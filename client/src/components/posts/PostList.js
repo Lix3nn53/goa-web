@@ -13,7 +13,7 @@ class PostsList extends Component {
     totalPages: 0,
     currentPosts: [],
     currentPage: null,
-    pageLimit: 2,
+    pageLimit: 3,
     pageNeighbours: 1
   };
 
@@ -105,13 +105,13 @@ class PostsList extends Component {
     return (
       <div className="row">
         <div className="col-lg-8">
-          <h1 className="text-center mb-2 font-weight-bold">Latest Posts</h1>
+          <h1 className="text-center pb-4 font-weight-bold">Latest Posts</h1>
 
           {this.renderPosts()}
         </div>
 
         <div className="col-lg-4">
-          <h1 className="text-center mb-2 font-weight-bold">
+          <h1 className="text-center pb-4 font-weight-bold">
             <FontAwesomeIcon icon={faTwitter} />
           </h1>
           <article className="h-75">

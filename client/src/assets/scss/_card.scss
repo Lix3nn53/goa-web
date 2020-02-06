@@ -1,20 +1,25 @@
 .card {
   border: none;
-  box-shadow: 0 0.6rem 1rem 0 rgba(0, 0, 0, 0.24);
+  box-shadow: 0 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.24);
   background: linear-gradient(180deg, #7c6e6a 0%, #65554e 100%);
-  border-radius: 15px;
-  .card-img-top {
-    height: 18rem;
-    object-fit: cover;
-  }
-
-  .card-img-top.card-img-small {
-    padding-top: 1.2rem;
-    height: 14vh;
-    object-fit: contain;
-  }
 }
 
+.post-card {
+  min-height: 240px;
+
+  .card-title {
+    margin-bottom: 0;
+  }
+  .post-title {
+    font-size: 27px;
+  }
+
+  img {
+    height: 240px;
+    width: 40%;
+    min-width: 40%;
+  }
+}
 .product-card .card-title {
   color: #fed11b;
 }

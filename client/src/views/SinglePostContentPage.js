@@ -43,14 +43,12 @@ class SinglePostContentPage extends Component {
           <div className="col-lg-12">
             {this.renderImage()}
 
-            <h2 className="mt-4">{this.state.title}</h2>
+            <h1 className="pt-2">{this.state.title}</h1>
 
-            <p className="lead mt-n2">
-              {" "}
-              Posted on {new Date(
-                this.state.dateSent
-              ).toLocaleDateString()} by {this.state.author}
-            </p>
+            <small className="">
+              Posted on {new Date(this.state.dateSent).toDateString()} by{" "}
+              {this.state.author}
+            </small>
 
             <hr />
 

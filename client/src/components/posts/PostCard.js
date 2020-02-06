@@ -6,7 +6,21 @@ import { faPencilAlt, faCalendar } from "@fortawesome/free-solid-svg-icons";
 class PostCard extends Component {
   renderImage() {
     if (this.props.image) {
-      return <img className="card-img-top" src={this.props.image} alt="" />;
+      return (
+        <img
+          className="fluid-image rounded-left"
+          src={this.props.image}
+          alt=""
+        />
+      );
+    } else {
+      return (
+        <img
+          className="fluid-image rounded-left"
+          src="https://via.placeholder.com/300"
+          alt=""
+        />
+      );
     }
   }
 
@@ -26,28 +40,26 @@ class PostCard extends Component {
     const postLink = "post/" + this.props._id;
 
     return (
-      <div className="card mb-4">
+      <div className="card post-card mb-4 flex-row">
         {this.renderImage()}
 
         <div className="card-body">
           <div className="card-title text-capitalize">
-            <h3>
-              <u>
-                <Link to={postLink}>{this.props.title}</Link>
-              </u>
-            </h3>
-            <small>
-              <span className="mx-2">
-                <FontAwesomeIcon className="mr-2" icon={faPencilAlt} />
-                {this.props.author}
-              </span>
-              <span className="mx-2">
-                <FontAwesomeIcon className="mr-2" icon={faCalendar} />
-                {this.props.date}
-              </span>
-            </small>
+            <div className="post-title">
+              <Link to={postLink}>{this.props.title}</Link>
+            </div>
           </div>
-          <p className="card-text mt-4 ml-2">{this.renderTextPreview()}</p>
+          <small>
+            <span className="px-2">
+              <FontAwesomeIcon className="mr-2" icon={faPencilAlt} />
+              {this.props.author}
+            </span>
+            <span className="px-2">
+              <FontAwesomeIcon className="mr-2" icon={faCalendar} />
+              {new Date(this.props.date).toDateString()}
+            </span>
+          </small>
+          <p className="card-text pt-4">{this.renderTextPreview()}</p>
         </div>
       </div>
     );

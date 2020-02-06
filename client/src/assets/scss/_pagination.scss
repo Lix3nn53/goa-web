@@ -1,9 +1,9 @@
 .pagination > li > a,
 .pagination > li > span {
   background-color: transparent;
-  border: 2px solid #e2ded3;
+  border: 2px solid #f5f3f0;
   border-radius: 20px;
-  color: #e2ded3;
+  color: #f5f3f0;
   height: 36px;
   margin: 0 2px;
   min-width: 36px;
@@ -14,15 +14,15 @@
 .pagination > li > a:hover,
 .pagination > li > a:focus,
 .pagination > li > a:active {
-  background-color: #c3baa2;
-  border-color: #e2ded3;
+  background-color: #d7d1c1;
+  border-color: #f5f3f0;
   color: #3a312c;
 }
 
 .page-item.active .page-link {
-  background-color: #e2ded3;
+  background-color: #f5f3f0;
   color: #3a312c;
-  border-color: #e2ded3;
+  border-color: #f5f3f0;
 }
 
 .pagination .page-link {
@@ -30,9 +30,9 @@
 }
 
 .page-item.disabled .page-link {
-  color: #c3baa2;
+  color: #d7d1c1;
   pointer-events: none;
   cursor: auto;
   background-color: transparent;
-  border-color: #c3baa2;
+  border-color: #d7d1c1;
 }

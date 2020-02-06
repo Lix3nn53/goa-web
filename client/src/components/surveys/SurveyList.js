@@ -84,7 +84,7 @@ class SurveyList extends Component {
                 <div className="card-header">
                   <h5 className="card-title">{survey.title}</h5>
                   <small className="card-subtitle mb-2 text-muted">
-                    Sent on: {new Date(survey.dateSent).toLocaleDateString()}
+                    Sent on: {new Date(survey.dateSent).toDateString()}
                   </small>
                 </div>
                 <div className="card-body">
@@ -107,7 +107,4 @@ function mapStateToProps({ surveys }) {
   return { surveys };
 }
 
-export default connect(
-  mapStateToProps,
-  { fetchSurveys }
-)(SurveyList);
+export default connect(mapStateToProps, { fetchSurveys })(SurveyList);

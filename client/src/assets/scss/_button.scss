@@ -1,7 +1,7 @@
 .btn {
   border: none;
   background: #8f7970;
-  color: #e2ded3;
+  color: #f5f3f0;
 }
 
 .btn.disabled,
@@ -20,19 +20,19 @@
 
 .btn:hover {
   background: #816d65;
-  border-color: #e2ded3;
-  color: #e2ded3;
+  border-color: #f5f3f0;
+  color: #f5f3f0;
 }
 
 .btn:focus,
 .btn.focus {
-  box-shadow: 0 0 0 1px #e2ded3;
+  box-shadow: 0 0 0 1px #f5f3f0;
 }
 
 .btn:not(:disabled):not(.disabled):active,
 .btn:not(:disabled):not(.disabled).active,
 .show > .btn.dropdown-toggle {
-  color: #e2ded3;
+  color: #f5f3f0;
   background-color: #64554f;
   border-color: #493c37;
 }
@@ -40,7 +40,7 @@
 .btn:not(:disabled):not(.disabled):active:focus,
 .btn:not(:disabled):not(.disabled).active:focus,
 .show > .btn.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem #e2ded3;
+  box-shadow: 0 0 0 0.2rem #f5f3f0;
 }
 
 .landing-btn {
@@ -53,7 +53,7 @@
   box-shadow: 0 0 0 0.25rem #3a302c;
   width: 16rem;
   font-size: 15px;
-  color: #e2ded3;
+  color: #f5f3f0;
 }
 
 .landing-btn:hover {

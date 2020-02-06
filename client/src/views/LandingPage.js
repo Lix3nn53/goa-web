@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PostsHome from "components/posts/PostList";
+import PostList from "components/posts/PostList";
 import $ from "jquery";
 
 class LandingPage extends Component {
@@ -72,7 +72,7 @@ class LandingPage extends Component {
         </div>
 
         <div className="container mt-4">
-          <PostsHome />
+          <PostList />
         </div>
       </div>
     );
