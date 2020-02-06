@@ -13,14 +13,6 @@ class PostCard extends Component {
           alt=""
         />
       );
-    } else {
-      return (
-        <img
-          className="fluid-image rounded-left"
-          src="https://via.placeholder.com/300"
-          alt=""
-        />
-      );
     }
   }
 
