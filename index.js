@@ -19,7 +19,7 @@ mongoose.connect(keys.mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
-  useCreateIndex: true
+  useCreateIndex: true,
 });
 
 const app = express();
@@ -33,7 +33,7 @@ app.use(bodyParser.json());
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
-    keys: [keys.cookieKey]
+    keys: [keys.cookieKey],
   })
 );
 app.use(passport.initialize());
@@ -56,7 +56,7 @@ const path = require("path");
 app.use(express.static(path.join(__dirname, "client/build")));
 
 //Express will serve up the index.html file if it does not recognize the route
-app.get("/*", function(req, res) {
+app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "client/build", "index.html"));
 });
 
