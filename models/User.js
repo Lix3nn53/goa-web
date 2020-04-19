@@ -9,28 +9,28 @@ const userSchema = new Schema({
     index: true,
     unique: true,
     sparse: true,
-    select: false
+    select: false,
   },
   githubId: {
     type: String,
     index: true,
     unique: true,
     sparse: true,
-    select: false
+    select: false,
   },
   twitterId: {
     type: String,
     index: true,
     unique: true,
     sparse: true,
-    select: false
+    select: false,
   },
   facebookId: {
     type: String,
     index: true,
     unique: true,
     sparse: true,
-    select: false
+    select: false,
   },
   email: { type: String, index: true, unique: true, sparse: true },
   username: String,
@@ -39,17 +39,14 @@ const userSchema = new Schema({
   billing: BillingSchema,
   role: { type: String, default: "user" },
   minecraftUsername: String,
-  verified: Boolean
+  verified: Boolean,
+  refreshTokens: { type: [String], select: false },
 });
 
-userSchema.methods.verifyPassword = async function(password) {
+userSchema.methods.verifyPassword = async function (password) {
   const compare = await bcrypt.compare(password, this.password);
 
-  if (compare) {
-    return true;
-  } else {
-    return false;
-  }
+  return compare;
 };
 
 mongoose.model("users", userSchema);

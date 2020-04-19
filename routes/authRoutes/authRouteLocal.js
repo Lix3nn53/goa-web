@@ -4,6 +4,7 @@ const SendgridSingle = require("../../services/mailers/SendgridSingle");
 const registerTemplate = require("../../services/emailTemplates/registerTemplate");
 const { Path } = require("path-parser");
 const bcrypt = require("bcryptjs");
+const token = require("../../services/token");
 
 const User = mongoose.model("users");
 const UserVerify = mongoose.model("usersVerify");
@@ -11,27 +12,39 @@ const UserVerify = mongoose.model("usersVerify");
 const {
   passwordRegex,
   emailRegex,
-  usernameRegex
+  usernameRegex,
 } = require("../../services/regex");
 
-module.exports = app => {
-  app.post("/auth/local", function(req, res, next) {
-    passport.authenticate("local", function(err, user, info) {
+module.exports = (app) => {
+  app.post("/auth/local", function (req, res, next) {
+    passport.authenticate("local", function (err, user, info) {
       if (err) {
         return next(err);
       }
       if (!user) {
         return res.status(400).json({
           success: false,
-          message: info.message
+          message: info.message,
         });
       }
-      req.logIn(user, function(err) {
+      req.logIn(user, { session: false }, function (err) {
         if (err) {
           return next(err);
         }
+
+        const remoteAddress = req.ip;
+
+        const refreshToken = token.generateToken(user, "refreshToken", remoteAddress);
+        const accessToken = token.generateToken(user, "accessToken", remoteAddress);
+
+        user.refreshTokens.push(refreshToken);
+
+        await user.save();
+
         return res.status(200).json({
-          success: true
+          success: true,
+          refreshToken: refreshToken,
+          accessToken: accessToken,
         });
       });
     })(req, res, next);
@@ -43,28 +56,28 @@ module.exports = app => {
     if (password !== passwordConfirm) {
       return res.status(400).json({
         success: false,
-        message: "Passwords does not match."
+        message: "Passwords does not match.",
       });
     }
 
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
         success: false,
-        message: "Password is not valid."
+        message: "Password is not valid.",
       });
     }
 
     if (!usernameRegex.test(username)) {
       return res.status(400).json({
         success: false,
-        message: "Username is not valid."
+        message: "Username is not valid.",
       });
     }
 
     if (!emailRegex.test(email)) {
       return res.status(400).json({
         success: false,
-        message: "Email is not valid."
+        message: "Email is not valid.",
       });
     }
 
@@ -72,7 +85,7 @@ module.exports = app => {
 
     try {
       user = await User.findOne({
-        $or: [{ email: email }, { username: username }]
+        $or: [{ email: email }, { username: username }],
       });
     } catch (error) {
       return done(error);
@@ -81,7 +94,7 @@ module.exports = app => {
     if (user) {
       return res.status(400).json({
         success: false,
-        message: "Email or username is taken."
+        message: "Email or username is taken.",
       });
     }
 
@@ -92,16 +105,16 @@ module.exports = app => {
         email: email,
         username: username,
         password: hashedPassword,
-        verified: false
+        verified: false,
       }).save();
 
-      req.logIn(user, async function(err) {
+      req.logIn(user, { session: false }, async function (err) {
         if (err) {
           return next(err);
         }
 
         const userVerify = await new UserVerify({
-          _user: user.id
+          _user: user.id,
         }).save();
 
         const mailer = new SendgridSingle(
@@ -111,8 +124,19 @@ module.exports = app => {
 
         mailer.send();
 
+        const remoteAddress = req.ip;
+
+        const refreshToken = token.generateToken(user, "refreshToken", remoteAddress);
+        const accessToken = token.generateToken(user, "accessToken", remoteAddress);
+
+        user.refreshTokens.push(refreshToken);
+
+        await user.save();
+
         return res.status(200).json({
-          success: true
+          success: true,
+          refreshToken: refreshToken,
+          accessToken: accessToken,
         });
       });
     } catch (error) {
@@ -127,7 +151,7 @@ module.exports = app => {
     if (!match) {
       return res.status(400).json({
         success: false,
-        message: "Invalid request."
+        message: "Invalid request.",
       });
     }
 
@@ -138,7 +162,7 @@ module.exports = app => {
     if (!userVerify) {
       return res.status(400).json({
         success: false,
-        message: "Invalid request."
+        message: "Invalid request.",
       });
     }
 
@@ -161,12 +185,12 @@ module.exports = app => {
       if (user.verified) {
         return res.status(400).json({
           success: false,
-          message: "User is already verified."
+          message: "User is already verified.",
         });
       }
 
       const userVerify = await UserVerify.findOne({
-        _user: user.id
+        _user: user.id,
       });
 
       const mailer = new SendgridSingle(
@@ -181,7 +205,7 @@ module.exports = app => {
       }
 
       return res.status(200).json({
-        success: true
+        success: true,
       });
     }
   });

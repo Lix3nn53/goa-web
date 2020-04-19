@@ -24,6 +24,7 @@
     "concurrently": "^4.1.2",
     "express": "^4.17.1",
     "iyzipay": "^2.0.34",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.1",
     "ngrok": "^3.2.5",
     "nodemon": "^1.19.2",
