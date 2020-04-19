@@ -27,25 +27,20 @@ module.exports = (app) => {
           message: info.message,
         });
       }
-      req.logIn(user, { session: false }, function (err) {
-        if (err) {
-          return next(err);
-        }
+      
+      const remoteAddress = req.ip;
 
-        const remoteAddress = req.ip;
+      const refreshToken = token.generateToken(user, "refreshToken", remoteAddress);
+      const accessToken = token.generateToken(user, "accessToken", remoteAddress);
 
-        const refreshToken = token.generateToken(user, "refreshToken", remoteAddress);
-        const accessToken = token.generateToken(user, "accessToken", remoteAddress);
+      user.refreshTokens.push(refreshToken);
 
-        user.refreshTokens.push(refreshToken);
+      await user.save();
 
-        await user.save();
-
-        return res.status(200).json({
-          success: true,
-          refreshToken: refreshToken,
-          accessToken: accessToken,
-        });
+      return res.status(200).json({
+        success: true,
+        refreshToken: refreshToken,
+        accessToken: accessToken,
       });
     })(req, res, next);
   });
