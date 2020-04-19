@@ -11,7 +11,10 @@ module.exports = (app) => {
   );
 
   app.get("/auth/twitter/callback", function (req, res, next) {
-    passport.authenticate("twitter", { session: false }, function (err, user) {
+    passport.authenticate("twitter", { session: false }, async function (
+      err,
+      user
+    ) {
       if (err) {
         return next(err);
       }
@@ -23,8 +26,16 @@ module.exports = (app) => {
 
       const remoteAddress = req.ip;
 
-      const refreshToken = token.generateToken(user, "refreshToken", remoteAddress);
-      const accessToken = token.generateToken(user, "accessToken", remoteAddress);
+      const refreshToken = token.generateToken(
+        user,
+        "refreshToken",
+        remoteAddress
+      );
+      const accessToken = token.generateToken(
+        user,
+        "accessToken",
+        remoteAddress
+      );
 
       user.refreshTokens.push(refreshToken);
 

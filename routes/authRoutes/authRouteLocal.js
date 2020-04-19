@@ -17,7 +17,11 @@ const {
 
 module.exports = (app) => {
   app.post("/auth/local", function (req, res, next) {
-    passport.authenticate("local", { session: false }, function (err, user, info) {
+    passport.authenticate("local", { session: false }, async function (
+      err,
+      user,
+      info
+    ) {
       if (err) {
         return next(err);
       }
@@ -27,11 +31,19 @@ module.exports = (app) => {
           message: info.message,
         });
       }
-      
+
       const remoteAddress = req.ip;
 
-      const refreshToken = token.generateToken(user, "refreshToken", remoteAddress);
-      const accessToken = token.generateToken(user, "accessToken", remoteAddress);
+      const refreshToken = token.generateToken(
+        user,
+        "refreshToken",
+        remoteAddress
+      );
+      const accessToken = token.generateToken(
+        user,
+        "accessToken",
+        remoteAddress
+      );
 
       user.refreshTokens.push(refreshToken);
 
@@ -121,8 +133,16 @@ module.exports = (app) => {
 
         const remoteAddress = req.ip;
 
-        const refreshToken = token.generateToken(user, "refreshToken", remoteAddress);
-        const accessToken = token.generateToken(user, "accessToken", remoteAddress);
+        const refreshToken = token.generateToken(
+          user,
+          "refreshToken",
+          remoteAddress
+        );
+        const accessToken = token.generateToken(
+          user,
+          "accessToken",
+          remoteAddress
+        );
 
         user.refreshTokens.push(refreshToken);
 
