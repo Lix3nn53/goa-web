@@ -1,7 +1,7 @@
 const keys = require("../config/keys");
 const { Path } = require("path-parser");
 const mongoose = require("mongoose");
-const requireLogin = require("../middlewares/requireLogin");
+const authenticateAccessToken = require("../middlewares/authenticateAccessToken");
 const Iyzipay = require("iyzipay");
 const uuidv4 = require("uuid/v4");
 const atob = require("atob");
@@ -13,17 +13,17 @@ const CreditSelection = mongoose.model("creditselection");
 var iyzipay = new Iyzipay({
   apiKey: keys.iyzipayPublishableKey,
   secretKey: keys.iyzipaySecretKey,
-  uri: "https://sandbox-api.iyzipay.com"
+  uri: "https://sandbox-api.iyzipay.com",
 });
 
-module.exports = app => {
-  app.post("/api/iyzipay", requireLogin, async (req, res) => {
+module.exports = (app) => {
+  app.post("/api/iyzipay", authenticateAccessToken, async (req, res) => {
     const { product, buyer, paymentCard } = req.body;
 
     const creditSelReq = product;
 
     const creditSelection = await CreditSelection.findOne({
-      productId: creditSelReq.productId
+      productId: creditSelReq.productId,
     });
 
     if (!creditSelection) {
@@ -39,7 +39,7 @@ module.exports = app => {
 
     const iyzipayRequest = iyzipayStart3D(product, buyer, paymentCard);
 
-    iyzipay.threedsInitialize.create(iyzipayRequest, function(err, result) {
+    iyzipay.threedsInitialize.create(iyzipayRequest, function (err, result) {
       if (!result.threeDSHtmlContent) {
         res.send(result.errorMessage);
         return;
@@ -83,10 +83,10 @@ module.exports = app => {
       locale: "tr",
       conversationId: body.conversationId,
       paymentId: body.paymentId,
-      conversationData: body.conversationData
+      conversationData: body.conversationData,
     };
 
-    await iyzipay.threedsPayment.create(iyzipayRequest, async function(
+    await iyzipay.threedsPayment.create(iyzipayRequest, async function (
       err,
       result
     ) {
@@ -105,10 +105,10 @@ module.exports = app => {
       }
 
       const products = result.itemTransactions.map(
-        product =>
+        (product) =>
           new Object({
             productId: product.itemId,
-            paymentTransactionId: product.paymentTransactionId
+            paymentTransactionId: product.paymentTransactionId,
           })
       );
 
@@ -127,7 +127,7 @@ module.exports = app => {
         products: productsString,
         status: result.status,
         _user: userId,
-        dateSent: Date.now()
+        dateSent: Date.now(),
       });
 
       if (result.status != "success") {
@@ -152,14 +152,14 @@ module.exports = app => {
 };
 
 const onSuccessfulPayment = async (userId, requestProducts) => {
-  const productIds = requestProducts.map(product => product.productId);
+  const productIds = requestProducts.map((product) => product.productId);
 
   const creditSelections = await CreditSelection.find({
-    productId: { $in: productIds }
+    productId: { $in: productIds },
   });
 
   const credits = creditSelections.map(
-    creditSelection => creditSelection.credits
+    (creditSelection) => creditSelection.credits
   );
 
   const totalCredits = credits.reduce((a, b) => a + b, 0);
@@ -195,7 +195,7 @@ const iyzipayStart3D = (product, buyer, paymentCard) => {
       address: "Ornek Mahallesi Semarkant Sokak No:28/A Atasehir",
       contactName: "Utku Akyıldız",
       city: "Istanbul",
-      country: "Turkey"
+      country: "Turkey",
     },
     basketItems: [
       {
@@ -203,8 +203,8 @@ const iyzipayStart3D = (product, buyer, paymentCard) => {
         price: price,
         name: product.name,
         category1: product.category,
-        itemType: "VIRTUAL"
-      }
-    ]
+        itemType: "VIRTUAL",
+      },
+    ],
   };
 };

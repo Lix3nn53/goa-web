@@ -1,6 +1,6 @@
 const _ = require("lodash");
 const mongoose = require("mongoose");
-const requireLogin = require("../middlewares/requireLogin");
+const authenticateAccessToken = require("../middlewares/authenticateAccessToken");
 
 const User = mongoose.model("users");
 
@@ -8,11 +8,11 @@ const {
   passwordRegex,
   emailRegex,
   usernameRegex,
-  minecraftUsernameRegex
+  minecraftUsernameRegex,
 } = require("../services/regex");
 
-module.exports = app => {
-  app.post("/api/profile", requireLogin, async (req, res) => {
+module.exports = (app) => {
+  app.post("/api/profile", authenticateAccessToken, async (req, res) => {
     const {
       email,
       username,
@@ -21,7 +21,7 @@ module.exports = app => {
       registrationAddress,
       city,
       country,
-      minecraftUsername
+      minecraftUsername,
     } = req.body;
 
     if (username) {
@@ -29,17 +29,17 @@ module.exports = app => {
         if (!usernameRegex.test(username)) {
           return res.status(400).json({
             success: false,
-            message: "Invalid request."
+            message: "Invalid request.",
           });
         } else {
           const user = await User.findOne({
-            username: username
+            username: username,
           });
 
           if (user) {
             return res.status(400).json({
               success: false,
-              message: "Username is taken."
+              message: "Username is taken.",
             });
           }
         }
@@ -51,7 +51,7 @@ module.exports = app => {
         if (!passwordRegex.test(password)) {
           return res.status(400).json({
             success: false,
-            message: "Invalid request."
+            message: "Invalid request.",
           });
         }
       }
@@ -62,7 +62,7 @@ module.exports = app => {
         if (!minecraftUsernameRegex.test(minecraftUsername)) {
           return res.status(400).json({
             success: false,
-            message: "Invalid request."
+            message: "Invalid request.",
           });
         }
       }
@@ -72,7 +72,7 @@ module.exports = app => {
       identityNumber: identityNumber,
       registrationAddress: registrationAddress,
       city: city,
-      country: country
+      country: country,
     };
 
     clean(billing);
@@ -82,7 +82,7 @@ module.exports = app => {
       username: username,
       password: password,
       billing: billing,
-      minecraftUsername: minecraftUsername
+      minecraftUsername: minecraftUsername,
     };
 
     clean(profife);
@@ -92,17 +92,17 @@ module.exports = app => {
         if (!emailRegex.test(email)) {
           return res.status(400).json({
             success: false,
-            message: "Invalid request."
+            message: "Invalid request.",
           });
         } else {
           const user = await User.findOne({
-            email: email
+            email: email,
           });
 
           if (user) {
             return res.status(400).json({
               success: false,
-              message: "Email is taken."
+              message: "Email is taken.",
             });
           }
         }
@@ -112,7 +112,7 @@ module.exports = app => {
     try {
       const mongoRes = await User.findByIdAndUpdate(req.user.id, profife, {
         useFindAndModify: false,
-        new: true
+        new: true,
       });
 
       res.send(mongoRes);

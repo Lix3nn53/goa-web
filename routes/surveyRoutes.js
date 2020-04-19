@@ -2,17 +2,17 @@ const _ = require("lodash");
 const { Path } = require("path-parser");
 const { URL } = require("url");
 const mongoose = require("mongoose");
-const requireLogin = require("../middlewares/requireLogin");
+const authenticateAccessToken = require("../middlewares/authenticateAccessToken");
 const requireCredits = require("../middlewares/requireCredits");
 const Mailer = require("../services/Mailer");
 const surveyTemplate = require("../services/emailTemplates/surveyTemplate");
 
 const Survey = mongoose.model("surveys");
 
-module.exports = app => {
-  app.get("/api/surveys", requireLogin, async (req, res) => {
+module.exports = (app) => {
+  app.get("/api/surveys", authenticateAccessToken, async (req, res) => {
     const surveys = await Survey.find({ _user: req.user.id }).select({
-      recipients: false
+      recipients: false,
     });
 
     res.send(surveys);
@@ -39,13 +39,13 @@ module.exports = app => {
           {
             _id: surveyId,
             recipients: {
-              $elemMatch: { email: email, responded: false }
-            }
+              $elemMatch: { email: email, responded: false },
+            },
           },
           {
             $inc: { [choice]: 1 },
             $set: { "recipients.$.responded": true },
-            lastResponded: new Date()
+            lastResponded: new Date(),
           }
         ).exec();
       })
@@ -54,29 +54,36 @@ module.exports = app => {
     res.send({});
   });
 
-  app.post("/api/surveys", requireLogin, requireCredits, async (req, res) => {
-    const { title, subject, body, recipients } = req.body;
+  app.post(
+    "/api/surveys",
+    authenticateAccessToken,
+    requireCredits,
+    async (req, res) => {
+      const { title, subject, body, recipients } = req.body;
 
-    const survey = new Survey({
-      title: title,
-      subject,
-      body,
-      recipients: recipients.split(",").map(email => ({ email: email.trim() })),
-      _user: req.user.id,
-      dateSent: Date.now()
-    });
+      const survey = new Survey({
+        title: title,
+        subject,
+        body,
+        recipients: recipients
+          .split(",")
+          .map((email) => ({ email: email.trim() })),
+        _user: req.user.id,
+        dateSent: Date.now(),
+      });
 
-    const mailer = new Mailer(survey, surveyTemplate(survey));
+      const mailer = new Mailer(survey, surveyTemplate(survey));
 
-    try {
-      await mailer.send();
-      await survey.save();
-      req.user.credits -= 1;
-      const user = await req.user.save();
+      try {
+        await mailer.send();
+        await survey.save();
+        req.user.credits -= 1;
+        const user = await req.user.save();
 
-      res.send(user);
-    } catch (err) {
-      res.status(422).send(err);
+        res.send(user);
+      } catch (err) {
+        res.status(422).send(err);
+      }
     }
-  });
+  );
 };
