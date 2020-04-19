@@ -1,17 +1,18 @@
 const passport = require("passport");
 
-module.exports = app => {
+module.exports = (app) => {
   app.get(
     "/auth/twitter",
     passport.authenticate("twitter", {
       scope: ["user"],
-      prompt: "select_account"
+      prompt: "select_account",
+      session: false,
     })
   );
 
   app.get(
     "/auth/twitter/callback",
-    passport.authenticate("twitter"),
+    passport.authenticate("twitter", { session: false }),
     (req, res) => {
       res.redirect("/");
     }

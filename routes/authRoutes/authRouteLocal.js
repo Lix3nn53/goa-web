@@ -17,7 +17,7 @@ const {
 
 module.exports = (app) => {
   app.post("/auth/local", function (req, res, next) {
-    passport.authenticate("local", function (err, user, info) {
+    passport.authenticate("local", { session: false }, function (err, user, info) {
       if (err) {
         return next(err);
       }
