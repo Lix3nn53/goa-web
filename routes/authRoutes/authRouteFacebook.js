@@ -1,4 +1,5 @@
 const passport = require("passport");
+const authHandler = require("./authHandler");
 
 module.exports = (app) => {
   app.get(
@@ -18,27 +19,7 @@ module.exports = (app) => {
         return res.status(400);
       }
 
-      const remoteAddress = req.ip;
-
-      const refreshToken = token.generateToken(
-        user,
-        "refreshToken",
-        remoteAddress
-      );
-      const accessToken = token.generateToken(
-        user,
-        "accessToken",
-        remoteAddress
-      );
-
-      user.refreshTokens.push(refreshToken);
-
-      await user.save();
-
-      return res.status(200).json({
-        refreshToken: refreshToken,
-        accessToken: accessToken,
-      });
+      await authHandler.successfulLogin(req, res, user);
     })(req, res, next);
   });
 };

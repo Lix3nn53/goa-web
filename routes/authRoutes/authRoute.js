@@ -14,14 +14,16 @@ module.exports = (app) => {
       if (err) return;
 
       //remove refresh token
-      const index = user.refreshTokens.indexOf(refreshToken);
-      if (index >= 0) user.refreshTokens.splice(index, 1);
+      const filtered = user.sessions.filter(
+        (session) => session.refreshToken !== refreshToken
+      );
+      user.sessions = filtered;
 
       await req.user.save();
     });
   });
 
-  app.get("/api/current_user", authenticateAccessToken, (req, res) => {
+  app.get("/api/logoutAllButThese", authenticateAccessToken, (req, res) => {
     res.send(req.user);
   });
 

@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 const { Schema } = mongoose; //const Schema = mongoose.Schema;
 const BillingSchema = require("./Billing");
-const bcrypt = require("bcryptjs");
+const SessionSchema = require("./Session");
 
 const userSchema = new Schema({
   googleId: {
@@ -40,7 +41,7 @@ const userSchema = new Schema({
   role: { type: String, default: "user" },
   minecraftUsername: String,
   verified: Boolean,
-  refreshTokens: { type: [String], select: false },
+  sessions: { type: [SessionSchema], select: false },
 });
 
 userSchema.methods.verifyPassword = async function (password) {

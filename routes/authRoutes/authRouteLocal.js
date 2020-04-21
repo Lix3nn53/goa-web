@@ -4,7 +4,7 @@ const SendgridSingle = require("../../services/mailers/SendgridSingle");
 const registerTemplate = require("../../services/emailTemplates/registerTemplate");
 const { Path } = require("path-parser");
 const bcrypt = require("bcryptjs");
-const token = require("../../services/token");
+const authHandler = require("./authHandler");
 
 const User = mongoose.model("users");
 const UserVerify = mongoose.model("usersVerify");
@@ -31,27 +31,7 @@ module.exports = (app) => {
         });
       }
 
-      const remoteAddress = req.ip;
-
-      const refreshToken = token.generateToken(
-        user,
-        "refreshToken",
-        remoteAddress
-      );
-      const accessToken = token.generateToken(
-        user,
-        "accessToken",
-        remoteAddress
-      );
-
-      user.refreshTokens.push(refreshToken);
-
-      await user.save();
-
-      return res.status(200).json({
-        refreshToken: refreshToken,
-        accessToken: accessToken,
-      });
+      await authHandler.successfulLogin(req, res, user);
     })(req, res, next);
   });
 
@@ -129,28 +109,7 @@ module.exports = (app) => {
 
         mailer.send();
 
-        const remoteAddress = req.ip;
-
-        const refreshToken = token.generateToken(
-          user,
-          "refreshToken",
-          remoteAddress
-        );
-        const accessToken = token.generateToken(
-          user,
-          "accessToken",
-          remoteAddress
-        );
-
-        user.refreshTokens.push(refreshToken);
-
-        await user.save();
-
-        return res.status(200).json({
-          success: true,
-          refreshToken: refreshToken,
-          accessToken: accessToken,
-        });
+        await authHandler.successfulLogin(req, res, user);
       });
     } catch (error) {
       return done(error);

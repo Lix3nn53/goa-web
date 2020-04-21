@@ -25,10 +25,6 @@ const generateToken = (user, tokenType, remoteAddress) => {
     }
   );
 
-  if (tokenType === "refreshToken") {
-    user.refreshTokens.push(token);
-  }
-
   return token;
 };
 
