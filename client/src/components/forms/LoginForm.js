@@ -10,7 +10,7 @@ import LoginStrategies from "components/other/LoginStrategies";
 
 class LoginForm extends Component {
   state = {
-    loginError: ""
+    loginError: "",
   };
 
   async onFormSubmit(fields) {
@@ -20,13 +20,13 @@ class LoginForm extends Component {
       this.hideLoginModal();
 
       console.log("1");
-      console.log(res.data.message);
+      console.log(res.data.errorMessage);
       console.log(res.data);
-      this.setState({ loginError: res.data.message });
-      if (res.data.success) {
+      if (res.data.refreshToken && res.data.accessToken) {
         this.props.fetchUser();
         this.props.history.push("/");
       } else {
+        this.setState({ loginError: res.data.errorMessage });
         this.props.history.push("/login");
       }
     } catch (error) {
@@ -57,7 +57,7 @@ class LoginForm extends Component {
             emailOrUsername: Yup.string().required(
               "Email or username is required"
             ),
-            password: Yup.string().required("password is required")
+            password: Yup.string().required("password is required"),
           })}
           onSubmit={async (fields, { setSubmitting }) => {
             await this.onFormSubmit(fields);
@@ -87,7 +87,7 @@ class LoginForm extends Component {
                   <ErrorMessage
                     name="emailOrUsername"
                     className="invalid-feedback"
-                    render={msg => <div className="text-danger">{msg}</div>}
+                    render={(msg) => <div className="text-danger">{msg}</div>}
                   />
                 </div>
               </div>
@@ -107,7 +107,7 @@ class LoginForm extends Component {
                   <ErrorMessage
                     name="password"
                     className="invalid-feedback"
-                    render={msg => <div className="text-danger">{msg}</div>}
+                    render={(msg) => <div className="text-danger">{msg}</div>}
                   />
                 </div>
               </div>

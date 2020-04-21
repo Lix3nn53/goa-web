@@ -27,8 +27,7 @@ module.exports = (app) => {
       }
       if (!user) {
         return res.status(400).json({
-          success: false,
-          message: info.message,
+          errorMessage: info.errorMessage,
         });
       }
 
@@ -50,7 +49,6 @@ module.exports = (app) => {
       await user.save();
 
       return res.status(200).json({
-        success: true,
         refreshToken: refreshToken,
         accessToken: accessToken,
       });

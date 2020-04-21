@@ -15,7 +15,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  User.findById(id).then(user => {
+  User.findById(id).then((user) => {
     done(null, user);
   });
 });
@@ -24,30 +24,30 @@ passport.use(
   new LocalStrategy(
     {
       usernameField: "emailOrUsername",
-      passwordField: "password"
+      passwordField: "password",
     },
-    function(username, password, done) {
+    function (username, password, done) {
       User.findOne(
         {
-          $or: [{ email: username }, { username: username }]
+          $or: [{ email: username }, { username: username }],
         },
         "+password",
-        async function(err, user) {
+        async function (err, user) {
           if (err) {
             return done(err);
           }
           if (!user) {
             return done(null, false, {
-              message: "Invalid username or email address."
+              errorMessage: "Invalid username or email address.",
             });
           }
 
           const verifyPassword = await user.verifyPassword(password);
 
           if (!verifyPassword) {
-            return done(null, false, { message: "Wrong password." });
+            return done(null, false, { errorMessage: "Wrong password." });
           }
-          return done(null, user, { message: "Success!" });
+          return done(null, user);
         }
       );
     }
@@ -60,7 +60,7 @@ passport.use(
       clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
       callbackURL: "/auth/google/callback",
-      proxy: true
+      proxy: true,
     },
     async (accessToken, refreshToken, profile, done) => {
       let user = await User.findOne({ googleId: profile.id });
@@ -69,7 +69,7 @@ passport.use(
         user = await new User({
           googleId: profile.id,
           username: profile.name.givenName,
-          verified: true
+          verified: true,
         }).save(); //we already have a record with given profile.id
       }
 
@@ -84,7 +84,7 @@ passport.use(
       clientID: keys.githubClientID,
       clientSecret: keys.githubClientSecret,
       callbackURL:
-        "https://guardiansofadelia.herokuapp.com/auth/github/callback"
+        "https://guardiansofadelia.herokuapp.com/auth/github/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       let user = await User.findOne({ githubId: profile.id });
@@ -93,7 +93,7 @@ passport.use(
         user = await new User({
           githubId: profile.id,
           username: profile.username,
-          verified: true
+          verified: true,
         }).save(); //we already have a record with given profile.id
       }
 
@@ -108,7 +108,7 @@ passport.use(
       consumerKey: keys.twitterConsumerKey,
       consumerSecret: keys.twitterConsumerSecret,
       callbackURL:
-        "https://guardiansofadelia.herokuapp.com/auth/twitter/callback"
+        "https://guardiansofadelia.herokuapp.com/auth/twitter/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       let user = await User.findOne({ twitterId: profile.id });
@@ -117,7 +117,7 @@ passport.use(
         user = await new User({
           twitterId: profile.id,
           username: profile.username,
-          verified: true
+          verified: true,
         }).save(); //we already have a record with given profile.id
       }
 
@@ -133,7 +133,7 @@ passport.use(
       clientSecret: keys.facebookAppSecret,
       callbackURL:
         "https://guardiansofadelia.herokuapp.com/auth/facebook/callback",
-      profileFields: ["id", "displayName"]
+      profileFields: ["id", "displayName"],
     },
     async (accessToken, refreshToken, profile, done) => {
       let user = await User.findOne({ facebookId: profile.id });
@@ -142,7 +142,7 @@ passport.use(
         user = await new User({
           facebookId: profile.id,
           username: profile.displayName,
-          verified: true
+          verified: true,
         }).save(); //we already have a record with given profile.id
       }
 

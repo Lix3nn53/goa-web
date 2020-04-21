@@ -19,9 +19,7 @@ module.exports = (app) => {
         return next(err);
       }
       if (!user) {
-        return res.status(400).json({
-          success: false,
-        });
+        return res.status(400);
       }
 
       const remoteAddress = req.ip;
@@ -42,7 +40,6 @@ module.exports = (app) => {
       await user.save();
 
       return res.status(200).json({
-        success: true,
         refreshToken: refreshToken,
         accessToken: accessToken,
       });
