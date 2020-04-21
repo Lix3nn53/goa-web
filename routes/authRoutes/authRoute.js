@@ -8,12 +8,12 @@ module.exports = (app) => {
 
     const authHeader = req.headers["authorization"];
     const refreshToken = authHeader && authHeader.split(" ")[1];
-    if (refreshToken == null) return;
+    if (refreshToken == null) return res.sendStatus(401);
 
     jwt.verify(refreshToken, keys.refreshTokenSecret, async (err, user) => {
-      if (err) return;
+      if (err) return res.sendStatus(403);
 
-      //remove refresh token
+      //remove refresh token that is equal to the one in header
       const filtered = user.sessions.filter(
         (session) => session.refreshToken !== refreshToken
       );
@@ -23,8 +23,24 @@ module.exports = (app) => {
     });
   });
 
-  app.get("/api/logoutAllButThese", authenticateAccessToken, (req, res) => {
-    res.send(req.user);
+  app.get("/api/logoutAllButThis", authenticateAccessToken, (req, res) => {
+    const authHeader = req.headers["authorization"];
+    const refreshToken = authHeader && authHeader.split(" ")[1];
+    if (refreshToken == null) return res.sendStatus(401);
+
+    jwt.verify(refreshToken, keys.refreshTokenSecret, async (err, user) => {
+      if (err) return res.sendStatus(403);
+
+      //remove refresh tokens that is not equal to the one in header
+      const filtered = user.sessions.filter(
+        (session) => session.refreshToken === refreshToken
+      );
+      user.sessions = filtered;
+
+      await req.user.save();
+    });
+
+    res.send({});
   });
 
   app.post("/refreshAccessToken", (req, res) => {
