@@ -31,7 +31,7 @@ passport.use(
         {
           $or: [{ email: username }, { username: username }],
         },
-        "+password",
+        "+password +sessions",
         async function (err, user) {
           if (err) {
             return done(err);
@@ -63,7 +63,7 @@ passport.use(
       proxy: true,
     },
     async (accessToken, refreshToken, profile, done) => {
-      let user = await User.findOne({ googleId: profile.id });
+      let user = await User.findOne({ googleId: profile.id }, "+sessions");
 
       if (!user) {
         user = await new User({
@@ -87,7 +87,7 @@ passport.use(
         "https://guardiansofadelia.herokuapp.com/auth/github/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
-      let user = await User.findOne({ githubId: profile.id });
+      let user = await User.findOne({ githubId: profile.id }, "+sessions");
 
       if (!user) {
         user = await new User({
@@ -111,7 +111,7 @@ passport.use(
         "https://guardiansofadelia.herokuapp.com/auth/twitter/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
-      let user = await User.findOne({ twitterId: profile.id });
+      let user = await User.findOne({ twitterId: profile.id }, "+sessions");
 
       if (!user) {
         user = await new User({
@@ -136,7 +136,7 @@ passport.use(
       profileFields: ["id", "displayName"],
     },
     async (accessToken, refreshToken, profile, done) => {
-      let user = await User.findOne({ facebookId: profile.id });
+      let user = await User.findOne({ facebookId: profile.id }, "+sessions");
 
       if (!user) {
         user = await new User({

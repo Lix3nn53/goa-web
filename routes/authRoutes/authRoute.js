@@ -1,24 +1,36 @@
+const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const keys = require("../../config/keys");
+
+const User = mongoose.model("users");
 
 module.exports = (app) => {
   app.get("/api/logout", (req, res) => {
     req.logout();
-    res.redirect("/");
 
     const authHeader = req.headers["authorization"];
     const refreshToken = authHeader && authHeader.split(" ")[1];
     if (refreshToken == null) return res.sendStatus(401);
 
-    jwt.verify(refreshToken, keys.refreshTokenSecret, async (err, user) => {
+    jwt.verify(refreshToken, keys.refreshTokenSecret, (err, decodedToken) => {
       if (err) return res.sendStatus(403);
+      console.log(decodedToken);
+      const userId = decodedToken.user;
 
-      //remove refresh token that is equal to the one in header
-      const filtered = user.sessions.filter(
-        (session) => session.refreshToken !== refreshToken
-      );
-      user.sessions = filtered;
+      User.findById(userId, "+sessions", async (err, user) => {
+        if (err) return res.sendStatus(403);
+        if (!user) return res.sendStatus(403);
 
-      await req.user.save();
+        //remove refresh token that is equal to the one in header
+        const filtered = user.sessions.filter(
+          (session) => session.refreshToken !== refreshToken
+        );
+        user.sessions = filtered;
+
+        await user.save();
+
+        res.sendStatus(200);
+      });
     });
   });
 
@@ -27,21 +39,26 @@ module.exports = (app) => {
     const refreshToken = authHeader && authHeader.split(" ")[1];
     if (refreshToken == null) return res.sendStatus(401);
 
-    jwt.verify(refreshToken, keys.refreshTokenSecret, async (err, user) => {
+    jwt.verify(refreshToken, keys.refreshTokenSecret, (err, decodedToken) => {
       if (err) return res.sendStatus(403);
+      console.log(decodedToken);
+      const userId = decodedToken.user;
 
-      //find session
-      const found = user.sessions.find(
-        (session) => session.refreshToken === refreshToken
-      );
-      if (!found) return res.sendStatus(403); //refresh token is not valid for user
+      User.findById(userId, "+sessions", async (err, user) => {
+        if (err) return res.sendStatus(403);
+        if (!user) return res.sendStatus(403);
 
-      found.lastActive = Date.now();
-      user.sessions = [found];
+        const found = user.sessions.find(
+          (session) => session.refreshToken === refreshToken
+        );
+        if (!found) return res.sendStatus(403); //refresh token is not valid for user
 
-      await req.user.save();
+        found.lastActive = Date.now();
+        user.sessions = [found];
+        await user.save();
 
-      res.send(user.sessions);
+        res.send(found);
+      });
     });
   });
 
@@ -50,19 +67,25 @@ module.exports = (app) => {
     const refreshToken = authHeader && authHeader.split(" ")[1];
     if (refreshToken == null) return res.sendStatus(401);
 
-    jwt.verify(refreshToken, keys.refreshTokenSecret, async (err, user) => {
+    jwt.verify(refreshToken, keys.refreshTokenSecret, (err, decodedToken) => {
       if (err) return res.sendStatus(403);
+      console.log(decodedToken);
+      const userId = decodedToken.user;
 
-      //find session
-      const found = user.sessions.find(
-        (session) => session.refreshToken === refreshToken
-      );
-      if (!found) return res.sendStatus(403); //refresh token is not valid for user
+      User.findById(userId, "+sessions", async (err, user) => {
+        if (err) return res.sendStatus(403);
+        if (!user) return res.sendStatus(403);
 
-      found.lastActive = Date.now();
-      await req.user.save();
+        const found = user.sessions.find(
+          (session) => session.refreshToken === refreshToken
+        );
+        if (!found) return res.sendStatus(403); //refresh token is not valid for user
 
-      res.send(found);
+        found.lastActive = Date.now();
+        await user.save();
+
+        res.send(found);
+      });
     });
   });
 
@@ -71,46 +94,89 @@ module.exports = (app) => {
     const refreshToken = authHeader && authHeader.split(" ")[1];
     if (refreshToken == null) return res.sendStatus(401);
 
-    jwt.verify(refreshToken, keys.refreshTokenSecret, async (err, user) => {
+    jwt.verify(refreshToken, keys.refreshTokenSecret, (err, decodedToken) => {
       if (err) return res.sendStatus(403);
+      console.log(decodedToken);
+      const userId = decodedToken.user;
 
-      //find session
-      const found = user.sessions.find(
-        (session) => session.refreshToken === refreshToken
-      );
-      if (!found) return res.sendStatus(403); //refresh token is not valid for user
+      User.findById(userId, "+sessions", async (err, user) => {
+        if (err) return res.sendStatus(403);
+        if (!user) return res.sendStatus(403);
 
-      //remove refresh token that is equal to the one in header
-      const filtered = user.sessions.filter(
-        (session) => session.refreshToken !== refreshToken
-      );
+        const found = user.sessions.find(
+          (session) => session.refreshToken === refreshToken
+        );
+        if (!found) return res.sendStatus(403); //refresh token is not valid for user
 
-      found.lastActive = Date.now();
-      await req.user.save();
+        found.lastActive = Date.now();
+        await user.save();
 
-      res.json({ current: found, other: filtered });
+        const filtered = user.sessions.filter(
+          (session) => session.refreshToken !== refreshToken
+        );
+
+        res.json({ current: found, other: filtered });
+      });
     });
   });
 
-  app.post("/refreshAccessToken", (req, res) => {
+  app.get("/api/refreshAccessToken", (req, res) => {
     const authHeader = req.headers["authorization"];
     const refreshToken = authHeader && authHeader.split(" ")[1];
     if (refreshToken == null) return res.sendStatus(401);
 
-    jwt.verify(refreshToken, keys.refreshTokenSecret, (err, user) => {
+    jwt.verify(refreshToken, keys.refreshTokenSecret, (err, decodedToken) => {
       if (err) return res.sendStatus(403);
+      console.log(decodedToken);
+      const userId = decodedToken.user;
 
-      //find session
-      const found = user.sessions.find(
-        (session) => session.refreshToken === refreshToken
-      );
-      if (!found) return res.sendStatus(403); //refresh token is not valid for user
+      User.findById(userId, "+sessions", async (err, user) => {
+        if (err) return res.sendStatus(403);
+        if (!user) return res.sendStatus(403);
 
-      found.lastActive = Date.now();
-      await req.user.save();
+        const found = user.sessions.find(
+          (session) => session.refreshToken === refreshToken
+        );
+        if (!found) return res.sendStatus(403); //refresh token is not valid for user
 
-      const accessToken = generateAccessToken({ name: user.name });
-      res.json({ accessToken: accessToken });
+        found.lastActive = Date.now();
+        await user.save();
+
+        const accessToken = generateAccessToken({ name: user.name });
+        res.json({ accessToken: accessToken });
+      });
+    });
+  });
+
+  app.get("/api/current_user", (req, res) => {
+    const authHeader = req.headers["authorization"];
+    const refreshToken = authHeader && authHeader.split(" ")[1];
+    if (refreshToken == null) return res.sendStatus(401);
+
+    jwt.verify(refreshToken, keys.refreshTokenSecret, (err, decodedToken) => {
+      if (err) return res.sendStatus(403);
+      console.log(decodedToken);
+      const userId = decodedToken.user;
+
+      User.findById(userId, "+sessions", async (err, user) => {
+        if (err) return res.sendStatus(403);
+        if (!user) return res.sendStatus(403);
+
+        const found = user.sessions.find(
+          (session) => session.refreshToken === refreshToken
+        );
+        if (!found) return res.sendStatus(403); //refresh token is not valid for user
+
+        found.lastActive = Date.now();
+        await user.save();
+
+        let tempUser = user.toObject();
+        delete tempUser.sessions;
+
+        console.log(tempUser);
+
+        res.send(tempUser);
+      });
     });
   });
 };

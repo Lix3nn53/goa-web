@@ -23,6 +23,8 @@ class LoginForm extends Component {
       console.log(res.data.errorMessage);
       console.log(res.data);
       if (res.data.refreshToken && res.data.accessToken) {
+        localStorage.setItem("refreshToken", res.data.refreshToken);
+        localStorage.setItem("accessToken", res.data.accessToken);
         this.props.fetchUser();
         this.props.history.push("/");
       } else {

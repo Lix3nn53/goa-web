@@ -1,12 +1,12 @@
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 
-const generateToken = (user, tokenType, remoteAddress) => {
+const generateToken = (id, tokenType) => {
   if (!(tokenType === "accessToken" || tokenType === "refreshToken"))
     return null;
 
-  const secret = keys.accessTokenSecret;
-  const expireTime = "1m";
+  var secret = keys.accessTokenSecret;
+  var expireTime = "1m";
 
   if (tokenType === "refreshToken") {
     secret = keys.refreshTokenSecret;
@@ -14,14 +14,13 @@ const generateToken = (user, tokenType, remoteAddress) => {
   }
 
   //Use JWT for access tokens
-  var token = jwt.sign(
+  const token = jwt.sign(
     {
-      user: user,
+      user: id,
     },
     secret,
     {
       expiresIn: expireTime,
-      subject: remoteAddress,
     }
   );
 

@@ -1,18 +1,19 @@
+const mongoose = require("mongoose");
 const parser = require("ua-parser-js");
 const geoip = require("geoip-lite");
 const token = require("../../services/token");
 
+const Session = mongoose.model("session");
+
 const successfulLogin = async (req, res, user) => {
   const remoteAddress = req.ip;
-
-  const refreshToken = token.generateToken(user, "refreshToken", remoteAddress);
-  const accessToken = token.generateToken(user, "accessToken", remoteAddress);
-
   var ua = parser(req.headers["user-agent"]);
-  console.log(ua);
-  console.log(remoteAddress);
   var geo = geoip.lookup(remoteAddress);
-  console.log(geo);
+
+  const id = user._id;
+  const refreshToken = token.generateToken(id, "refreshToken");
+  const accessToken = token.generateToken(id, "accessToken");
+
   const session = new Session({
     refreshToken: refreshToken,
     userAgent: ua,

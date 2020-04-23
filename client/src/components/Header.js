@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Spinner from "./util/Spinner";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -12,17 +13,40 @@ import {
   faSignOutAlt,
   faTools,
   faSignInAlt,
-  faUserPlus
+  faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { faWikipediaW } from "@fortawesome/free-brands-svg-icons";
 import $ from "jquery";
 import LoginModal from "./modals/LoginModal";
 import RegisterModal from "./modals/RegisterModal";
+import axios from "axios";
+import { fetchUser } from "actions";
 
 class Header extends Component {
   state = {
-    active: 9
+    active: 9,
   };
+
+  async logout() {
+    try {
+      console.log(1);
+
+      const refreshToken = localStorage.getItem("refreshToken");
+
+      await axios.get("/api/logout", {
+        headers: { Authorization: `Bearer ${refreshToken}` },
+      });
+
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("accessToken");
+
+      this.props.fetchUser();
+      this.props.history.push("/");
+    } catch (error) {
+      this.props.fetchUser();
+      this.props.history.push("/");
+    }
+  }
 
   handleClick(id) {
     this.setState({ active: id });
@@ -74,7 +98,7 @@ class Header extends Component {
           <FontAwesomeIcon className="mx-1" icon={faStore} />
           Store
         </Link>
-      </li>
+      </li>,
     ];
 
     return header;
@@ -113,7 +137,7 @@ class Header extends Component {
               <FontAwesomeIcon className="mr-2" icon={faSignInAlt} />
               Login
             </a>
-          </li>
+          </li>,
         ];
       default:
         const header = [
@@ -142,11 +166,15 @@ class Header extends Component {
             </Link>
           </li>,
           <li className="nav-item" key="2">
-            <a className="nav-link text-light" href="/api/logout">
+            <a
+              className="nav-link text-light"
+              href="#root"
+              onClick={() => this.logout()}
+            >
               <FontAwesomeIcon className="mx-1" icon={faSignOutAlt} />
               Logout
             </a>
-          </li>
+          </li>,
         ];
 
         if (this.props.auth.role === "admin") {
@@ -214,4 +242,4 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, { fetchUser })(withRouter(Header));
