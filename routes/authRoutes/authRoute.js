@@ -1,5 +1,4 @@
 const keys = require("../../config/keys");
-const authenticateAccessToken = require("../../middlewares/authenticateAccessToken");
 
 module.exports = (app) => {
   app.get("/api/logout", (req, res) => {
@@ -23,7 +22,7 @@ module.exports = (app) => {
     });
   });
 
-  app.get("/api/logoutAllButThis", authenticateAccessToken, (req, res) => {
+  app.get("/api/logoutAllButThis", (req, res) => {
     const authHeader = req.headers["authorization"];
     const refreshToken = authHeader && authHeader.split(" ")[1];
     if (refreshToken == null) return res.sendStatus(401);
@@ -37,6 +36,7 @@ module.exports = (app) => {
       );
       if (!found) return res.sendStatus(403); //refresh token is not valid for user
 
+      found.lastActive = Date.now();
       user.sessions = [found];
 
       await req.user.save();
@@ -45,7 +45,7 @@ module.exports = (app) => {
     });
   });
 
-  app.get("/api/session", authenticateAccessToken, (req, res) => {
+  app.get("/api/session", (req, res) => {
     const authHeader = req.headers["authorization"];
     const refreshToken = authHeader && authHeader.split(" ")[1];
     if (refreshToken == null) return res.sendStatus(401);
@@ -59,11 +59,14 @@ module.exports = (app) => {
       );
       if (!found) return res.sendStatus(403); //refresh token is not valid for user
 
+      found.lastActive = Date.now();
+      await req.user.save();
+
       res.send(found);
     });
   });
 
-  app.get("/api/sessions", authenticateAccessToken, (req, res) => {
+  app.get("/api/sessions", (req, res) => {
     const authHeader = req.headers["authorization"];
     const refreshToken = authHeader && authHeader.split(" ")[1];
     if (refreshToken == null) return res.sendStatus(401);
@@ -82,6 +85,9 @@ module.exports = (app) => {
         (session) => session.refreshToken !== refreshToken
       );
 
+      found.lastActive = Date.now();
+      await req.user.save();
+
       res.json({ current: found, other: filtered });
     });
   });
@@ -99,6 +105,9 @@ module.exports = (app) => {
         (session) => session.refreshToken === refreshToken
       );
       if (!found) return res.sendStatus(403); //refresh token is not valid for user
+
+      found.lastActive = Date.now();
+      await req.user.save();
 
       const accessToken = generateAccessToken({ name: user.name });
       res.json({ accessToken: accessToken });
