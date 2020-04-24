@@ -8,11 +8,12 @@ module.exports = {
   facebookAppID: process.env.FACEBOOK_APP_ID,
   facebookAppSecret: process.env.FACEBOOK_APP_SECRET,
   mongoURI: process.env.MONGO_URI,
-  cookieKey: process.env.COOKIE_KEY,
+  accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
+  refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
   iyzipayPublishableKey: process.env.IYZIPAY_API_KEY,
   iyzipaySecretKey: process.env.IYZIPAY_SECRET_KEY,
   sendgridKey: process.env.SENDGRID_KEY,
   redirectDomain: process.env.REDIRECT_DOMAIN,
   minecraftSocketAddress: process.env.MINECRAFT_SOCKET_ADDRESS,
-  minecraftSocketPassword: process.env.MINECRAFT_SOCKET_PASSWORD
+  minecraftSocketPassword: process.env.MINECRAFT_SOCKET_PASSWORD,
 };
