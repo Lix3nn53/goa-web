@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Spinner from "components/util/Spinner";
-import axios from "axios";
+import postAPI from "api/postAPI";
 
 class SinglePostContentPage extends Component {
   state = {
@@ -9,15 +9,15 @@ class SinglePostContentPage extends Component {
     text: "",
     author: "",
     image: "",
-    dateSent: ""
+    dateSent: "",
   };
 
   async componentDidMount() {
     const postId = this.props.history.location.pathname.replace("/post/", "");
 
-    const res = await axios.get("/api/post?postId=" + postId);
+    const post = await postAPI.getPost(postId);
 
-    this.setState(res.data);
+    this.setState(post);
   }
 
   renderImage() {

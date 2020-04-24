@@ -7,13 +7,13 @@ import Spinner from "../util/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import $ from "jquery";
-import axios from "axios";
+import mojangAPI from "api/mojangAPI";
 
 class ProductConfirmation extends Component {
   state = {
     name: "",
-    id: "",
-    skin: ""
+    uuid: "",
+    skin: "",
   };
 
   componentDidMount() {
@@ -22,26 +22,17 @@ class ProductConfirmation extends Component {
 
   async getMinecraftUser() {
     if (this.props.formValues.minecraftUsername) {
-      try {
-        const res = await axios.get(
-          "/api/mojang/users/profiles/minecraft?username=" +
-            this.props.formValues.minecraftUsername
-        );
+      const user = await mojangAPI.getMinecraftUser(
+        this.props.formValues.minecraftUsername
+      );
 
-        this.setState({ name: res.data.name, id: res.data.id });
+      const url = await mojangAPI.getMinecraftSkinURL(user.uuid);
 
-        const skinRes = await axios.get(
-          "/api/mojang/session/minecraft/profile?uuid=" + res.data.id
-        );
-
-        this.setState({
-          name: res.data.name,
-          id: res.data.id,
-          skin: skinRes.data.textures.SKIN.url
-        });
-      } catch (err) {
-        console.log(err);
-      }
+      this.setState({
+        name: user.name,
+        uuid: user.uuid,
+        skin: url,
+      });
     }
   }
 
@@ -55,7 +46,7 @@ class ProductConfirmation extends Component {
       </div>
     );
 
-    if (!this.state.id) {
+    if (!this.state.uuid) {
       this.props.notifyModal(true, "danger", "Minecraft user not found");
       return;
     }
@@ -67,7 +58,7 @@ class ProductConfirmation extends Component {
     console.log(formValues);
 
     const requestString = Object.assign(
-      { minecraftUuid: this.state.id },
+      { minecraftUuid: this.state.uuid },
       formValues
     );
 
@@ -126,7 +117,7 @@ class ProductConfirmation extends Component {
                   <h5 className="card-title text-center mt-2">
                     Minecraft UUID
                   </h5>
-                  <p className="text-center">{this.state.id}</p>
+                  <p className="text-center">{this.state.uuid}</p>
                   <h5 className="card-title text-center mt-2">
                     Minecraft Skin
                   </h5>

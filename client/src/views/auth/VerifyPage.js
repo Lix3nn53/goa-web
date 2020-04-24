@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import EmailForm from "components/forms/EmailForm";
 import Spinner from "components/util/Spinner";
-import axios from "axios";
 import { notifyModal } from "actions";
+import authAPI from "api/authAPI";
 
 class VerifyPage extends Component {
   constructor(props) {
@@ -15,18 +15,18 @@ class VerifyPage extends Component {
   async resendConfirmationMail() {
     this.props.notifyModal(true, "Please wait", "");
 
-    const res = await axios.get("/auth/local/register/resend");
+    const res = await authAPI.resendConfirmationMail();
 
-    if (res.data.success) {
+    if (res.success) {
       this.props.notifyModal(
         true,
         "Success",
         "We sent you a new activation email."
       );
     } else {
-      var message = "Failed";
-      if (res.data.message) message = res.data.message;
-      this.props.notifyModal(true, "Danger", message);
+      var errorMessage = "Failed";
+      if (res.errorMessage) errorMessage = res.errorMessage;
+      this.props.notifyModal(true, "Danger", errorMessage);
     }
   }
 

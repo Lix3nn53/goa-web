@@ -3,43 +3,33 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import $ from "jquery";
 import { emailRegex, usernameRegex, passwordRegex } from "assets/regex";
 import { fetchUser } from "actions";
 import LoginStrategies from "components/other/LoginStrategies";
+import authAPI from "api/authAPI";
 
 class RegisterForm extends Component {
   state = {
-    registerError: ""
+    errorMessage: "",
   };
 
   async onFormSubmit(fields) {
-    try {
-      const res = await axios.post("/auth/local/register", fields);
+    this.hideRegisterModal();
 
-      this.hideRegisterModal();
+    const res = authAPI.localAuthRegister(
+      fields.email,
+      fields.username,
+      fields.password,
+      fields.passwordConfirm
+    );
 
-      console.log("1");
-      console.log(res.data.message);
-      console.log(res.data);
-      this.setState({ registerError: res.data.message });
-      if (res.data.success) {
-        this.props.fetchUser();
-        this.props.history.push("/");
-      } else {
-        this.props.history.push("/register");
-      }
-    } catch (error) {
-      console.log("2");
-
-      if (error.response && error.response.data) {
-        console.log(error.response.data);
-        this.setState({ registerError: error.response.data.message });
-      }
-
-      this.hideRegisterModal();
+    if (res.success) {
+      this.props.fetchUser();
+      this.props.history.push("/");
+    } else {
       this.props.history.push("/register");
+      this.setState({ errorMessage: res.errorMessage });
     }
   }
 
@@ -53,11 +43,11 @@ class RegisterForm extends Component {
       exclusive: false,
       message: msg,
       params: {
-        reference: ref.path
+        reference: ref.path,
       },
-      test: function(value) {
+      test: function (value) {
         return value === this.resolve(ref);
-      }
+      },
     });
   }
 
@@ -76,7 +66,7 @@ class RegisterForm extends Component {
             email: "",
             username: "",
             password: "",
-            passwordConfirm: ""
+            passwordConfirm: "",
           }}
           validationSchema={Yup.object().shape({
             email: Yup.string()
@@ -100,7 +90,7 @@ class RegisterForm extends Component {
               .required("Password is required"),
             passwordConfirm: Yup.string()
               .equalTo(Yup.ref("password"), "Passwords must match")
-              .required("Required")
+              .required("Required"),
           })}
           onSubmit={async (fields, { setSubmitting }) => {
             await this.onFormSubmit(fields);
@@ -112,7 +102,7 @@ class RegisterForm extends Component {
         >
           {({ errors, status, touched, isSubmitting }) => (
             <Form className="d-block mx-auto px-2">
-              <span className="text-danger">{this.state.registerError}</span>
+              <span className="text-danger">{this.state.errorMessage}</span>
               <div className="form-row">
                 <div className="form-group col" key="email">
                   <label htmlFor="email">Email</label>
@@ -128,7 +118,7 @@ class RegisterForm extends Component {
                   <ErrorMessage
                     name="email"
                     className="invalid-feedback"
-                    render={msg => <div className="text-danger">{msg}</div>}
+                    render={(msg) => <div className="text-danger">{msg}</div>}
                   />
                 </div>
               </div>
@@ -147,7 +137,7 @@ class RegisterForm extends Component {
                   <ErrorMessage
                     name="username"
                     className="invalid-feedback"
-                    render={msg => <div className="text-danger">{msg}</div>}
+                    render={(msg) => <div className="text-danger">{msg}</div>}
                   />
                 </div>
               </div>
@@ -167,7 +157,7 @@ class RegisterForm extends Component {
                   <ErrorMessage
                     name="password"
                     className="invalid-feedback"
-                    render={msg => <div className="text-danger">{msg}</div>}
+                    render={(msg) => <div className="text-danger">{msg}</div>}
                   />
                 </div>
 
@@ -187,7 +177,7 @@ class RegisterForm extends Component {
                   <ErrorMessage
                     name="passwordConfirm"
                     className="invalid-feedback"
-                    render={msg => <div className="text-danger">{msg}</div>}
+                    render={(msg) => <div className="text-danger">{msg}</div>}
                   />
                 </div>
               </div>

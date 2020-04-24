@@ -2,18 +2,19 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import { notifyModal } from "../../actions";
+import postAPI from "api/postAPI";
 
 class PostForm extends Component {
   async publishPost(fields) {
     this.props.notifyModal(true, "secondary", "Please wait");
 
-    const post = Object.assign(fields, {
-      author: this.props.auth.username
-    });
-
-    await axios.post("/api/posts", post);
+    await postAPI.publishPost(
+      fields.title,
+      fields.text,
+      this.props.auth.username,
+      fields.image
+    );
 
     this.props.notifyModal(true, "success", "Published post");
   }
@@ -26,9 +27,9 @@ class PostForm extends Component {
         validationSchema={Yup.object().shape({
           title: Yup.string().required("title is required"),
           text: Yup.string().required("text is required"),
-          image: Yup.string().url("must be an url")
+          image: Yup.string().url("must be an url"),
         })}
-        onSubmit={fields => {
+        onSubmit={(fields) => {
           this.publishPost(fields);
         }}
       >
@@ -49,7 +50,7 @@ class PostForm extends Component {
                 <ErrorMessage
                   name="title"
                   className="invalid-feedback"
-                  render={msg => <div className="text-danger">{msg}</div>}
+                  render={(msg) => <div className="text-danger">{msg}</div>}
                 />
               </div>
 
@@ -67,7 +68,7 @@ class PostForm extends Component {
                 <ErrorMessage
                   name="image"
                   className="invalid-feedback"
-                  render={msg => <div className="text-danger">{msg}</div>}
+                  render={(msg) => <div className="text-danger">{msg}</div>}
                 />
               </div>
             </div>
@@ -89,7 +90,7 @@ class PostForm extends Component {
                 <ErrorMessage
                   name="text"
                   className="invalid-feedback"
-                  render={msg => <div className="text-danger">{msg}</div>}
+                  render={(msg) => <div className="text-danger">{msg}</div>}
                 />
               </div>
             </div>

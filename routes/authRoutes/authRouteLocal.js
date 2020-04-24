@@ -41,28 +41,28 @@ module.exports = (app) => {
     if (password !== passwordConfirm) {
       return res.status(400).json({
         success: false,
-        message: "Passwords does not match.",
+        errorMessage: "Passwords does not match.",
       });
     }
 
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
         success: false,
-        message: "Password is not valid.",
+        errorMessage: "Password is not valid.",
       });
     }
 
     if (!usernameRegex.test(username)) {
       return res.status(400).json({
         success: false,
-        message: "Username is not valid.",
+        errorMessage: "Username is not valid.",
       });
     }
 
     if (!emailRegex.test(email)) {
       return res.status(400).json({
         success: false,
-        message: "Email is not valid.",
+        errorMessage: "Email is not valid.",
       });
     }
 
@@ -79,7 +79,7 @@ module.exports = (app) => {
     if (user) {
       return res.status(400).json({
         success: false,
-        message: "Email or username is taken.",
+        errorMessage: "Email or username is taken.",
       });
     }
 
@@ -134,7 +134,7 @@ module.exports = (app) => {
     if (!userVerify) {
       return res.status(400).json({
         success: false,
-        message: "Invalid request.",
+        errorMessage: "Invalid request.",
       });
     }
 
@@ -152,33 +152,50 @@ module.exports = (app) => {
   });
 
   app.get("/auth/local/register/resend", async (req, res) => {
-    if (req.user) {
-      const user = req.user;
-      if (user.verified) {
-        return res.status(400).json({
-          success: false,
-          message: "User is already verified.",
+    const authHeader = req.headers["authorization"];
+    const refreshToken = authHeader && authHeader.split(" ")[1];
+    if (refreshToken == null) return res.sendStatus(401);
+
+    jwt.verify(refreshToken, keys.refreshTokenSecret, (err, decodedToken) => {
+      if (err) return res.sendStatus(403);
+      console.log(decodedToken);
+      const userId = decodedToken.user;
+
+      User.findById(userId, "+sessions", async (err, user) => {
+        if (err) return res.sendStatus(403);
+        if (!user) return res.sendStatus(403);
+
+        const found = user.sessions.find(
+          (session) => session.refreshToken === refreshToken
+        );
+        if (!found) return res.sendStatus(403); //refresh token is not valid for user
+
+        if (user.verified) {
+          return res.status(400).json({
+            success: false,
+            errorMessage: "User is already verified.",
+          });
+        }
+
+        const userVerify = await UserVerify.findOne({
+          _user: user.id,
         });
-      }
 
-      const userVerify = await UserVerify.findOne({
-        _user: user.id,
+        const mailer = new SendgridSingle(
+          { subject: "Activate your GoA account", recipient: user.email },
+          registerTemplate(userVerify)
+        );
+
+        try {
+          await mailer.send();
+        } catch (err) {
+          res.status(422).send(err);
+        }
+
+        return res.status(200).json({
+          success: true,
+        });
       });
-
-      const mailer = new SendgridSingle(
-        { subject: "Activate your GoA account", recipient: user.email },
-        registerTemplate(userVerify)
-      );
-
-      try {
-        await mailer.send();
-      } catch (err) {
-        res.status(422).send(err);
-      }
-
-      return res.status(200).json({
-        success: true,
-      });
-    }
+    });
   });
 };

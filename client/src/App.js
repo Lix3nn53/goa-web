@@ -1,7 +1,7 @@
 import React, { Component, Suspense, lazy } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
-import * as actions from "./actions";
+import { fetchUser, notifyTopBar } from "actions";
 import { Link } from "react-router-dom";
 
 //components
@@ -91,4 +91,4 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-export default connect(mapStateToProps, actions)(App);
+export default connect(mapStateToProps, { fetchUser, notifyTopBar })(App);

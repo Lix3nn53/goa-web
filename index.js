@@ -7,6 +7,7 @@ require("./models/CreditSelection");
 require("./models/Order");
 require("./models/Post");
 require("./models/Product");
+require("./models/Session");
 require("./models/User"); //add use schema before using it in ./services/passport.js
 require("./models/UserVerify");
 require("./services/passport"); //not assigned to a variable since we need this to run only once

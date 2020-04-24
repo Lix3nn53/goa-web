@@ -6,8 +6,8 @@ import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import $ from "jquery";
-import axios from "axios";
 import CreditSelectionCard from "./CreditSelectionCard";
+import storeAPI from "api/storeAPI";
 
 class CardForm extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class CardForm extends Component {
     $('[data-toggle="tooltip"]').tooltip();
   }
 
-  onFormSubmit(fieldsToCopy) {
+  async onFormSubmit(fieldsToCopy) {
     $("#paymentModal").modal("show");
     const fields = Object.assign({}, fieldsToCopy);
 
@@ -34,31 +34,42 @@ class CardForm extends Component {
     names.pop();
     const name = names.join(" ");
 
-    const product = this.props.formValues.creditSelection;
+    const creditSelection = this.props.formValues.creditSelection;
+    const product = storeAPI.product(
+      creditSelection.category,
+      creditSelection.description,
+      creditSelection.icon,
+      creditSelection.name,
+      creditSelection.price,
+      creditSelection.productId
+    );
 
-    const buyer = {
-      id: this.props.auth._id,
-      username: this.props.formValues.username,
-      identityNumber: this.props.formValues.identityNumber,
-      email: this.props.formValues.email,
-      registrationAddress: this.props.formValues.registrationAddress,
-      city: this.props.formValues.city,
-      country: this.props.formValues.country,
-      name: name,
-      surname: surname
-    };
+    const buyer = storeAPI.buyer(
+      this.props.auth._id,
+      this.props.formValues.username,
+      this.props.formValues.identityNumber,
+      this.props.formValues.email,
+      this.props.formValues.registrationAddress,
+      this.props.formValues.city,
+      this.props.formValues.country,
+      name,
+      surname
+    );
 
-    const paymentCard = Object.assign(fields, { registerCard: 0 });
+    const paymentCard = storeAPI.paymentCard(
+      fields.cardHolderName,
+      fields.cardNumber,
+      fields.cvc,
+      fields.expireMonth,
+      fields.expireYear,
+      0
+    );
 
-    const token = Object.assign({ product }, { buyer }, { paymentCard });
-
-    this.startIyzipay3D(token);
-  }
-
-  async startIyzipay3D(token) {
-    const res = await axios.post("/api/iyzipay", token);
-
-    const iyzipayHtml = res.data;
+    const iyzipayHtml = await storeAPI.startIyzipay3D(
+      buyer,
+      paymentCard,
+      product
+    );
 
     this.setState({ iyzipayHtml });
   }
@@ -74,7 +85,7 @@ class CardForm extends Component {
               cardNumber: "",
               expireYear: "",
               expireMonth: "",
-              cvc: ""
+              cvc: "",
             }}
             validationSchema={Yup.object().shape({
               cardHolderName: Yup.string()
@@ -97,10 +108,10 @@ class CardForm extends Component {
               cvc: Yup.number()
                 .min(100, "Must be 3 digits")
                 .max(999, "Must be 3 digits")
-                .required("required")
+                .required("required"),
             })}
-            onSubmit={fields => {
-              this.onFormSubmit(fields);
+            onSubmit={async (fields) => {
+              await this.onFormSubmit(fields);
             }}
           >
             {({ errors, status, touched }) => (
@@ -122,7 +133,7 @@ class CardForm extends Component {
                     <ErrorMessage
                       name="cardHolderName"
                       className="invalid-feedback"
-                      render={msg => <div className="text-danger">{msg}</div>}
+                      render={(msg) => <div className="text-danger">{msg}</div>}
                     />
                   </div>
 
@@ -142,7 +153,7 @@ class CardForm extends Component {
                     <ErrorMessage
                       name="expireMonth"
                       className="invalid-feedback"
-                      render={msg => <div className="text-danger">{msg}</div>}
+                      render={(msg) => <div className="text-danger">{msg}</div>}
                     />
                   </div>
 
@@ -162,7 +173,7 @@ class CardForm extends Component {
                     <ErrorMessage
                       name="expireYear"
                       className="invalid-feedback"
-                      render={msg => <div className="text-danger">{msg}</div>}
+                      render={(msg) => <div className="text-danger">{msg}</div>}
                     />
                   </div>
                 </div>
@@ -184,7 +195,7 @@ class CardForm extends Component {
                     <ErrorMessage
                       name="cardNumber"
                       className="invalid-feedback"
-                      render={msg => <div className="text-danger">{msg}</div>}
+                      render={(msg) => <div className="text-danger">{msg}</div>}
                     />
                   </div>
                   <div className="form-group col-md-2" key="cvc">
@@ -216,7 +227,9 @@ class CardForm extends Component {
                       <ErrorMessage
                         name="cvc"
                         className="invalid-feedback"
-                        render={msg => <div className="text-danger">{msg}</div>}
+                        render={(msg) => (
+                          <div className="text-danger">{msg}</div>
+                        )}
                       />
                     </div>
                   </div>
@@ -258,7 +271,7 @@ class CardForm extends Component {
               name: this.props.formValues.creditSelection.name,
               description: this.props.formValues.creditSelection.description,
               category: this.props.formValues.creditSelection.category,
-              icon: this.props.formValues.creditSelection.icon
+              icon: this.props.formValues.creditSelection.icon,
             }}
           />
         </div>

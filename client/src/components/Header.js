@@ -19,8 +19,8 @@ import { faWikipediaW } from "@fortawesome/free-brands-svg-icons";
 import $ from "jquery";
 import LoginModal from "./modals/LoginModal";
 import RegisterModal from "./modals/RegisterModal";
-import axios from "axios";
-import { fetchUser } from "actions";
+import { fetchUser, notifyTopBar } from "actions";
+import authAPI from "api/authAPI";
 
 class Header extends Component {
   state = {
@@ -28,24 +28,11 @@ class Header extends Component {
   };
 
   async logout() {
-    try {
-      console.log(1);
+    authAPI.logout();
 
-      const refreshToken = localStorage.getItem("refreshToken");
-
-      await axios.get("/api/logout", {
-        headers: { Authorization: `Bearer ${refreshToken}` },
-      });
-
-      localStorage.removeItem("refreshToken");
-      localStorage.removeItem("accessToken");
-
-      this.props.fetchUser();
-      this.props.history.push("/");
-    } catch (error) {
-      this.props.fetchUser();
-      this.props.history.push("/");
-    }
+    this.props.fetchUser();
+    this.props.history.push("/");
+    window.location.reload(false);
   }
 
   handleClick(id) {
@@ -242,4 +229,6 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-export default connect(mapStateToProps, { fetchUser })(withRouter(Header));
+export default connect(mapStateToProps, { fetchUser, notifyTopBar })(
+  withRouter(Header)
+);

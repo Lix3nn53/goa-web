@@ -17,9 +17,11 @@ class NotificationTopBar extends Component {
   }
 
   render() {
-    console.log(this.props.notificationTopBar);
+    if (!this.props.notificationTopBar) {
+      return <div />;
+    }
 
-    switch (this.props.notificationTopBar) {
+    switch (this.props.notificationTopBar.isVisible) {
       case null:
         return <div />;
       case false:

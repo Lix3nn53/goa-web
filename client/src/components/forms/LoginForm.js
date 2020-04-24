@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import $ from "jquery";
 import { fetchUser } from "actions";
 import LoginStrategies from "components/other/LoginStrategies";
+import authAPI from "api/authAPI";
 
 class LoginForm extends Component {
   state = {
@@ -14,30 +14,19 @@ class LoginForm extends Component {
   };
 
   async onFormSubmit(fields) {
-    try {
-      const res = await axios.post("/auth/local", fields);
+    this.hideLoginModal();
 
-      this.hideLoginModal();
+    const localAuth = await authAPI.localAuth(
+      fields.emailOrUsername,
+      fields.password
+    );
 
-      console.log("1");
-      console.log(res.data.errorMessage);
-      console.log(res.data);
-      if (res.data.refreshToken && res.data.accessToken) {
-        localStorage.setItem("refreshToken", res.data.refreshToken);
-        localStorage.setItem("accessToken", res.data.accessToken);
-        this.props.fetchUser();
-        this.props.history.push("/");
-      } else {
-        this.setState({ loginError: res.data.errorMessage });
-        this.props.history.push("/login");
-      }
-    } catch (error) {
-      console.log("2");
-      if (error.response && error.response.data) {
-        console.log(error.response.data);
-        this.setState({ loginError: error.response.data.message });
-      }
-      this.hideLoginModal();
+    if (localAuth.success) {
+      this.props.fetchUser();
+      this.props.history.push("/");
+      window.location.reload(false);
+    } else {
+      this.setState({ loginError: localAuth.errorMessage });
       this.props.history.push("/login");
     }
   }
