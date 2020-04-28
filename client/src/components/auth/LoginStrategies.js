@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGoogle,
@@ -7,7 +9,8 @@ import {
   faFacebook,
 } from "@fortawesome/free-brands-svg-icons";
 import GoogleLogin from "./google/GoogleLogin";
-import axios from "axios";
+import { fetchUser } from "actions";
+import authAPI from "api/authAPI";
 
 class LoginStrategies extends Component {
   constructor(props) {
@@ -16,17 +19,25 @@ class LoginStrategies extends Component {
     this.responseGoogle = this.responseGoogle.bind(this);
   }
 
-  async responseGoogle(auhtRes) {
-    console.log(auhtRes);
+  async responseGoogle(res) {
+    const authCode = res.code;
 
-    const res = await axios.get("/auth/google", {
-      headers: { Authorization: `Bearer ${auhtRes.code}` },
-    });
+    const auth = await authAPI.googleAuth(authCode);
 
-    console.log(res);
+    if (auth.success) {
+      this.props.fetchUser();
+      this.props.history.push("/");
+      window.location.reload(false);
+    } else {
+      this.setState({ loginError: auth.errorMessage });
+      this.props.history.push("/login");
+    }
   }
 
   render() {
+    if (this.props.auth) {
+      return <p>You are already logged in</p>;
+    }
     return (
       <>
         <div className="row">
@@ -76,4 +87,10 @@ class LoginStrategies extends Component {
   }
 }
 
-export default LoginStrategies;
+function mapStateToProps({ auth }) {
+  return { auth };
+}
+
+export default connect(mapStateToProps, { fetchUser })(
+  withRouter(LoginStrategies)
+);

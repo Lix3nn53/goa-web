@@ -18,20 +18,4 @@ module.exports = (app) => {
       await authHandler.successfulLogin(req, res, user);
     })(req, res, next);
   });
-
-  app.get("/auth/google/callback", function (req, res, next) {
-    passport.authenticate("google", { session: false }, async function (
-      err,
-      user
-    ) {
-      if (err) {
-        return next(err);
-      }
-      if (!user) {
-        return res.status(400);
-      }
-
-      await authHandler.successfulLogin(req, res, user);
-    })(req, res, next);
-  });
 };

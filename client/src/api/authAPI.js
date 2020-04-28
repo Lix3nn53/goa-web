@@ -7,20 +7,40 @@ const localAuth = async (emailOrUsername, password) => {
       password: password,
     });
 
-    if (res.data.refreshToken && res.data.accessToken) {
-      localStorage.setItem("refreshToken", res.data.refreshToken);
-      localStorage.setItem("accessToken", res.data.accessToken);
-
-      return { success: true };
-    } else {
-      return { success: false, errorMessage: res.data.errorMessage };
-    }
+    return handleAuthResponse(res);
   } catch (error) {
     if (error.response && error.response.data) {
       return { success: false, errorMessage: error.response.data.message };
     }
 
     return { success: false };
+  }
+};
+
+const googleAuth = async (authCode) => {
+  try {
+    const res = await axios.get("/auth/google", {
+      headers: { Authorization: `Bearer ${authCode}` },
+    });
+
+    return handleAuthResponse(res);
+  } catch (error) {
+    if (error.response && error.response.data) {
+      return { success: false, errorMessage: error.response.data.message };
+    }
+
+    return { success: false };
+  }
+};
+
+const handleAuthResponse = (res) => {
+  if (res.data.refreshToken && res.data.accessToken) {
+    localStorage.setItem("refreshToken", res.data.refreshToken);
+    localStorage.setItem("accessToken", res.data.accessToken);
+
+    return { success: true };
+  } else {
+    return { success: false, errorMessage: res.data.errorMessage };
   }
 };
 
@@ -91,4 +111,10 @@ const resendConfirmationMail = async () => {
   }
 };
 
-export default { localAuth, localAuthRegister, logout, resendConfirmationMail };
+export default {
+  localAuth,
+  localAuthRegister,
+  logout,
+  resendConfirmationMail,
+  googleAuth,
+};

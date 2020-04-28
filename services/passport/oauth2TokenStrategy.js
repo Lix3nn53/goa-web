@@ -16,22 +16,6 @@ const InternalOAuthError = require("passport-oauth2").InternalOAuthError;
  * callback supplying a `user`, which should be set to `false` if the
  * credentials are not valid.  If an exception occured, `err` should be set.
  *
- * Options:
- *   - `clientID`      your Google application's client id
- *   - `clientSecret`  your Google application's client secret
- *
- * Examples:
- *
- *     passport.use(new OAuth2TokenStrategy({
- *         clientID: '123-456-789',
- *         clientSecret: 'shhh-its-a-secret'
- *       },
- *       function(accessToken, refreshToken, profile, done) {
- *         User.findOrCreate(..., function (err, user) {
- *           done(err, user);
- *         });
- *       }
- *     ));
  *
  * @param {Object} options
  * @param {Function} verify
