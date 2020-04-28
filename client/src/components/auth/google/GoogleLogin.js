@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import useGoogleLogin from "./useGoogleLogin";
-import ButtonContent from "./buttonContent";
-import Icon from "./icon";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 const GoogleLogin = (props) => {
   const [hovered, setHovered] = useState(false);
@@ -16,7 +16,6 @@ const GoogleLogin = (props) => {
     children,
     render,
     theme,
-    icon,
     disabled: disabledProp,
     onSuccess,
     clientId,
@@ -65,20 +64,15 @@ const GoogleLogin = (props) => {
   }
 
   const initialStyle = {
-    backgroundColor: theme === "dark" ? "rgb(66, 133, 244)" : "#fff",
-    display: "inline-flex",
+    backgroundColor: theme === "dark" ? "rgb(66, 133, 244)" : "#dd4b39",
     alignItems: "center",
-    color: theme === "dark" ? "#fff" : "rgba(0, 0, 0, .54)",
-    boxShadow: "0 2px 2px 0 rgba(0, 0, 0, .24), 0 0 1px 0 rgba(0, 0, 0, .24)",
+    color: theme === "dark" ? "#fff" : "#e2ded3",
     padding: 0,
-    borderRadius: 2,
     border: "1px solid transparent",
-    fontSize: 14,
-    fontWeight: "500",
-    fontFamily: "Roboto, sans-serif",
   };
 
   const hoveredStyle = {
+    color: theme === "dark" ? "#fff" : "#fff",
     cursor: "pointer",
     opacity: 0.9,
   };
@@ -126,10 +120,19 @@ const GoogleLogin = (props) => {
       className,
     },
     [
-      icon && <Icon key={1} active={active} />,
-      <ButtonContent icon={icon} key={2}>
+      <FontAwesomeIcon key={1} className="mr-2" icon={faGoogle} />,
+      <span
+        key={2}
+        style={{
+          paddingRight: 10,
+          fontWeight: 500,
+          paddingLeft: 10,
+          paddingTop: 10,
+          paddingBottom: 10,
+        }}
+      >
         {children || buttonText}
-      </ButtonContent>,
+      </span>,
     ]
   );
 
@@ -164,7 +167,6 @@ GoogleLogin.propTypes = {
   accessType: PropTypes.string,
   render: PropTypes.func,
   theme: PropTypes.string,
-  icon: PropTypes.bool,
 };
 
 GoogleLogin.defaultProps = {
@@ -181,7 +183,6 @@ GoogleLogin.defaultProps = {
   disabledStyle: {
     opacity: 0.6,
   },
-  icon: true,
   theme: "light",
   onRequest: () => {},
 };

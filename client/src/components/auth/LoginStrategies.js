@@ -41,14 +41,8 @@ class LoginStrategies extends Component {
     return (
       <>
         <div className="row">
-          <a
-            className="col mx-4 nav-link login login-google"
-            href="/auth/google"
-          >
-            <FontAwesomeIcon className="mr-2" icon={faGoogle} />
-            Login with Google
-          </a>
           <GoogleLogin
+            className="col mx-4 nav-link login"
             clientId="113424365961-tlr4vbu3hgldcmn0if70o0il8sb1v13e.apps.googleusercontent.com"
             buttonText="Login with Google"
             onSuccess={this.responseGoogle}
