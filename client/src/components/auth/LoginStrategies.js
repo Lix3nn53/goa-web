@@ -16,11 +16,11 @@ class LoginStrategies extends Component {
     this.responseGoogle = this.responseGoogle.bind(this);
   }
 
-  async responseGoogle(token) {
-    console.log(token);
+  async responseGoogle(auhtRes) {
+    console.log(auhtRes);
 
-    const res = await axios.get("/auth/google/callback", {
-      headers: { Authorization: `Bearer ${token}` },
+    const res = await axios.get("/auth/google", {
+      headers: { Authorization: `Bearer ${auhtRes.code}` },
     });
 
     console.log(res);

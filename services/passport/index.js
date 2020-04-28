@@ -4,8 +4,11 @@ const GitHubStrategy = require("passport-github").Strategy;
 const TwitterStrategy = require("passport-twitter").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
+const OAuth2Strategy = require("passport-oauth2").Strategy;
+const OAuth2TokenStrategy = require("./oauth2TokenStrategy");
 const mongoose = require("mongoose");
-const keys = require("../config/keys");
+const keys = require("../../config/keys");
+const axios = require("axios");
 
 const User = mongoose.model("users");
 
@@ -50,6 +53,34 @@ passport.use(
           return done(null, user);
         }
       );
+    }
+  )
+);
+
+passport.use(
+  "google-token",
+  new OAuth2TokenStrategy(
+    {
+      authorizationURL: "https://accounts.google.com/o/oauth2/v2/auth",
+      tokenURL: "https://oauth2.googleapis.com/token",
+      clientID: keys.googleClientID,
+      clientSecret: keys.googleClientSecret,
+      callbackURL: "postmessage",
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      console.log(refreshToken);
+      console.log(accessToken);
+      let user = await User.findOne({ googleId: profile.id }, "+sessions");
+
+      if (!user) {
+        user = await new User({
+          googleId: profile.id,
+          username: profile.name.givenName,
+          verified: true,
+        }).save(); //we already have a record with given profile.id
+      }
+
+      done(null, user); //call done after saving user(async db call) is completed
     }
   )
 );
