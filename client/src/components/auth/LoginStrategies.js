@@ -4,10 +4,28 @@ import {
   faGoogle,
   faGithub,
   faTwitter,
-  faFacebook
+  faFacebook,
 } from "@fortawesome/free-brands-svg-icons";
+import GoogleLogin from "./google/GoogleLogin";
+import axios from "axios";
 
 class LoginStrategies extends Component {
+  constructor(props) {
+    super(props);
+
+    this.responseGoogle = this.responseGoogle.bind(this);
+  }
+
+  async responseGoogle(token) {
+    console.log(token);
+
+    const res = await axios.get("/auth/google/callback", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    console.log(res);
+  }
+
   render() {
     return (
       <>
@@ -19,6 +37,16 @@ class LoginStrategies extends Component {
             <FontAwesomeIcon className="mr-2" icon={faGoogle} />
             Login with Google
           </a>
+          <GoogleLogin
+            clientId="113424365961-tlr4vbu3hgldcmn0if70o0il8sb1v13e.apps.googleusercontent.com"
+            buttonText="Login with Google"
+            onSuccess={this.responseGoogle}
+            onFailure={this.responseGoogle}
+            cookiePolicy={"single_host_origin"}
+            prompt="select_account"
+            accessType="offline"
+            responseType="code"
+          />
           <a
             className="col mx-4 nav-link login login-github"
             href="/auth/github"

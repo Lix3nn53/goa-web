@@ -5,7 +5,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import $ from "jquery";
 import { fetchUser } from "actions";
-import LoginStrategies from "components/other/LoginStrategies";
+import LoginStrategies from "components/auth/LoginStrategies";
 import authAPI from "api/authAPI";
 
 class LoginForm extends Component {

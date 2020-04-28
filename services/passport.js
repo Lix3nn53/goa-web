@@ -63,6 +63,8 @@ passport.use(
       proxy: true,
     },
     async (accessToken, refreshToken, profile, done) => {
+      console.log(refreshToken);
+      console.log(accessToken);
       let user = await User.findOne({ googleId: profile.id }, "+sessions");
 
       if (!user) {
