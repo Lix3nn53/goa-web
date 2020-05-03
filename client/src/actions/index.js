@@ -5,6 +5,7 @@ import {
   NOTIFICATION_MODAL,
   NOTIFICATION_TOPBAR,
 } from "./types";
+import tokenService from "api/tokenService";
 
 export const fetchUser = () => async (dispatch) => {
   const refreshToken = localStorage.getItem("refreshToken");
@@ -29,7 +30,11 @@ export const fetchUser = () => async (dispatch) => {
 
 export const updateUser = (values) => async (dispatch) => {
   try {
-    const res = await axios.post("/api/profile", values);
+    const res = await tokenService.requestWithAccessToken(
+      "/api/profile",
+      "post",
+      values
+    );
 
     dispatch({ type: FETCH_USER, payload: res.data });
 
@@ -43,7 +48,11 @@ export const updateUser = (values) => async (dispatch) => {
 
 export const buyProduct = (values) => async (dispatch) => {
   try {
-    const res = await axios.post("/api/products", values);
+    const res = await tokenService.requestWithAccessToken(
+      "/api/products",
+      "post",
+      values
+    );
 
     console.log(res.data);
 

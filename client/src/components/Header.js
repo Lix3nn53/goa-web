@@ -30,8 +30,6 @@ class Header extends Component {
   async logout() {
     authAPI.logout();
 
-    this.props.fetchUser();
-    this.props.history.push("/");
     window.location.reload(false);
   }
 

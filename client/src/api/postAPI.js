@@ -1,13 +1,20 @@
 import axios from "axios";
+import tokenService from "./tokenService";
 
 const publishPost = async (title, text, author, image) => {
-  try {
-    await axios.post("/api/posts", { title, text, author, image });
+  const params = { title, text, author, image };
 
-    return true;
-  } catch (error) {
-    return false;
+  const res = await tokenService.requestWithAccessToken(
+    "/api/posts",
+    "post",
+    params
+  );
+
+  if (res.success === false) {
+    return res;
   }
+
+  return true;
 };
 
 const getPost = async (postId) => {

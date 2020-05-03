@@ -6,7 +6,7 @@ const generateToken = (id, tokenType) => {
     return null;
 
   var secret = keys.accessTokenSecret;
-  var expireTime = "1m";
+  var expireTime = "15s";
 
   if (tokenType === "refreshToken") {
     secret = keys.refreshTokenSecret;

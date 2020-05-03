@@ -25,7 +25,6 @@ class LoginStrategies extends Component {
     const auth = await authAPI.googleAuth(authCode);
 
     if (auth.success) {
-      this.props.fetchUser();
       this.props.history.push("/");
       window.location.reload(false);
     } else {

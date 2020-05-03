@@ -1,4 +1,4 @@
-import axios from "axios";
+import tokenService from "./tokenService";
 
 const startIyzipay3D = async (buyer, paymentCard, product) => {
   try {
@@ -8,7 +8,11 @@ const startIyzipay3D = async (buyer, paymentCard, product) => {
       product,
     };
 
-    const res = await axios.post("/api/iyzipay", token);
+    const res = await tokenService.requestWithAccessToken(
+      "/api/iyzipay",
+      "post",
+      token
+    );
 
     return res.data; //iyzipay html
   } catch (error) {

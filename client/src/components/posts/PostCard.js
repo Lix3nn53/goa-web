@@ -13,7 +13,7 @@ class PostCard extends Component {
   renderTextPreview() {
     const limit = 240;
 
-    if (this.props.text.length > limit) {
+    if (this.props.text && this.props.text.length > limit) {
       const preview = this.props.text.substring(0, limit - 1);
 
       return preview + "...";

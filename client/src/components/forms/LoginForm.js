@@ -22,7 +22,6 @@ class LoginForm extends Component {
     );
 
     if (localAuth.success) {
-      this.props.fetchUser();
       this.props.history.push("/");
       window.location.reload(false);
     } else {

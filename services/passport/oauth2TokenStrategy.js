@@ -24,9 +24,6 @@ const InternalOAuthError = require("passport-oauth2").InternalOAuthError;
 function OAuth2TokenStrategy(options, verify) {
   options = options || {};
 
-  console.log("options");
-  console.log(options);
-
   this._passReqToCallback = options.passReqToCallback;
 
   OAuth2Strategy.call(this, options, verify);
@@ -69,8 +66,6 @@ OAuth2TokenStrategy.prototype.authenticate = function (req, options) {
     const authHeader = req.headers["authorization"];
     authCode = authHeader && authHeader.split(" ")[1];
   }
-  console.log("authCode");
-  console.log(authCode);
 
   if (!authCode) {
     return this.fail();
@@ -83,15 +78,11 @@ OAuth2TokenStrategy.prototype.authenticate = function (req, options) {
     resultsJson
   ) {
     if (err) {
-      console.log("err");
+      console.log("_exchangeAuthCode Err");
       console.log(err);
       return self.fail(err);
     }
 
-    console.log("accessToken");
-    console.log(accessToken);
-    console.log("refreshToken");
-    console.log(refreshToken);
     self._loadUserProfile(accessToken, function (err, profile) {
       if (err) {
         return self.fail(err);
@@ -128,8 +119,6 @@ OAuth2TokenStrategy.prototype._exchangeAuthCode = function (authCode, done) {
     grant_type: "authorization_code",
     redirect_uri: this._callbackURL,
   };
-  console.log("params");
-  console.log(params);
   this._oauth2.getOAuthAccessToken(authCode, params, done);
 };
 

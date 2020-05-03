@@ -30,7 +30,7 @@ module.exports = (app) => {
         await post.save();
         res.send({});
       } catch (e) {
-        res.status(500).json({ message: e.message });
+        res.status(400).json({ errorMessage: e.message });
       }
     }
   );

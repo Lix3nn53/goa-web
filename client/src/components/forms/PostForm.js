@@ -9,12 +9,15 @@ class PostForm extends Component {
   async publishPost(fields) {
     this.props.notifyModal(true, "secondary", "Please wait");
 
-    await postAPI.publishPost(
+    const res = await postAPI.publishPost(
       fields.title,
       fields.text,
       this.props.auth.username,
       fields.image
     );
+
+    console.log("postRes");
+    console.log(res);
 
     this.props.notifyModal(true, "success", "Published post");
   }

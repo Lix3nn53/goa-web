@@ -73,16 +73,15 @@ const localAuthRegister = async (
 };
 
 const logout = async () => {
-  try {
-    const refreshToken = localStorage.getItem("refreshToken");
+  const refreshToken = localStorage.getItem("refreshToken");
 
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("accessToken");
+
+  try {
     await axios.get("/api/logout", {
       headers: { Authorization: `Bearer ${refreshToken}` },
     });
-
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("accessToken");
-
     return true;
   } catch (error) {
     return false;
@@ -90,9 +89,11 @@ const logout = async () => {
 };
 
 const resendConfirmationMail = async () => {
-  try {
-    const refreshToken = localStorage.getItem("refreshToken");
+  const refreshToken = localStorage.getItem("refreshToken");
 
+  if (!refreshToken) return false;
+
+  try {
     const res = await axios.get("/auth/local/register/resend", {
       headers: { Authorization: `Bearer ${refreshToken}` },
     });
