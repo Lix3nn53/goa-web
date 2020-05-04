@@ -1,9 +1,12 @@
+// Import constants
+@import "./colors.scss";
+
 .pagination > li > a,
 .pagination > li > span {
   background-color: transparent;
-  border: 2px solid #f5f3f0;
+  border: 2px solid $color_primary;
   border-radius: 20px;
-  color: #f5f3f0;
+  color: $color_primary;
   height: 36px;
   margin: 0 2px;
   min-width: 36px;
@@ -14,15 +17,15 @@
 .pagination > li > a:hover,
 .pagination > li > a:focus,
 .pagination > li > a:active {
-  background-color: #d7d1c1;
-  border-color: #f5f3f0;
-  color: #3a312c;
+  background-color: $color_primary_dark;
+  border-color: $color_primary;
+  color: $color_accent_darker;
 }
 
 .page-item.active .page-link {
-  background-color: #f5f3f0;
-  color: #3a312c;
-  border-color: #f5f3f0;
+  background-color: $color_primary;
+  color: $color_accent_darker;
+  border-color: $color_primary;
 }
 
 .pagination .page-link {
@@ -30,9 +33,9 @@
 }
 
 .page-item.disabled .page-link {
-  color: #d7d1c1;
+  color: $color_primary_dark;
   pointer-events: none;
   cursor: auto;
   background-color: transparent;
-  border-color: #d7d1c1;
+  border-color: $color_primary_dark;
 }

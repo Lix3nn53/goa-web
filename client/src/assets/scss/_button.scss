@@ -1,62 +1,73 @@
+// Import constants
+@import "./colors.scss";
+
 .btn {
   border: none;
-  background: #8f7970;
-  color: #f5f3f0;
+  background: $color_primary_darker;
+  color: $color_primary;
 }
 
 .btn.disabled,
 .btn:disabled {
-  border-color: #fff;
-  background: rgba(238, 241, 246, 0.3) !important;
-  box-shadow: inset 0 0 0 1px #cfd7e6 !important;
-  color: #cfd7e6 !important;
+  border-color: $white;
+  background: $gray !important;
+  box-shadow: inset 0 0 0 1px $color_primary_dark !important;
+  color: $color_primary_dark !important;
   cursor: not-allowed;
 }
 
 .btn.disabled:hover,
 .btn:disabled {
-  border-color: #fff;
+  border-color: $white;
 }
 
 .btn:hover {
-  background: #816d65;
-  border-color: #f5f3f0;
-  color: #f5f3f0;
+  background: $color_accent;
+  border-color: $color_primary;
+  color: $color_primary;
 }
 
 .btn:focus,
 .btn.focus {
-  box-shadow: 0 0 0 1px #f5f3f0;
+  box-shadow: 0 0 0 1px $color_primary;
 }
 
 .btn:not(:disabled):not(.disabled):active,
 .btn:not(:disabled):not(.disabled).active,
 .show > .btn.dropdown-toggle {
-  color: #f5f3f0;
-  background-color: #64554f;
-  border-color: #493c37;
+  color: $color_primary;
+  background-color: $color_accent;
+  border-color: $color_accent_darker;
 }
 
 .btn:not(:disabled):not(.disabled):active:focus,
 .btn:not(:disabled):not(.disabled).active:focus,
 .show > .btn.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem #f5f3f0;
+  box-shadow: 0 0 0 0.2rem $color_primary;
 }
 
 .landing-btn {
-  background: linear-gradient(180deg, #5e4e47 0%, #3a302c 100%);
+  background: linear-gradient(
+    180deg,
+    $color_accent_dark 0%,
+    $color_accent_darker 100%
+  );
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
   padding-right: 2.4rem;
   padding-left: 2.4rem;
-  border: 0.15rem solid #746058;
-  box-shadow: 0 0 0 0.25rem #3a302c;
+  border: 0.15rem solid $color_accent;
+  box-shadow: 0 0 0 0.25rem $color_accent_darker;
   width: 16rem;
   font-size: 15px;
-  color: #f5f3f0;
+  color: $color_primary;
 }
 
 .landing-btn:hover {
-  border-color: #746058;
-  background: linear-gradient(180deg, #66544d 0%, #493c37 100%);
+  border-color: $color_accent;
+  background: linear-gradient(
+    180deg,
+    $color_accent_dark 0%,
+    $color_accent_darker 100%
+  );
 }

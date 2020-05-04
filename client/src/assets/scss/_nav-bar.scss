@@ -1,7 +1,14 @@
+// Import constants
+@import "./colors.scss";
+
 .navbar {
-  background: linear-gradient(180deg, #5e4e47 0%, #726058 100%);
-  box-shadow: 0 0.2rem 1.2rem #1d1916;
-  border-bottom: 0.2rem solid #3f3530;
+  background: linear-gradient(
+    180deg,
+    $color_accent_dark 0%,
+    $color_accent 100%
+  );
+  box-shadow: 0 0.2rem 1.2rem $black;
+  border-bottom: 0.2rem solid $color_accent_darker;
 }
 
 .navbar img {
@@ -10,8 +17,8 @@
 
 .nav-item,
 .nav-tabs .nav-link {
-  background: #726058;
-  border: 1.5px solid #3f3530;
+  background: $color_accent;
+  border: 1.5px solid $color_accent_darker;
   box-sizing: border-box;
   border-radius: 3px;
   margin: 5px;
@@ -19,16 +26,16 @@
 
 .nav-tabs .nav-link:hover,
 .nav-tabs .nav-link:focus {
-  border-color: #e2ded3;
-  color: #e2ded3;
+  border-color: $color_primary_dark;
+  color: $color_primary_dark;
 }
 
 .nav-item.active,
 .nav-tabs .nav-link.active {
   border-width: 2px;
-  border-color: #3f3530;
-  background: #5e4e47;
-  color: #e2ded3;
+  border-color: $color_accent_darker;
+  background: $color_accent_dark;
+  color: $color_primary_dark;
 }
 
 .nav-item > .nav-link {
@@ -65,18 +72,18 @@
 .store {
   .nav-item.active,
   .nav-tabs .nav-link.active {
-    border-color: #e2ded3;
-    color: #e2ded3;
+    border-color: $color_primary_dark;
+    color: $color_primary_dark;
   }
 
   .nav-tabs .nav-link:hover,
   .nav-tabs .nav-link:focus {
-    border-color: #e2ded3;
-    color: #e2ded3;
+    border-color: $color_primary_dark;
+    color: $color_primary_dark;
   }
 
   .nav-tabs .nav-link.active:hover,
   .nav-tabs .nav-link.active:focus {
-    color: #e2ded3;
+    color: $color_primary_dark;
   }
 }

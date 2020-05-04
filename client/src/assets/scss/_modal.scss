@@ -1,32 +1,35 @@
+// Import constants
+@import "./colors.scss";
+
 .modal-content {
   position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   pointer-events: auto;
-  background-color: #d7d1c1;
+  background-color: $color_primary_darker;
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 0.3rem;
   outline: 0;
-  color: #3a312c;
+  color: $color_accent_darker;
 
   form {
-    background-color: #d7d1c1;
-    border-color: #d7d1c1;
+    background-color: $color_primary_darker;
+    border-color: $color_primary_darker;
 
     .text-danger {
-      color: #dd4b39 !important;
+      color: $orange !important;
     }
   }
 }
 
 .login {
-  color: #e2ded3;
+  color: $color_primary_dark;
 }
 
 .login:hover {
-  color: #fff;
+  color: $white;
 }
 
 .login-github {
@@ -45,15 +48,15 @@
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 1;
-  color: #3a312c;
-  text-shadow: 0 1px 0 #3a312c;
+  color: $color_accent_darker;
+  text-shadow: 0 1px 0 $color_accent_darker;
 }
 
 .close:hover {
-  color: #3a312c;
+  color: $color_accent_darker;
 }
 
 .modal-header,
 .modal-footer {
-  border-bottom-color: #e2ded3;
+  border-bottom-color: $color_primary_dark;
 }

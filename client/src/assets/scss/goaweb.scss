@@ -4,12 +4,15 @@ $font-family-base: "Lato", sans-serif !default;
 // Import Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap.scss";
 
+// Import constants
+@import "./colors.scss";
+
 /* General */
 
 body {
-  background-color: #493c37;
+  background-color: $color_background;
   background-image: url("data:image/svg+xml,%3Csvg width='42' height='44' viewBox='0 0 42 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='Page-1' fill='none' fill-rule='evenodd'%3E%3Cg id='brick-wall' fill='%2366544d' fill-opacity='0.4'%3E%3Cpath d='M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  color: #f5f3f0;
+  color: $color_primary;
 }
 
 .main-container {
@@ -21,11 +24,11 @@ html {
 }
 
 a {
-  color: #f5f3f0;
+  color: $color_primary;
 }
 
 a:hover {
-  color: #e2ded3;
+  color: $color_primary_dark;
 }
 
 hr {
@@ -33,7 +36,7 @@ hr {
   display: block;
   height: 1px;
   border: 0;
-  border-top: 1px solid #4e413bb0;
+  border-top: 1px solid $color_accent_darker;
   margin: 1em 0;
   padding: 0;
 }
@@ -41,11 +44,11 @@ hr {
 /* Custom */
 
 .intro {
-  border-bottom: 1.4rem solid #3a312c;
+  border-bottom: 1.4rem solid $color_accent_darker;
 }
 
 .text-danger {
-  color: #ffa04d !important;
+  color: $orange !important;
 }
 
 /* Imports General */

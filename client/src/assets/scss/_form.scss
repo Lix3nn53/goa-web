@@ -1,13 +1,16 @@
+// Import constants
+@import "./colors.scss";
+
 form {
-  background: #736159;
-  border: 1rem solid #736159;
+  background: $color_accent;
+  border: 1rem solid $color_accent;
   border-radius: 1rem;
 }
 
 .form-control:focus {
-  color: #495057;
-  background-color: #fff;
-  border-color: #fff;
+  color: $gray;
+  background-color: $white;
+  border-color: $white;
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
 }

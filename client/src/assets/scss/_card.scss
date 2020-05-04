@@ -1,7 +1,14 @@
+// Import constants
+@import "./colors.scss";
+
 .card {
   border: none;
   box-shadow: 0 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.24);
-  background: linear-gradient(180deg, #7c6e6a 0%, #65554e 100%);
+  background: linear-gradient(
+    180deg,
+    $color_accent 0%,
+    $color_accent_dark 100%
+  );
 }
 
 .post-card {
@@ -21,5 +28,5 @@
   }
 }
 .product-card .card-title {
-  color: #fed11b;
+  color: $yellow;
 }
