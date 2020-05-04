@@ -34,9 +34,6 @@ module.exports = (app) => {
       return res.status(406).send({ error: "Bad request" });
     }
 
-    buyer.identityNumber = "11111111111";
-    buyer.registrationAddress = buyer.city + " " + buyer.country;
-
     const iyzipayRequest = iyzipayStart3D(product, buyer, paymentCard);
 
     iyzipay.threedsInitialize.create(iyzipayRequest, function (err, result) {

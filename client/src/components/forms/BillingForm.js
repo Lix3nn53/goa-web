@@ -5,10 +5,10 @@ import { withRouter } from "react-router-dom";
 import allCountries from "assets/country";
 import Select from "react-select";
 
-const countryNames = allCountries.map(country => {
+const countryNames = allCountries.map((country) => {
   return {
     value: country.countryName,
-    label: country.countryName
+    label: country.countryName,
   };
 });
 
@@ -17,8 +17,8 @@ var cityNames;
 const customStyles = {
   option: (provided, state) => ({
     ...provided,
-    color: "black"
-  })
+    color: "black",
+  }),
 };
 
 class BillingForm extends Component {
@@ -28,7 +28,7 @@ class BillingForm extends Component {
 
     this.state = {
       selectedCountry: null,
-      selectedCity: null
+      selectedCity: null,
     };
 
     var initialCountry;
@@ -50,25 +50,25 @@ class BillingForm extends Component {
     this.state = {
       selectedCountry: {
         value: initialCountry,
-        label: initialCountry
+        label: initialCountry,
       },
       selectedCity: {
         value: initialCity,
-        label: initialCity
-      }
+        label: initialCity,
+      },
     };
   }
 
-  handleCountryChange = selectedCountry => {
+  handleCountryChange = (selectedCountry) => {
     if (selectedCountry) {
       const regions = allCountries.find(
-        element => element.countryName === selectedCountry.value
+        (element) => element.countryName === selectedCountry.value
       ).regions;
 
-      cityNames = regions.map(region => {
+      cityNames = regions.map((region) => {
         return {
           value: region.name,
-          label: region.name
+          label: region.name,
         };
       });
     }
@@ -76,7 +76,7 @@ class BillingForm extends Component {
     this.setState({ selectedCountry, selectedCity: cityNames[0] });
   };
 
-  handleCityChange = selectedCity => {
+  handleCityChange = (selectedCity) => {
     this.setState({ selectedCity });
   };
 
@@ -100,7 +100,7 @@ class BillingForm extends Component {
     if (selectedCountry && selectedCity) {
       this.props.onFormSubmit({
         country: selectedCountry.value,
-        city: selectedCity.value
+        city: selectedCity.value,
       });
     }
   }

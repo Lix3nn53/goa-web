@@ -36,7 +36,7 @@ class AddCreditPage extends Component {
             this.setState({ formStage: 1 });
             this.gotoPreviousStage();
           }}
-          onFormSubmit={fields => {
+          onFormSubmit={(fields) => {
             const formValues = Object.assign(this.state.formValues, fields);
             this.setState(Object.assign({ formStage: 3 }, { formValues }));
             this.gotoNextStage();
@@ -53,7 +53,7 @@ class AddCreditPage extends Component {
             this.setState({ formStage: 0 });
             this.gotoPreviousStage();
           }}
-          onFormSubmit={fields => {
+          onFormSubmit={(fields) => {
             const formValues = Object.assign(this.state.formValues, fields);
             this.setState(Object.assign({ formStage: 2 }, { formValues }));
             this.gotoNextStage();
@@ -66,7 +66,7 @@ class AddCreditPage extends Component {
     return (
       <CreditSelection
         formValues={this.state.formValues}
-        onFormSubmit={creditSelection => {
+        onFormSubmit={(creditSelection) => {
           const formValues = this.state.formValues;
           formValues.creditSelection = creditSelection;
           this.setState(Object.assign({ formStage: 1 }, { formValues }));
@@ -93,7 +93,7 @@ class AddCreditPage extends Component {
             { title: "Select Credit", optional: "" },
             { title: "Profile", optional: "" },
             { title: "Billing Info", optional: "" },
-            { title: "Payment", optional: "" }
+            { title: "Payment", optional: "" },
           ]}
         />
 

@@ -44,12 +44,16 @@ class CardForm extends Component {
       creditSelection.productId
     );
 
+    const identityNumber = "11111111111";
+    const registrationAddress =
+      this.props.formValues.city + "/" + this.props.formValues.country;
+
     const buyer = storeAPI.buyer(
       this.props.auth._id,
       this.props.formValues.username,
-      this.props.formValues.identityNumber,
+      identityNumber,
       this.props.formValues.email,
-      this.props.formValues.registrationAddress,
+      registrationAddress,
       this.props.formValues.city,
       this.props.formValues.country,
       name,
