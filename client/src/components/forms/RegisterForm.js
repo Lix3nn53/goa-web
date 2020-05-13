@@ -5,7 +5,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import $ from "jquery";
 import { emailRegex, usernameRegex, passwordRegex } from "assets/regex";
-import { fetchUser } from "actions";
+import { fetchUser } from "store/actions";
 import LoginStrategies from "components/auth/LoginStrategies";
 import authAPI from "api/authAPI";
 

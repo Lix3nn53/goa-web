@@ -9,7 +9,7 @@ import {
   faFacebook,
 } from "@fortawesome/free-brands-svg-icons";
 import GoogleLogin from "./google/GoogleLogin";
-import { fetchUser } from "actions";
+import { fetchUser } from "store/actions";
 import authAPI from "api/authAPI";
 
 class LoginStrategies extends Component {

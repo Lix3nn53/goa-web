@@ -19,7 +19,7 @@ import { faWikipediaW } from "@fortawesome/free-brands-svg-icons";
 import $ from "jquery";
 import LoginModal from "./modals/LoginModal";
 import RegisterModal from "./modals/RegisterModal";
-import { fetchUser, notifyTopBar } from "actions";
+import { fetchUser, notifyTopBar } from "store/actions";
 import authAPI from "api/authAPI";
 
 class Header extends Component {

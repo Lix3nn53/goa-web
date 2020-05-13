@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import ProductCard from "./ProductCard";
-import { notifyModal, buyProduct } from "../../actions";
+import { notifyModal, buyProduct } from "store/actions";
 import Spinner from "../util/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";

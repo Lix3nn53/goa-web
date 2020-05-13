@@ -4,7 +4,7 @@ import Spinner from "components/util/Spinner";
 import ProfileForm from "components/forms/ProfileForm";
 import BillingForm from "components/forms/BillingForm";
 import MinecraftForm from "components/forms/MinecraftForm";
-import { notifyModal, updateUser } from "actions";
+import { notifyModal, updateUser } from "store/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import $ from "jquery";
@@ -106,7 +106,7 @@ class ProfilePage extends Component {
                     aria-labelledby="v-pills-home-tab"
                   >
                     <ProfileForm
-                      onFormSubmit={fields => {
+                      onFormSubmit={(fields) => {
                         this.onFormSubmit(fields);
                       }}
                     />
@@ -118,7 +118,7 @@ class ProfilePage extends Component {
                     aria-labelledby="v-pills-profile-tab"
                   >
                     <BillingForm
-                      onFormSubmit={fields => {
+                      onFormSubmit={(fields) => {
                         this.onFormSubmit(fields);
                       }}
                     />
@@ -130,7 +130,7 @@ class ProfilePage extends Component {
                     aria-labelledby="v-pills-messages-tab"
                   >
                     <MinecraftForm
-                      onFormSubmit={fields => {
+                      onFormSubmit={(fields) => {
                         this.onFormSubmit(fields);
                       }}
                     />

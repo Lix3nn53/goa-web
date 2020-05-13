@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { TwitterTimelineEmbed } from "react-twitter-embed";
 import PostCard from "./PostCard";
 import { connect } from "react-redux";
-import { fetchPosts } from "../../actions";
+import { fetchPosts } from "store/actions";
 import Pagination from "../util/Pagination";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
@@ -14,7 +14,7 @@ class PostsList extends Component {
     currentPosts: [],
     currentPage: null,
     pageLimit: 3,
-    pageNeighbours: 1
+    pageNeighbours: 1,
   };
 
   async componentDidMount() {
@@ -28,7 +28,7 @@ class PostsList extends Component {
     this.setState({ totalPosts, currentPosts, currentPage });
   }
 
-  onPageChanged = async data => {
+  onPageChanged = async (data) => {
     const { totalPages, currentPage } = data;
     const { pageLimit } = this.state;
 
@@ -47,14 +47,14 @@ class PostsList extends Component {
       currentPosts,
       currentPage,
       pageLimit,
-      pageNeighbours
+      pageNeighbours,
     } = this.state;
 
     if (totalPosts === 0) return null;
 
     const headerClass = [
       "m-0",
-      currentPage ? "px-2 border-light border-right" : ""
+      currentPage ? "px-2 border-light border-right" : "",
     ]
       .join(" ")
       .trim();
@@ -62,7 +62,7 @@ class PostsList extends Component {
     return (
       <div>
         <div className="post-list">
-          {currentPosts.map(post => (
+          {currentPosts.map((post) => (
             <PostCard
               title={post.title}
               text={post.text}

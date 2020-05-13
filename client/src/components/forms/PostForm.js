@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { notifyModal } from "../../actions";
+import { notifyModal } from "store/actions";
 import postAPI from "api/postAPI";
 
 class PostForm extends Component {

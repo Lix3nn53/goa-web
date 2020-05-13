@@ -3,7 +3,7 @@ import Spinner from "../util/Spinner";
 import { connect } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { notifyModal, updateUser } from "actions";
+import { notifyModal, updateUser } from "store/actions";
 import { emailRegex } from "assets/regex";
 
 class EmailForm extends Component {
@@ -30,16 +30,16 @@ class EmailForm extends Component {
 
   getInitialValues() {
     var initialValuesMap = {
-      email: ""
+      email: "",
     };
 
     if (this.props.auth) {
       initialValuesMap = {
-        email: this.props.auth.email || ""
+        email: this.props.auth.email || "",
       };
     } else {
       initialValuesMap = {
-        email: this.props.auth.email || ""
+        email: this.props.auth.email || "",
       };
     }
 
@@ -60,9 +60,9 @@ class EmailForm extends Component {
             validationSchema={Yup.object().shape({
               email: Yup.string()
                 .matches(emailRegex, "Email is invalid")
-                .required("Email is required")
+                .required("Email is required"),
             })}
-            onSubmit={fields => {
+            onSubmit={(fields) => {
               this.onFormSubmit(fields);
             }}
           >
@@ -82,7 +82,7 @@ class EmailForm extends Component {
                   <ErrorMessage
                     name="email"
                     className="invalid-feedback"
-                    render={msg => <div className="text-danger">{msg}</div>}
+                    render={(msg) => <div className="text-danger">{msg}</div>}
                   />
                 </div>
 

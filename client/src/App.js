@@ -1,7 +1,7 @@
 import React, { Component, Suspense, lazy } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
-import { fetchUser, notifyTopBar } from "actions";
+import { fetchUser, notifyTopBar } from "store/actions";
 import { Link } from "react-router-dom";
 
 //components

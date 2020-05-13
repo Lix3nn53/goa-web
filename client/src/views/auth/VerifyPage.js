@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import EmailForm from "components/forms/EmailForm";
 import Spinner from "components/util/Spinner";
-import { notifyModal } from "actions";
+import { notifyModal } from "store/actions";
 import authAPI from "api/authAPI";
 
 class VerifyPage extends Component {

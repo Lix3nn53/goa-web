@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchSurveys } from "../../actions";
+import { fetchSurveys } from "store/actions";
 import Pagination from "../util/Pagination";
 
 class SurveyList extends Component {
@@ -8,7 +8,7 @@ class SurveyList extends Component {
     allSurveysReversed: [],
     currentSurveys: [],
     currentPage: null,
-    totalPages: null
+    totalPages: null,
   };
 
   async componentDidMount() {
@@ -18,7 +18,7 @@ class SurveyList extends Component {
     this.setState({ allSurveysReversed });
   }
 
-  onPageChanged = data => {
+  onPageChanged = (data) => {
     const { allSurveysReversed } = this.state;
     const { currentPage, totalPages, pageLimit } = data;
 
@@ -33,7 +33,7 @@ class SurveyList extends Component {
       allSurveysReversed,
       currentSurveys,
       currentPage,
-      totalPages
+      totalPages,
     } = this.state;
 
     const totalSurveys = allSurveysReversed.length;
@@ -42,7 +42,7 @@ class SurveyList extends Component {
 
     const headerClass = [
       "py-2 pr-4 m-0",
-      currentPage ? "border-light border-right" : ""
+      currentPage ? "border-light border-right" : "",
     ]
       .join(" ")
       .trim();
@@ -75,7 +75,7 @@ class SurveyList extends Component {
           </div>
 
           <div className="card-deck">
-            {currentSurveys.map(survey => (
+            {currentSurveys.map((survey) => (
               <div
                 key={survey.dateSent}
                 className="card border-light mb-3"

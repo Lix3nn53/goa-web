@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import $ from "jquery";
-import { fetchUser } from "actions";
+import { fetchUser } from "store/actions";
 import LoginStrategies from "components/auth/LoginStrategies";
 import authAPI from "api/authAPI";
 
