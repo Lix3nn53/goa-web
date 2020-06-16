@@ -15,19 +15,6 @@
   max-height: 32px;
 }
 
-.nav-item,
-.nav-tabs .nav-link {
-  background: $color_primary;
-  border: 1.5px solid $color_primary_dark;
-  box-sizing: border-box;
-  border-radius: 3px;
-  margin: 5px;
-}
-
-.nav-item > .nav-link {
-  text-align: center;
-}
-
 @media only screen and (min-width: 992px) {
   .navbar-brand {
     position: absolute;
@@ -38,4 +25,20 @@
 
 .navbar .navbar-toggler-icon {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(248,248,248, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-dark .navbar-nav .nav-link.active,
+.navbar-dark .navbar-nav .nav-link.active:hover {
+  opacity: 1;
+  color: $color_secondary;
+  position: relative;
+  bottom: 2px;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: $color_secondary;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: $color_secondary_dark;
 }

@@ -24,7 +24,7 @@
 
 .page-item.active .page-link {
   background-color: $color_light;
-  color: $color_secondary_dark;
+  color: $color_primary_dark;
   border-color: $color_light;
 }
 
@@ -33,9 +33,10 @@
 }
 
 .page-item.disabled .page-link {
-  color: $color_primary;
+  opacity: 0.7;
+  color: $color_secondary;
   pointer-events: none;
   cursor: auto;
   background-color: transparent;
-  border-color: $color_primary;
+  border-color: $color_secondary;
 }

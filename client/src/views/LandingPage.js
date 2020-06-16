@@ -65,7 +65,9 @@ function LandingPage(props) {
         </div>
 
         <div className="row mb-5">
-          <p className="col text-center">play.guardiansofadelia.com</p>
+          <p className="col text-center text-light">
+            play.guardiansofadelia.com
+          </p>
         </div>
       </div>
 
