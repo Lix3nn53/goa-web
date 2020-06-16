@@ -39,11 +39,11 @@
   box-shadow: 0 0 0 0.25rem $color_primary;
   width: 16rem;
   font-size: 15px;
-  color: $color_secondary;
+  color: $color_secondary_dark;
 }
 
 .landing-btn:hover {
-  border-color: $color_secondary;
+  border-color: $color_secondary_dark;
   background: linear-gradient(
     180deg,
     $color_primary_dark 0%,

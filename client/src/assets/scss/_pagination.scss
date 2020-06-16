@@ -4,9 +4,9 @@
 .pagination > li > a,
 .pagination > li > span {
   background-color: transparent;
-  border: 2px solid $color_light;
+  border: 2px solid $color_primary;
   border-radius: 20px;
-  color: $color_light;
+  color: $color_primary_dark;
   height: 36px;
   margin: 0 2px;
   min-width: 36px;
@@ -17,15 +17,15 @@
 .pagination > li > a:hover,
 .pagination > li > a:focus,
 .pagination > li > a:active {
-  background-color: $color_primary;
-  border-color: $color_light;
-  color: $color_secondary_dark;
+  background-color: $color_secondary;
+  border-color: $color_primary;
+  color: $color_primary_dark;
 }
 
 .page-item.active .page-link {
-  background-color: $color_light;
+  background-color: $color_third;
   color: $color_primary_dark;
-  border-color: $color_light;
+  border-color: $color_primary;
 }
 
 .pagination .page-link {
@@ -33,10 +33,10 @@
 }
 
 .page-item.disabled .page-link {
-  opacity: 0.7;
-  color: $color_secondary;
+  opacity: 0.8;
+  color: $color_primary;
   pointer-events: none;
   cursor: auto;
   background-color: transparent;
-  border-color: $color_secondary;
+  border-color: $color_primary;
 }

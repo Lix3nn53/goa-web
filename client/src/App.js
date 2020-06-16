@@ -33,28 +33,31 @@ function App(props) {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const verified = auth ? auth.verified : false;
-  const email = auth ? auth.email : null;
-
+  //fetch user
   useEffect(() => {
     dispatch(fetchUser());
+  }, [dispatch]);
 
-    if (verified) {
-      dispatch(
-        notifyTopBar(
-          true,
-          "warning",
-          <>
-            Confirm your email address to access all features. A confirmation
-            message was sent to {email}{" "}
-            <Link className="mx-2 text-dark" to="/register/verify">
-              <u>Help?</u>
-            </Link>
-          </>
-        )
-      );
-    }
-  }, [dispatch, verified, email]); // Only re-run the effect if count changes
+  //display notifyTopBar
+  useEffect(() => {
+    if (!auth) return;
+
+    if (auth.verified) return;
+
+    dispatch(
+      notifyTopBar(
+        true,
+        "warning",
+        <>
+          Confirm your email address to access all features. A confirmation
+          message was sent to {auth.email}{" "}
+          <Link className="mx-2 text-dark" to="/register/verify">
+            <u>Help?</u>
+          </Link>
+        </>
+      )
+    );
+  }, [dispatch, auth]);
 
   return (
     <BrowserRouter>

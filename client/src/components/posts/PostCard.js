@@ -26,29 +26,30 @@ class PostCard extends Component {
     const postLink = "post/" + this.props._id;
 
     return (
-      <div className="card bg-light text-dark mb-4">
+      <div class="card mb-3">
         {this.renderImage()}
-
-        <div className="card-body">
-          <div className="card-title text-capitalize">
-            <div className="post-title">
-              <Link to={postLink} style={{ fontSize: "27px" }}>
-                {this.props.title}
-              </Link>
-            </div>
+        <div class="card-body">
+          <h5 class="card-title text-capitalize">
+            <Link to={postLink} style={{ fontSize: "27px" }}>
+              {this.props.title}
+            </Link>
+          </h5>
+          <p class="card-text">
+            This is a wider card with supporting text below as a natural lead-in
+            to additional content. This content is a little bit longer.
+          </p>
+          <p class="card-text">
             <small>
-              <span className="px-2">
-                <FontAwesomeIcon className="mr-2" icon={faPencilAlt} />
+              <span className="">
+                <FontAwesomeIcon className="mr-1" icon={faPencilAlt} />
                 {this.props.author}
               </span>
               <span className="px-2">
-                <FontAwesomeIcon className="mr-2" icon={faCalendar} />
+                <FontAwesomeIcon className="mr-1" icon={faCalendar} />
                 {new Date(this.props.date).toDateString()}
               </span>
             </small>
-          </div>
-
-          <p className="card-text">{this.renderTextPreview()}</p>
+          </p>
         </div>
       </div>
     );
