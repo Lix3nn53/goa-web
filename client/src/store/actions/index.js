@@ -15,6 +15,7 @@ export const fetchUser = () => async (dispatch) => {
       headers: { Authorization: `Bearer ${refreshToken}` },
     });
 
+    console.log("res.data");
     console.log(res.data);
 
     dispatch({ type: FETCH_USER, payload: res.data });

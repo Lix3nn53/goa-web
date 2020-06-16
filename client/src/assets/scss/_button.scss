@@ -3,71 +3,68 @@
 
 .btn {
   border: none;
-  background: $color_primary_darker;
-  color: $color_primary;
+  border-radius: 2rem;
+  font-size: 1.4rem;
+
+  p {
+    margin-bottom: 0px;
+  }
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem !important;
+  line-height: 0.9 !important;
 }
 
 .btn.disabled,
 .btn:disabled {
-  border-color: $white;
+  border-color: $color_light;
   background: $gray !important;
-  box-shadow: inset 0 0 0 1px $color_primary_dark !important;
-  color: $color_primary_dark !important;
+  box-shadow: inset 0 0 0 1px $color_primary !important;
+  color: $color_primary !important;
   cursor: not-allowed;
-}
-
-.btn.disabled:hover,
-.btn:disabled {
-  border-color: $white;
-}
-
-.btn:hover {
-  background: $color_accent;
-  border-color: $color_primary;
-  color: $color_primary;
-}
-
-.btn:focus,
-.btn.focus {
-  box-shadow: 0 0 0 1px $color_primary;
-}
-
-.btn:not(:disabled):not(.disabled):active,
-.btn:not(:disabled):not(.disabled).active,
-.show > .btn.dropdown-toggle {
-  color: $color_primary;
-  background-color: $color_accent;
-  border-color: $color_accent_darker;
-}
-
-.btn:not(:disabled):not(.disabled):active:focus,
-.btn:not(:disabled):not(.disabled).active:focus,
-.show > .btn.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem $color_primary;
 }
 
 .landing-btn {
   background: linear-gradient(
     180deg,
-    $color_accent_dark 0%,
-    $color_accent_darker 100%
+    $color_primary_dark 0%,
+    $color_primary_dark 100%
   );
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
   padding-right: 2.4rem;
   padding-left: 2.4rem;
-  border: 0.15rem solid $color_accent;
-  box-shadow: 0 0 0 0.25rem $color_accent_darker;
+  border: 0.15rem solid $color_primary;
+  box-shadow: 0 0 0 0.25rem $color_primary_dark;
   width: 16rem;
   font-size: 15px;
-  color: $color_primary;
+  color: $color_secondary;
 }
 
 .landing-btn:hover {
-  border-color: $color_accent;
+  border-color: $color_primary;
   background: linear-gradient(
     180deg,
-    $color_accent_dark 0%,
-    $color_accent_darker 100%
+    $color_primary_dark 0%,
+    $color_primary_dark 100%
   );
+  color: $color_secondary_dark;
+}
+
+.btn-text {
+  background-color: transparent;
+  border: none;
+  color: $color_secondary;
+  font-size: 1rem;
+  line-height: 19px;
+  text-decoration: underline;
+  padding: 0;
+  text-align: left;
+}
+
+.btn.badge-light {
+  color: $color_secondary;
+  border-color: $color_secondary;
+  font-size: 1rem;
 }

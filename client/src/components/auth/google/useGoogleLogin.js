@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import loadScript from "utils/load-script";
-import removeScript from "utils/remove-script";
+import { useState, useEffect, useCallback } from "react";
+import loadScript from "./load-script";
+import removeScript from "./remove-script";
 
 const useGoogleLogin = ({
   onSuccess,
@@ -24,50 +24,64 @@ const useGoogleLogin = ({
 }) => {
   const [loaded, setLoaded] = useState(false);
 
-  function handleSigninSuccess(res) {
-    /*
+  const handleSigninSuccess = useCallback(
+    (res) => {
+      /*
       offer renamed response keys to names that match use
     */
-    const basicProfile = res.getBasicProfile();
-    const authResponse = res.getAuthResponse();
-    res.googleId = basicProfile.getId();
-    res.tokenObj = authResponse;
-    res.tokenId = authResponse.id_token;
-    res.accessToken = authResponse.access_token;
-    res.profileObj = {
-      googleId: basicProfile.getId(),
-      imageUrl: basicProfile.getImageUrl(),
-      email: basicProfile.getEmail(),
-      name: basicProfile.getName(),
-      givenName: basicProfile.getGivenName(),
-      familyName: basicProfile.getFamilyName(),
-    };
-    onSuccess(res);
-  }
-
-  function signIn(e) {
-    if (e) {
-      e.preventDefault(); // to prevent submit if used within form
-    }
-    if (loaded) {
-      const auth2 = window.gapi.auth2.getAuthInstance();
-      const options = {
-        prompt,
+      const basicProfile = res.getBasicProfile();
+      const authResponse = res.getAuthResponse();
+      res.googleId = basicProfile.getId();
+      res.tokenObj = authResponse;
+      res.tokenId = authResponse.id_token;
+      res.accessToken = authResponse.access_token;
+      res.profileObj = {
+        googleId: basicProfile.getId(),
+        imageUrl: basicProfile.getImageUrl(),
+        email: basicProfile.getEmail(),
+        name: basicProfile.getName(),
+        givenName: basicProfile.getGivenName(),
+        familyName: basicProfile.getFamilyName(),
       };
-      onRequest();
-      if (responseType === "code") {
-        auth2.grantOfflineAccess(options).then(
-          (res) => onSuccess(res),
-          (err) => onFailure(err)
-        );
-      } else {
-        auth2.signIn(options).then(
-          (res) => handleSigninSuccess(res),
-          (err) => onFailure(err)
-        );
+      onSuccess(res);
+    },
+    [onSuccess]
+  );
+
+  const signIn = useCallback(
+    (e) => {
+      if (e) {
+        e.preventDefault(); // to prevent submit if used within form
       }
-    }
-  }
+      if (loaded) {
+        const auth2 = window.gapi.auth2.getAuthInstance();
+        const options = {
+          prompt,
+        };
+        onRequest();
+        if (responseType === "code") {
+          auth2.grantOfflineAccess(options).then(
+            (res) => onSuccess(res),
+            (err) => onFailure(err)
+          );
+        } else {
+          auth2.signIn(options).then(
+            (res) => handleSigninSuccess(res),
+            (err) => onFailure(err)
+          );
+        }
+      }
+    },
+    [
+      loaded,
+      onFailure,
+      onRequest,
+      onSuccess,
+      prompt,
+      responseType,
+      handleSigninSuccess,
+    ]
+  );
 
   useEffect(() => {
     let unmounted = false;
@@ -112,13 +126,29 @@ const useGoogleLogin = ({
       unmounted = true;
       removeScript(document, "google-login");
     };
-  }, []);
+  }, [
+    accessType,
+    clientId,
+    cookiePolicy,
+    discoveryDocs,
+    fetchBasicProfile,
+    handleSigninSuccess,
+    hostedDomain,
+    isSignedIn,
+    jsSrc,
+    loginHint,
+    onFailure,
+    redirectUri,
+    responseType,
+    scope,
+    uxMode,
+  ]);
 
   useEffect(() => {
     if (autoLoad) {
       signIn();
     }
-  }, [loaded]);
+  }, [loaded, autoLoad, signIn]);
 
   return { signIn, loaded };
 };

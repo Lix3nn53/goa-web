@@ -1,16 +1,31 @@
-$color_background: #493c37;
+$color_primary_dark: #493c37;
 
-$color_primary: #f5f3f0;
-$color_primary_dark: #e2ded3;
-$color_primary_darker: #a7938b;
+$color_secondary_dark: #e2ded3;
 
-$color_accent: #726058;
-$color_accent_dark: #5e4e47;
-$color_accent_darker: #3a312c;
+$color_third: #fed11b;
+$color_third_dark: #ffa04d;
 
-$black: #1d1916;
-$gray: #495057;
+//bootstrap config
+$color_primary: #5e4e47;
+$color_secondary: #f5f3f0;
+$color_success: #28a745;
+$color_info: #17a2b8;
+$color_warning: #ffc107;
+$color_danger: #dc3545;
+$color_light: #f8f9fa;
+$color_dark: #343a40;
+
+//bootstrap colors
+$blue: #007bff;
+$indigo: #6610f2;
+$purple: #6f42c1;
+$pink: #e83e8c;
+$red: #dc3545;
+$orange: #fd7e14;
+$yellow: #ffc107;
+$green: #28a745;
+$teal: #20c997;
+$cyan: #17a2b8;
 $white: #fff;
-
-$yellow: #fed11b;
-$orange: #ffa04d;
+$gray: #6c757d;
+$gray-dark: #343a40;

@@ -4,11 +4,11 @@
 .navbar {
   background: linear-gradient(
     180deg,
-    $color_accent_dark 0%,
-    $color_accent 100%
+    $color_primary_dark 0%,
+    $color_primary 100%
   );
-  box-shadow: 0 0.2rem 1.2rem $black;
-  border-bottom: 0.2rem solid $color_accent_darker;
+  box-shadow: 0 0.2rem 1rem $color_primary;
+  border-bottom: 0.2rem solid $color_primary_dark;
 }
 
 .navbar img {
@@ -17,38 +17,15 @@
 
 .nav-item,
 .nav-tabs .nav-link {
-  background: $color_accent;
-  border: 1.5px solid $color_accent_darker;
+  background: $color_primary;
+  border: 1.5px solid $color_primary_dark;
   box-sizing: border-box;
   border-radius: 3px;
   margin: 5px;
 }
 
-.nav-tabs .nav-link:hover,
-.nav-tabs .nav-link:focus {
-  border-color: $color_primary_dark;
-  color: $color_primary_dark;
-}
-
-.nav-item.active,
-.nav-tabs .nav-link.active {
-  border-width: 2px;
-  border-color: $color_accent_darker;
-  background: $color_accent_dark;
-  color: $color_primary_dark;
-}
-
 .nav-item > .nav-link {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
   text-align: center;
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
-.navbar ul a .active {
-  opacity: 0.5;
 }
 
 @media only screen and (min-width: 992px) {
@@ -57,33 +34,8 @@
     transform: translate(-50%);
     left: 50%;
   }
-
-  .navbar-left-buttons {
-    margin-left: 4rem;
-  }
-
-  .navbar-right-buttons {
-    margin-right: 4rem;
-  }
 }
 
-// Store
-
-.store {
-  .nav-item.active,
-  .nav-tabs .nav-link.active {
-    border-color: $color_primary_dark;
-    color: $color_primary_dark;
-  }
-
-  .nav-tabs .nav-link:hover,
-  .nav-tabs .nav-link:focus {
-    border-color: $color_primary_dark;
-    color: $color_primary_dark;
-  }
-
-  .nav-tabs .nav-link.active:hover,
-  .nav-tabs .nav-link.active:focus {
-    color: $color_primary_dark;
-  }
+.navbar .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(248,248,248, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }

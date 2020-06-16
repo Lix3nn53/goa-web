@@ -1,0 +1,14 @@
+// Import constants
+@import "./colors.scss";
+
+.logo {
+  background-color: $color_secondary;
+  padding-right: 0.4rem;
+  padding-left: 0.4rem;
+  padding-top: 1.6rem;
+  padding-bottom: 1.8rem;
+  border: thick solid $color_secondary;
+  border-radius: 2.2rem;
+  height: 120px;
+  box-shadow: 0px 20px 10px -10px grey;
+}

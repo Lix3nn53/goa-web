@@ -1,58 +1,22 @@
-import React, { Component } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 
-class HorizontalStepper extends Component {
-  constructor(props) {
-    super(props);
+function HorizontalStepper(props) {
+  const { stages, currentStage } = props;
 
-    this.state = { currentStage: 0 };
-  }
-
-  gotoNextStage() {
-    var { currentStage } = this.state;
-
-    const { stages } = this.props;
-
-    if (currentStage === stages.lenght) return;
-
-    currentStage++;
-
-    this.setState({ currentStage });
-  }
-
-  gotoPreviousStage() {
-    var { currentStage } = this.state;
-
-    const { stages } = this.props;
-
-    if (currentStage === stages.lenght) return;
-
-    currentStage--;
-
-    this.setState({ currentStage });
-  }
-
-  gotoStage = stage => {
-    stage = stage - 1;
-    this.setState({ currentStage: stage });
-  };
-
-  renderStages() {
+  const renderStages = () => {
     var steps = [];
 
-    for (var i = 0; i < this.props.stages.length; i++) {
-      if (i < this.state.currentStage) {
+    for (var i = 0; i < stages.length; i++) {
+      if (i < currentStage) {
         steps[i] = (
           <div key={i} className="col mdl-stepper-step step-done">
             <div className="mdl-stepper-circle">
               <span>{i + 1}</span>
             </div>
-            <div className="mdl-stepper-title">
-              {this.props.stages[i].title}
-            </div>
-            {this.props.stages[i].optional ? (
-              <div className="mdl-stepper-optional">
-                {this.props.stages[i].optional}
-              </div>
+            <div className="mdl-stepper-title">{stages[i].title}</div>
+            {stages[i].optional ? (
+              <div className="mdl-stepper-optional">{stages[i].optional}</div>
             ) : (
               ""
             )}
@@ -60,19 +24,15 @@ class HorizontalStepper extends Component {
             <div className="mdl-stepper-bar-right"></div>
           </div>
         );
-      } else if (i > this.state.currentStage) {
+      } else if (i > currentStage) {
         steps[i] = (
           <div key={i} className="col mdl-stepper-step">
             <div className="mdl-stepper-circle">
               <span>{i + 1}</span>
             </div>
-            <div className="mdl-stepper-title">
-              {this.props.stages[i].title}
-            </div>
-            {this.props.stages[i].optional ? (
-              <div className="mdl-stepper-optional">
-                {this.props.stages[i].optional}
-              </div>
+            <div className="mdl-stepper-title">{stages[i].title}</div>
+            {stages[i].optional ? (
+              <div className="mdl-stepper-optional">{stages[i].optional}</div>
             ) : (
               ""
             )}
@@ -86,13 +46,9 @@ class HorizontalStepper extends Component {
             <div className="mdl-stepper-circle">
               <span>{i + 1}</span>
             </div>
-            <div className="mdl-stepper-title">
-              {this.props.stages[i].title}
-            </div>
-            {this.props.stages[i].optional ? (
-              <div className="mdl-stepper-optional">
-                {this.props.stages[i].optional}
-              </div>
+            <div className="mdl-stepper-title">{stages[i].title}</div>
+            {stages[i].optional ? (
+              <div className="mdl-stepper-optional">{stages[i].optional}</div>
             ) : (
               ""
             )}
@@ -104,19 +60,22 @@ class HorizontalStepper extends Component {
     }
 
     return steps;
-  }
+  };
 
-  render() {
-    return (
-      <div className="container">
-        <div className="mdl-card__supporting-text">
-          <div className="row mdl-stepper-horizontal-alternative">
-            {this.renderStages()}
-          </div>
+  return (
+    <div className="container">
+      <div className="mdl-card__supporting-text">
+        <div className="row mdl-stepper-horizontal-alternative">
+          {renderStages()}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default HorizontalStepper;
+
+HorizontalStepper.propTypes = {
+  stages: PropTypes.array.isRequired,
+  currentStage: PropTypes.number.isRequired,
+};

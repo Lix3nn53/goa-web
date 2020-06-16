@@ -1,11 +1,10 @@
-import React, { Component, Suspense, lazy } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { connect } from "react-redux";
+import React, { Suspense, lazy, useEffect } from "react";
+import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchUser, notifyTopBar } from "store/actions";
-import { Link } from "react-router-dom";
 
 //components
-import Header from "./components/Header";
+import Header from "./components/header/Header";
 import Footer from "./components/Footer";
 
 //utils
@@ -30,65 +29,63 @@ const SinglePostContentPage = lazy(() =>
 );
 const MissingPage = lazy(() => import("./views/MissingPage"));
 
-class App extends Component {
-  componentDidMount() {
-    this.props.fetchUser();
-  }
+function App(props) {
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
-  componentDidUpdate() {
-    if (this.props.auth) {
-      if (!this.props.auth.verified) {
-        this.props.notifyTopBar(
+  const verified = auth ? auth.verified : false;
+  const email = auth ? auth.email : null;
+
+  useEffect(() => {
+    dispatch(fetchUser());
+
+    if (verified) {
+      dispatch(
+        notifyTopBar(
           true,
           "warning",
           <>
             Confirm your email address to access all features. A confirmation
-            message was sent to {this.props.auth.email}{" "}
+            message was sent to {email}{" "}
             <Link className="mx-2 text-dark" to="/register/verify">
               <u>Help?</u>
             </Link>
           </>
-        );
-      }
+        )
+      );
     }
-  }
+  }, [dispatch, verified, email]); // Only re-run the effect if count changes
 
-  render() {
-    return (
-      <BrowserRouter>
-        <div className="main-container">
-          <NotificationTopBar />
-          <Header />
-          <Suspense fallback={<div>Loading...</div>}>
-            <Switch>
-              <Route exact path="/admin" component={AdminDashboard} />
-              <Route exact path="/" component={LandingPage} />
-              <Route path="/login" component={LoginPage} />
-              <Route exact path="/register" component={RegisterPage} />
-              <Route path="/register/verify" component={VerifyPage} />
-              <Route path="/lore" component={LorePage} />
-              <Route exact path="/store" component={StorePage} />
-              <Route exact path="/profile" component={ProfilePage} />
-              <Route exact path="/addcredit" component={AddCreditPage} />
-              <Route
-                path="/addcredit/callback"
-                component={AddCreditCallbackPage}
-              />
-              <Route path="/post" component={SinglePostContentPage} />
-              <Route component={MissingPage} />
-            </Switch>
-          </Suspense>
-          <NotificationModal />
-        </div>
+  return (
+    <BrowserRouter>
+      <div className="main-container">
+        <NotificationTopBar />
+        <Header />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Switch>
+            <Route exact path="/admin" component={AdminDashboard} />
+            <Route exact path="/" component={LandingPage} />
+            <Route path="/login" component={LoginPage} />
+            <Route exact path="/register" component={RegisterPage} />
+            <Route path="/register/verify" component={VerifyPage} />
+            <Route path="/lore" component={LorePage} />
+            <Route exact path="/store" component={StorePage} />
+            <Route exact path="/profile" component={ProfilePage} />
+            <Route exact path="/addcredit" component={AddCreditPage} />
+            <Route
+              path="/addcredit/callback"
+              component={AddCreditCallbackPage}
+            />
+            <Route path="/post" component={SinglePostContentPage} />
+            <Route component={MissingPage} />
+          </Switch>
+        </Suspense>
+        <NotificationModal />
+      </div>
 
-        <Footer />
-      </BrowserRouter>
-    );
-  }
+      <Footer />
+    </BrowserRouter>
+  );
 }
 
-function mapStateToProps({ auth }) {
-  return { auth };
-}
-
-export default connect(mapStateToProps, { fetchUser, notifyTopBar })(App);
+export default App;

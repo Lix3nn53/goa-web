@@ -1,96 +1,76 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import ProductConfirmation from "components/store/ProductConfirmation";
 import ProductSelection from "components/store/ProductSelection";
 import MinecraftForm from "components/forms/MinecraftForm";
 import HorizontalStepper from "components/util/HorizontalStepper";
 
-class StorePage extends Component {
-  constructor(props) {
-    super(props);
-    // Don't call this.setState() here!
-    const formValues = {};
+function StorePage(props) {
+  const [formStage, setFormStage] = useState(0);
+  const [formValues, setFormValues] = useState(null);
 
-    this.state = Object.assign({ formStage: 0 }, { formValues });
-  }
-
-  renderCurrentStage() {
-    if (this.state.formStage === 2) {
+  const renderCurrentStage = () => {
+    if (formStage === 2) {
       return (
         <ProductConfirmation
-          formValues={this.state.formValues}
+          formValues={formValues}
           onCancel={() => {
-            this.setState({ formStage: 1 });
-            this.gotoPreviousStage();
+            setFormStage(1);
           }}
         />
       );
     }
 
-    if (this.state.formStage === 1) {
+    if (formStage === 1) {
       return (
         <div className="container">
           <p className="text-danger text-center">
             You must have joined the server at least once with this username
           </p>
           <MinecraftForm
-            formValues={this.state.formValues}
-            onFormSubmit={fields => {
-              const formValues = this.state.formValues;
+            formValues={formValues}
+            onFormSubmit={(fields) => {
               formValues.minecraftUsername = fields.minecraftUsername;
-              this.setState(Object.assign({ formStage: 2 }, { formValues }));
-              this.gotoNextStage();
+              setFormStage(2);
+              setFormValues(formValues);
             }}
             onCancel={() => {
-              this.setState({ formStage: 0 });
-              this.gotoPreviousStage();
+              setFormStage(0);
             }}
           />
         </div>
       );
     }
 
-    //if (this.state.formStage === 0)
+    //if (formStage === 0)
     return (
       <ProductSelection
-        formValues={this.state.formValues}
-        onFormSubmit={productSelection => {
-          const formValues = this.state.formValues;
-          formValues.productSelection = productSelection;
-          this.setState(Object.assign({ formStage: 1 }, { formValues }));
-          this.gotoNextStage();
+        formValues={formValues}
+        onFormSubmit={(productSelection) => {
+          setFormValues({ productSelection: productSelection });
+          setFormStage(1);
         }}
       />
     );
-  }
+  };
 
-  renderContent() {
-    return <div className="store">{this.renderCurrentStage()}</div>;
-  }
+  const renderContent = () => {
+    return <div className="store">{renderCurrentStage()}</div>;
+  };
 
-  gotoNextStage() {
-    this.refs.horizontalStepper.gotoNextStage();
-  }
+  return (
+    <div>
+      <HorizontalStepper
+        currentStage={formStage}
+        stages={[
+          { title: "Select Product", optional: "" },
+          { title: "Minecraft Username", optional: "" },
+          { title: "Confirm Purchase", optional: "" },
+        ]}
+      />
 
-  gotoPreviousStage() {
-    this.refs.horizontalStepper.gotoPreviousStage();
-  }
-
-  render() {
-    return (
-      <div>
-        <HorizontalStepper
-          ref="horizontalStepper"
-          stages={[
-            { title: "Select Product", optional: "" },
-            { title: "Minecraft Username", optional: "" },
-            { title: "Confirm Purchase", optional: "" }
-          ]}
-        />
-
-        {this.renderContent()}
-      </div>
-    );
-  }
+      {renderContent()}
+    </div>
+  );
 }
 
 export default StorePage;
