@@ -37,7 +37,6 @@ function LandingPage(props) {
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "bottom",
-          borderBottom: "0.4rem solid #e2ded3",
         }}
       >
         <div className="row">
