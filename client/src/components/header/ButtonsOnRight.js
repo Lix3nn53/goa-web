@@ -28,7 +28,11 @@ function ButtonsOnRight(props) {
 
   switch (auth) {
     case null:
-      return <Spinner />;
+      return (
+        <div className="text-light">
+          <Spinner />
+        </div>
+      );
     case false:
       return [
         <li className="nav-item" key="2">

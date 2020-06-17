@@ -17,13 +17,13 @@
 .pagination > li > a:hover,
 .pagination > li > a:focus,
 .pagination > li > a:active {
-  background-color: $color_secondary;
+  background-color: $color_third;
   border-color: $color_primary;
   color: $color_primary_dark;
 }
 
 .page-item.active .page-link {
-  background-color: $color_third;
+  background-color: $color_third_dark;
   color: $color_primary_dark;
   border-color: $color_primary;
 }

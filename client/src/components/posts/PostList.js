@@ -4,6 +4,7 @@ import { TwitterTimelineEmbed } from "react-twitter-embed";
 
 import PostCard from "./PostCard";
 import Pagination from "../util/Pagination";
+import Spinner from "components/util/Spinner";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
@@ -36,7 +37,7 @@ function PostsList(props) {
   };
 
   const renderPosts = () => {
-    if (!currentPosts) return null;
+    if (currentPosts.length === 0) return <Spinner />;
 
     const headerClass = [
       "m-0",

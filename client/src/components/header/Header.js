@@ -6,7 +6,7 @@ import ButtonsOnLeft from "./ButtonsOnLeft";
 
 function Header(props) {
   return (
-    <nav id="header" className="navbar navbar-dark navbar-expand-lg mx-auto">
+    <nav id="header" className="navbar navbar-expand-lg mx-auto">
       <Link className="navbar-brand" to="/">
         <img
           src="https://i.ibb.co/TgQ2z1w/favicon.png"
