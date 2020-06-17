@@ -9,7 +9,7 @@ class SurveyForm extends Component {
       title: this.props.formValues.title || "",
       subject: this.props.formValues.subject || "",
       body: this.props.formValues.body || "",
-      recipients: this.props.formValues.recipients || ""
+      recipients: this.props.formValues.recipients || "",
     };
 
     return initialValuesMap;
@@ -27,10 +27,13 @@ class SurveyForm extends Component {
             .required("Body is required"),
           recipients: Yup.string()
             .email("Email is invalid")
-            .required("Email is required")
+            .required("Email is required"),
         })}
-        onSubmit={fields => {
-          this.props.onSurveySubmit(fields);
+        onSubmit={async (fields, { setSubmitting }) => {
+          setSubmitting(true);
+          await this.props.onSurveySubmit(fields);
+
+          setSubmitting(false);
         }}
       >
         {({ errors, status, touched }) => (
@@ -50,7 +53,7 @@ class SurveyForm extends Component {
                 <ErrorMessage
                   name="title"
                   className="invalid-feedback"
-                  render={msg => <div className="text-danger">{msg}</div>}
+                  render={(msg) => <div className="text-danger">{msg}</div>}
                 />
               </div>
 
@@ -68,7 +71,7 @@ class SurveyForm extends Component {
                 <ErrorMessage
                   name="subject"
                   className="invalid-feedback"
-                  render={msg => <div className="text-danger">{msg}</div>}
+                  render={(msg) => <div className="text-danger">{msg}</div>}
                 />
               </div>
             </div>
@@ -88,7 +91,7 @@ class SurveyForm extends Component {
               <ErrorMessage
                 name="body"
                 className="invalid-feedback"
-                render={msg => <div className="text-danger">{msg}</div>}
+                render={(msg) => <div className="text-danger">{msg}</div>}
               />
             </div>
 
@@ -106,7 +109,7 @@ class SurveyForm extends Component {
               <ErrorMessage
                 name="recipients"
                 className="invalid-feedback"
-                render={msg => <div className="text-danger">{msg}</div>}
+                render={(msg) => <div className="text-danger">{msg}</div>}
               />
             </div>
 

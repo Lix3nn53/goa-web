@@ -8,10 +8,10 @@ class ProductSelection extends Component {
   render() {
     return (
       <section className="container py-5">
-        <ul class="nav nav-pills mb-3" id="pills-tab-shop" role="tablist">
-          <li class="nav-item mx-auto">
+        <ul className="nav nav-pills mb-3" id="pills-tab-shop" role="tablist">
+          <li className="nav-item mx-auto">
             <a
-              class="nav-link active"
+              className="nav-link active"
               id="pills-ranks-tab"
               data-toggle="pill"
               href="#pills-ranks"
@@ -22,9 +22,9 @@ class ProductSelection extends Component {
               Ranks
             </a>
           </li>
-          <li class="nav-item mx-auto">
+          <li className="nav-item mx-auto">
             <a
-              class="nav-link"
+              className="nav-link"
               id="pills-skins-tab"
               data-toggle="pill"
               href="#pills-skins"
@@ -35,9 +35,9 @@ class ProductSelection extends Component {
               Skins
             </a>
           </li>
-          <li class="nav-item mx-auto">
+          <li className="nav-item mx-auto">
             <a
-              class="nav-link"
+              className="nav-link"
               id="pills-chests-tab"
               data-toggle="pill"
               href="#pills-chests"
@@ -48,9 +48,9 @@ class ProductSelection extends Component {
               Chests
             </a>
           </li>
-          <li class="nav-item mx-auto">
+          <li className="nav-item mx-auto">
             <a
-              class="nav-link"
+              className="nav-link"
               id="pills-boosts-tab"
               data-toggle="pill"
               href="#pills-boosts"
@@ -62,9 +62,9 @@ class ProductSelection extends Component {
             </a>
           </li>
         </ul>
-        <div class="tab-content" id="pills-tabContent">
+        <div className="tab-content" id="pills-tabContent">
           <div
-            class="tab-pane fade show active"
+            className="tab-pane fade show active"
             id="pills-ranks"
             role="tabpanel"
             aria-labelledby="pills-ranks-tab"
@@ -76,7 +76,7 @@ class ProductSelection extends Component {
             />
           </div>
           <div
-            class="tab-pane fade"
+            className="tab-pane fade"
             id="pills-skins"
             role="tabpanel"
             aria-labelledby="pills-skins-tab"
@@ -88,7 +88,7 @@ class ProductSelection extends Component {
             />
           </div>
           <div
-            class="tab-pane fade"
+            className="tab-pane fade"
             id="pills-chests"
             role="tabpanel"
             aria-labelledby="pills-chests-tab"
@@ -100,7 +100,7 @@ class ProductSelection extends Component {
             />
           </div>
           <div
-            class="tab-pane fade"
+            className="tab-pane fade"
             id="pills-boosts"
             role="tabpanel"
             aria-labelledby="pills-boosts-tab"

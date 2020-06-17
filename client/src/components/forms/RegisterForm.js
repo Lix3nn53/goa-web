@@ -93,11 +93,10 @@ class RegisterForm extends Component {
               .required("Required"),
           })}
           onSubmit={async (fields, { setSubmitting }) => {
+            setSubmitting(true);
             await this.onFormSubmit(fields);
 
-            setTimeout(() => {
-              setSubmitting(false);
-            }, 2000);
+            setSubmitting(false);
           }}
         >
           {({ errors, status, touched, isSubmitting }) => (

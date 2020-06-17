@@ -27,4 +27,16 @@ const getPost = async (postId) => {
   }
 };
 
-export default { publishPost, getPost };
+const fetchPosts = async (currentPage, pageLimit) => {
+  try {
+    const res = await axios.get(
+      "/api/posts?page=" + currentPage + "&limit=" + pageLimit
+    );
+
+    return res.data;
+  } catch (error) {
+    return false;
+  }
+};
+
+export default { publishPost, getPost, fetchPosts };

@@ -10,10 +10,10 @@ class ProductsSkins extends Component {
   render() {
     return (
       <section className="">
-        <ul class="nav nav-pills mb-3" id="pills-tab-skins" role="tablist">
-          <li class="nav-item mx-auto">
+        <ul className="nav nav-pills mb-3" id="pills-tab-skins" role="tablist">
+          <li className="nav-item mx-auto">
             <a
-              class="nav-link active"
+              className="nav-link active"
               id="pills-weaponskins-tab"
               data-toggle="pill"
               href="#pills-weaponskins"
@@ -24,9 +24,9 @@ class ProductsSkins extends Component {
               Weapon Skins
             </a>
           </li>
-          <li class="nav-item mx-auto">
+          <li className="nav-item mx-auto">
             <a
-              class="nav-link"
+              className="nav-link"
               id="pills-helmetskins-tab"
               data-toggle="pill"
               href="#pills-helmetskins"
@@ -37,9 +37,9 @@ class ProductsSkins extends Component {
               Helmet Skins
             </a>
           </li>
-          <li class="nav-item mx-auto">
+          <li className="nav-item mx-auto">
             <a
-              class="nav-link"
+              className="nav-link"
               id="pills-petskins-tab"
               data-toggle="pill"
               href="#pills-petskins"
@@ -51,9 +51,9 @@ class ProductsSkins extends Component {
             </a>
           </li>
         </ul>
-        <div class="tab-content" id="pills-tabContent">
+        <div className="tab-content" id="pills-tabContent">
           <div
-            class="tab-pane fade show active"
+            className="tab-pane fade show active"
             id="pills-weaponskins"
             role="tabpanel"
             aria-labelledby="pills-weaponskins-tab"
@@ -61,7 +61,7 @@ class ProductsSkins extends Component {
             {this.renderWeapons()}
           </div>
           <div
-            class="tab-pane fade"
+            className="tab-pane fade"
             id="pills-helmetskins"
             role="tabpanel"
             aria-labelledby="pills-helmetskins-tab"
@@ -69,7 +69,7 @@ class ProductsSkins extends Component {
             {this.renderHeadgear()}
           </div>
           <div
-            class="tab-pane fade"
+            className="tab-pane fade"
             id="pills-petskins"
             role="tabpanel"
             aria-labelledby="pills-petskins-tab"

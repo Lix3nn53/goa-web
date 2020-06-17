@@ -1,10 +1,5 @@
 import axios from "axios";
-import {
-  FETCH_USER,
-  FETCH_POSTS,
-  NOTIFICATION_MODAL,
-  NOTIFICATION_TOPBAR,
-} from "./types";
+import { FETCH_USER, NOTIFICATION_MODAL, NOTIFICATION_TOPBAR } from "./types";
 import tokenService from "api/tokenService";
 
 export const fetchUser = () => async (dispatch) => {
@@ -85,19 +80,6 @@ export const buyProduct = (values) => async (dispatch) => {
     //console.log(error);
     return { success: false, msg: error.message };
   }
-};
-
-//NO FETCH PRODUCT CUZ PRODUCTS ARE HARD CODED IN THIS PROJECT
-/*export const fetchProducts = () => async (dispatch) => {
-  const res = await axios.get("/api/products");
-
-  dispatch({ type: FETCH_PRODUCTS, payload: res.data });
-};*/
-
-export const fetchPosts = (page, limit) => async (dispatch) => {
-  const res = await axios.get("/api/posts?page=" + page + "&limit=" + limit);
-
-  dispatch({ type: FETCH_POSTS, payload: res.data });
 };
 
 export const notifyModal = (isVisible, type, message) => async (dispatch) => {

@@ -62,8 +62,11 @@ class EmailForm extends Component {
                 .matches(emailRegex, "Email is invalid")
                 .required("Email is required"),
             })}
-            onSubmit={(fields) => {
-              this.onFormSubmit(fields);
+            onSubmit={async (fields, { setSubmitting }) => {
+              setSubmitting(true);
+              await this.onFormSubmit(fields);
+
+              setSubmitting(false);
             }}
           >
             {({ errors, status, touched }) => (

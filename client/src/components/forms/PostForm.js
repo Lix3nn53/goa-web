@@ -32,8 +32,11 @@ class PostForm extends Component {
           text: Yup.string().required("text is required"),
           image: Yup.string().url("must be an url"),
         })}
-        onSubmit={(fields) => {
-          this.publishPost(fields);
+        onSubmit={async (fields, { setSubmitting }) => {
+          setSubmitting(true);
+          await this.publishPost(fields);
+
+          setSubmitting(false);
         }}
       >
         {({ errors, status, touched }) => (

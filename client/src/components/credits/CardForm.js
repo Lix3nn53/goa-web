@@ -114,8 +114,11 @@ class CardForm extends Component {
                 .max(999, "Must be 3 digits")
                 .required("required"),
             })}
-            onSubmit={async (fields) => {
+            onSubmit={async (fields, { setSubmitting }) => {
+              setSubmitting(true);
               await this.onFormSubmit(fields);
+
+              setSubmitting(false);
             }}
           >
             {({ errors, status, touched }) => (

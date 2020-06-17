@@ -18,11 +18,11 @@ class MinecraftForm extends Component {
         minecraftUsername:
           this.props.formValues.minecraftUsername ||
           this.props.auth.minecraftUsername ||
-          ""
+          "",
       };
     } else if (this.props.auth) {
       initialValuesMap = {
-        minecraftUsername: this.props.auth.minecraftUsername || ""
+        minecraftUsername: this.props.auth.minecraftUsername || "",
       };
     }
 
@@ -77,10 +77,13 @@ class MinecraftForm extends Component {
                       minecraftUsernameRegex,
                       "3-16 characters, no spaces, The only allowed special character is _(underscore)"
                     )
-                    .required("Minecraft Username is required")
+                    .required("Minecraft Username is required"),
                 })}
-                onSubmit={fields => {
-                  this.props.onFormSubmit(fields);
+                onSubmit={async (fields, { setSubmitting }) => {
+                  setSubmitting(true);
+                  await this.props.onFormSubmit(fields);
+
+                  setSubmitting(false);
                 }}
               >
                 {({ errors, status, touched }) => (
@@ -103,7 +106,9 @@ class MinecraftForm extends Component {
                       <ErrorMessage
                         name="minecraftUsername"
                         className="invalid-feedback"
-                        render={msg => <div className="text-danger">{msg}</div>}
+                        render={(msg) => (
+                          <div className="text-danger">{msg}</div>
+                        )}
                       />
                     </div>
 

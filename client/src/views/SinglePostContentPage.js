@@ -1,63 +1,58 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Spinner from "components/util/Spinner";
 import postAPI from "api/postAPI";
 
-class SinglePostContentPage extends Component {
-  state = {
-    _id: "",
-    title: "",
-    text: "",
-    author: "",
-    image: "",
-    dateSent: "",
-  };
+function SinglePostContentPage(props) {
+  const [post, setPost] = useState(null);
 
-  async componentDidMount() {
-    const postId = this.props.history.location.pathname.replace("/post/", "");
+  let location = useLocation();
+  const postId = location.pathname.split("/")[2];
 
-    const post = await postAPI.getPost(postId);
+  useEffect(() => {
+    async function fetchPost() {
+      if (!postId) return;
 
-    this.setState(post);
+      const post = await postAPI.getPost(postId);
+      setPost(post);
+    }
+
+    fetchPost();
+  }, [postId]);
+
+  if (!post) {
+    return <Spinner />;
   }
 
-  renderImage() {
-    if (this.state.image) {
+  const { title, text, author, image, dateSent } = post;
+
+  const renderImage = () => {
+    if (image) {
       return (
-        <img
-          className="img-fluid rounded mt-4 w-100"
-          src={this.state.image}
-          alt=""
-        />
+        <img className="img-fluid rounded mt-4 w-100" src={image} alt="" />
       );
     }
-  }
+  };
 
-  render() {
-    if (!this.state.title) {
-      return <Spinner />;
-    }
+  return (
+    <div className="container">
+      <div className="row">
+        <div className="col-lg-12">
+          {renderImage()}
 
-    return (
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-12">
-            {this.renderImage()}
+          <h1 className="pt-2">{title}</h1>
 
-            <h1 className="pt-2">{this.state.title}</h1>
+          <small className="">
+            Posted on {new Date(dateSent).toDateString()} by {author}
+          </small>
 
-            <small className="">
-              Posted on {new Date(this.state.dateSent).toDateString()} by{" "}
-              {this.state.author}
-            </small>
+          <hr />
 
-            <hr />
-
-            <p>{this.state.text}</p>
-          </div>
+          <p>{text}</p>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default SinglePostContentPage;

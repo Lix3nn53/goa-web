@@ -10,19 +10,19 @@ class ProfileForm extends Component {
   getInitialValues() {
     var initialValuesMap = {
       username: "",
-      email: ""
+      email: "",
     };
 
     if (this.props.formValues && this.props.auth) {
       initialValuesMap = {
         username:
           this.props.formValues.username || this.props.auth.username || "",
-        email: this.props.formValues.email || this.props.auth.email || ""
+        email: this.props.formValues.email || this.props.auth.email || "",
       };
     } else {
       initialValuesMap = {
         username: this.props.auth.username || "",
-        email: this.props.auth.email || ""
+        email: this.props.auth.email || "",
       };
     }
 
@@ -62,10 +62,13 @@ class ProfileForm extends Component {
                 .required("Name is required"),
               email: Yup.string()
                 .matches(emailRegex, "Email is invalid")
-                .required("Email is required")
+                .required("Email is required"),
             })}
-            onSubmit={fields => {
-              this.props.onFormSubmit(fields);
+            onSubmit={async (fields, { setSubmitting }) => {
+              setSubmitting(true);
+              await this.props.onFormSubmit(fields);
+
+              setSubmitting(false);
             }}
           >
             {({ errors, status, touched }) => (
@@ -87,7 +90,7 @@ class ProfileForm extends Component {
                     <ErrorMessage
                       name="username"
                       className="invalid-feedback"
-                      render={msg => <div className="text-danger">{msg}</div>}
+                      render={(msg) => <div className="text-danger">{msg}</div>}
                     />
                   </div>
                 </div>
@@ -106,7 +109,7 @@ class ProfileForm extends Component {
                   <ErrorMessage
                     name="email"
                     className="invalid-feedback"
-                    render={msg => <div className="text-danger">{msg}</div>}
+                    render={(msg) => <div className="text-danger">{msg}</div>}
                   />
                 </div>
 

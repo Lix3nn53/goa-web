@@ -1,56 +1,42 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+
 import { TwitterTimelineEmbed } from "react-twitter-embed";
+
 import PostCard from "./PostCard";
-import { connect } from "react-redux";
-import { fetchPosts } from "store/actions";
 import Pagination from "../util/Pagination";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 
-class PostsList extends Component {
-  state = {
-    totalPosts: 0,
-    totalPages: 0,
-    currentPosts: [],
-    currentPage: null,
-    pageLimit: 3,
-    pageNeighbours: 1,
+import postAPI from "api/postAPI";
+
+function PostsList(props) {
+  const [totalPosts, setTotalPosts] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPosts, setCurrentPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const pageLimit = 3;
+  const pageNeighbours = 1;
+
+  useEffect(() => {
+    async function fetchPostList() {
+      const data = await postAPI.fetchPosts(currentPage, pageLimit);
+
+      setCurrentPosts(data.currentResults);
+      setTotalPosts(data.totalResults);
+      setTotalPages(Math.ceil(data.totalResults / pageLimit));
+    }
+
+    fetchPostList();
+  }, [currentPage, pageLimit]);
+
+  const onPageChanged = async (page) => {
+    setCurrentPage(page);
   };
 
-  async componentDidMount() {
-    const { pageLimit } = this.state;
-    const currentPage = 1;
-
-    await this.props.fetchPosts(currentPage, pageLimit); //wait for async method to complete so this.props.posts at next lines is not null
-
-    const currentPosts = this.props.posts.currentResults;
-    const totalPosts = this.props.posts.totalResults;
-    this.setState({ totalPosts, currentPosts, currentPage });
-  }
-
-  onPageChanged = async (data) => {
-    const { totalPages, currentPage } = data;
-    const { pageLimit } = this.state;
-
-    await this.props.fetchPosts(currentPage, pageLimit);
-
-    const currentPosts = this.props.posts.currentResults;
-    const totalPosts = this.props.posts.totalResults;
-
-    this.setState({ totalPosts, totalPages, currentPosts, currentPage });
-  };
-
-  renderPosts() {
-    const {
-      totalPosts,
-      totalPages,
-      currentPosts,
-      currentPage,
-      pageLimit,
-      pageNeighbours,
-    } = this.state;
-
-    if (totalPosts === 0) return null;
+  const renderPosts = () => {
+    if (!currentPosts) return null;
 
     const headerClass = [
       "m-0",
@@ -91,45 +77,40 @@ class PostsList extends Component {
           <div className="d-flex flex-row align-items-center">
             <Pagination
               totalRecords={totalPosts}
-              pageLimit={pageLimit}
+              totalPages={totalPages}
+              currentPage={currentPage}
               pageNeighbours={pageNeighbours}
-              onPageChanged={this.onPageChanged}
+              onPageChanged={onPageChanged}
             />
           </div>
         </div>
       </div>
     );
-  }
+  };
 
-  render() {
-    return (
-      <div className="row">
-        <div className="col-lg-8">
-          <h1 className="text-center pb-4 font-weight-bold">Latest Posts</h1>
+  return (
+    <div className="row">
+      <div className="col-lg-8">
+        <h1 className="text-center pb-4 font-weight-bold">Latest Posts</h1>
 
-          {this.renderPosts()}
-        </div>
-
-        <div className="col-lg-4">
-          <h1 className="text-center pb-4 font-weight-bold">
-            <FontAwesomeIcon icon={faTwitter} />
-          </h1>
-          <article className="h-75">
-            <TwitterTimelineEmbed
-              sourceType="profile"
-              screenName="loykAd"
-              options={{ height: 640 }}
-              lang="en"
-            />
-          </article>
-        </div>
+        {renderPosts()}
       </div>
-    );
-  }
+
+      <div className="col-lg-4">
+        <h1 className="text-center pb-4 font-weight-bold">
+          <FontAwesomeIcon icon={faTwitter} />
+        </h1>
+        <article className="h-75">
+          <TwitterTimelineEmbed
+            sourceType="profile"
+            screenName="loykAd"
+            options={{ height: 640 }}
+            lang="en"
+          />
+        </article>
+      </div>
+    </div>
+  );
 }
 
-function mapStateToProps({ posts }) {
-  return { posts };
-}
-
-export default connect(mapStateToProps, { fetchPosts })(PostsList);
+export default PostsList;

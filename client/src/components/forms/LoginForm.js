@@ -50,11 +50,10 @@ class LoginForm extends Component {
             password: Yup.string().required("password is required"),
           })}
           onSubmit={async (fields, { setSubmitting }) => {
+            setSubmitting(true);
             await this.onFormSubmit(fields);
 
-            setTimeout(() => {
-              setSubmitting(false);
-            }, 2000);
+            setSubmitting(false);
           }}
         >
           {({ errors, status, touched, isSubmitting }) => (
