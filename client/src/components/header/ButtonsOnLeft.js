@@ -39,11 +39,7 @@ function ButtonsOnLeft(props) {
     </li>,
     <li className="nav-item" key="6">
       <Link
-        className={
-          path === "store"
-            ? "nav-link active text-warning"
-            : "nav-link text-warning"
-        }
+        className={path === "store" ? "nav-link active" : "nav-link"}
         to="/store"
       >
         <FontAwesomeIcon className="mx-1" icon={faStore} />

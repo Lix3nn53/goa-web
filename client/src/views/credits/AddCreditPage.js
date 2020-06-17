@@ -1,62 +1,52 @@
 //Shows CreditSelection and BillingForm and CardForm
-import React, { Component } from "react";
+import React, { useState } from "react";
 import CreditSelection from "components/credits/CreditSelection";
 import BillingForm from "components/forms/BillingForm";
 import ProfileForm from "components/forms/ProfileForm";
 import CardForm from "components/credits/CardForm";
 import HorizontalStepper from "components/util/HorizontalStepper";
 
-class AddCreditPage extends Component {
-  constructor(props) {
-    super(props);
-    // Don't call this.setState() here!
-    const formValues = {};
+function AddCreditPage(props) {
+  const [formStage, setFormStage] = useState(0);
+  const [formValues, setFormValues] = useState(null);
 
-    this.state = Object.assign({ formStage: 0 }, { formValues });
-  }
-
-  renderContent() {
-    if (this.state.formStage === 3) {
+  const renderContent = () => {
+    if (formStage === 3) {
       return (
         <CardForm
-          formValues={this.state.formValues}
+          formValues={formValues}
           onCancel={() => {
-            this.setState({ formStage: 2 });
-            this.gotoPreviousStage();
+            setFormStage(2);
           }}
         />
       );
     }
 
-    if (this.state.formStage === 2) {
+    if (formStage === 2) {
       return (
         <BillingForm
-          formValues={this.state.formValues}
+          formValues={formValues}
           onCancel={() => {
-            this.setState({ formStage: 1 });
-            this.gotoPreviousStage();
+            setFormStage(1);
           }}
           onFormSubmit={(fields) => {
-            const formValues = Object.assign(this.state.formValues, fields);
-            this.setState(Object.assign({ formStage: 3 }, { formValues }));
-            this.gotoNextStage();
+            setFormValues({ ...formValues, ...fields });
+            setFormStage(3);
           }}
         />
       );
     }
 
-    if (this.state.formStage === 1) {
+    if (formStage === 1) {
       return (
         <ProfileForm
-          formValues={this.state.formValues}
+          formValues={formValues}
           onCancel={() => {
-            this.setState({ formStage: 0 });
-            this.gotoPreviousStage();
+            setFormStage(0);
           }}
           onFormSubmit={(fields) => {
-            const formValues = Object.assign(this.state.formValues, fields);
-            this.setState(Object.assign({ formStage: 2 }, { formValues }));
-            this.gotoNextStage();
+            setFormValues({ ...formValues, ...fields });
+            setFormStage(2);
           }}
         />
       );
@@ -65,42 +55,30 @@ class AddCreditPage extends Component {
     //if (this.state.formStage === 0)
     return (
       <CreditSelection
-        formValues={this.state.formValues}
+        formValues={formValues}
         onFormSubmit={(creditSelection) => {
-          const formValues = this.state.formValues;
-          formValues.creditSelection = creditSelection;
-          this.setState(Object.assign({ formStage: 1 }, { formValues }));
-          this.gotoNextStage();
+          setFormValues({ creditSelection: creditSelection });
+          setFormStage(1);
         }}
       />
     );
-  }
+  };
 
-  gotoNextStage() {
-    this.refs.horizontalStepper.gotoNextStage();
-  }
+  return (
+    <div>
+      <HorizontalStepper
+        currentStage={formStage}
+        stages={[
+          { title: "Select Credit", optional: "" },
+          { title: "Profile", optional: "" },
+          { title: "Billing Info", optional: "" },
+          { title: "Payment", optional: "" },
+        ]}
+      />
 
-  gotoPreviousStage() {
-    this.refs.horizontalStepper.gotoPreviousStage();
-  }
-
-  render() {
-    return (
-      <div>
-        <HorizontalStepper
-          ref="horizontalStepper"
-          stages={[
-            { title: "Select Credit", optional: "" },
-            { title: "Profile", optional: "" },
-            { title: "Billing Info", optional: "" },
-            { title: "Payment", optional: "" },
-          ]}
-        />
-
-        {this.renderContent()}
-      </div>
-    );
-  }
+      {renderContent()}
+    </div>
+  );
 }
 
 export default AddCreditPage;

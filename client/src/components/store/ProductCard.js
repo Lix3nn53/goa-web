@@ -36,7 +36,7 @@ class ProductCard extends Component {
         key={this.props.product.name}
         style={{ marginBottom: "1rem" }}
       >
-        <div className="card product-card">
+        <div className="card">
           {this.renderImage()}
           <div className="card-body">
             <h4 className="card-title text-center mt-2 font-weight-bold">

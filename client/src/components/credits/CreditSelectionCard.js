@@ -21,7 +21,10 @@ class CreditSelectionCard extends Component {
         key={this.props.creditSelection.name}
         style={{ marginBottom: "1rem" }}
       >
-        <div className="card mb-5 mb-lg-0">
+        <div
+          className="card mb-5 mb-lg-0"
+          style={{ backgroundColor: "transparent" }}
+        >
           <img
             src={this.props.creditSelection.icon}
             className="card-img-top card-img-small"
@@ -34,7 +37,7 @@ class CreditSelectionCard extends Component {
             <h1 className="card-price text-center">
               {this.props.creditSelection.name}
             </h1>
-            <p className="text-center font-italic text-warning">
+            <p className="text-center font-italic">
               {this.props.creditSelection.description}
             </p>
 

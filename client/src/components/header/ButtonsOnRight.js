@@ -54,11 +54,7 @@ function ButtonsOnRight(props) {
       const header = [
         <li className="nav-item" key="3">
           <Link
-            className={
-              path === "addcredit"
-                ? "nav-link active text-warning"
-                : "nav-link text-warning"
-            }
+            className={path === "addcredit" ? "nav-link active" : "nav-link"}
             to="/addcredit"
           >
             <FontAwesomeIcon className="mx-1" icon={faCoins} />

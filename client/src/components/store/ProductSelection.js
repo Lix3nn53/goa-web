@@ -8,99 +8,105 @@ class ProductSelection extends Component {
   render() {
     return (
       <section className="container py-5">
-        <nav>
-          <div className="nav nav-tabs" id="nav-tab-shop" role="tablist">
+        <ul class="nav nav-pills mb-3" id="pills-tab-shop" role="tablist">
+          <li class="nav-item mx-auto">
             <a
-              className="nav-item nav-link active mx-auto"
-              id="nav-ranks-tab"
-              data-toggle="tab"
-              href="#nav-ranks"
+              class="nav-link active"
+              id="pills-ranks-tab"
+              data-toggle="pill"
+              href="#pills-ranks"
               role="tab"
-              aria-controls="nav-ranks"
+              aria-controls="pills-ranks"
               aria-selected="true"
             >
               Ranks
             </a>
+          </li>
+          <li class="nav-item mx-auto">
             <a
-              className="nav-item nav-link mx-auto"
-              id="nav-skins-tab"
-              data-toggle="tab"
-              href="#nav-skins"
+              class="nav-link"
+              id="pills-skins-tab"
+              data-toggle="pill"
+              href="#pills-skins"
               role="tab"
-              aria-controls="nav-skins"
+              aria-controls="pills-skins"
               aria-selected="false"
             >
               Skins
             </a>
+          </li>
+          <li class="nav-item mx-auto">
             <a
-              className="nav-item nav-link mx-auto"
-              id="nav-chests-tab"
-              data-toggle="tab"
-              href="#nav-chests"
+              class="nav-link"
+              id="pills-chests-tab"
+              data-toggle="pill"
+              href="#pills-chests"
               role="tab"
-              aria-controls="nav-chests"
+              aria-controls="pills-chests"
               aria-selected="false"
             >
               Chests
             </a>
+          </li>
+          <li class="nav-item mx-auto">
             <a
-              className="nav-item nav-link mx-auto"
-              id="nav-boosts-tab"
-              data-toggle="tab"
-              href="#nav-boosts"
+              class="nav-link"
+              id="pills-boosts-tab"
+              data-toggle="pill"
+              href="#pills-boosts"
               role="tab"
-              aria-controls="nav-boosts"
+              aria-controls="pills-boosts"
               aria-selected="false"
             >
               Boosts
             </a>
-          </div>
-        </nav>
-        <div className="tab-content mt-4" id="nav-tabContent">
+          </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
           <div
-            className="tab-pane fade show active"
-            id="nav-ranks"
+            class="tab-pane fade show active"
+            id="pills-ranks"
             role="tabpanel"
-            aria-labelledby="nav-ranks-tab"
+            aria-labelledby="pills-ranks-tab"
           >
             <ProductsRanks
-              onFormSubmit={productSelection =>
+              onFormSubmit={(productSelection) =>
                 this.props.onFormSubmit(productSelection)
               }
             />
           </div>
           <div
-            className="tab-pane fade"
-            id="nav-skins"
+            class="tab-pane fade"
+            id="pills-skins"
             role="tabpanel"
-            aria-labelledby="nav-skins-tab"
+            aria-labelledby="pills-skins-tab"
           >
             <ProductsSkins
-              onFormSubmit={productSelection =>
+              onFormSubmit={(productSelection) =>
                 this.props.onFormSubmit(productSelection)
               }
             />
           </div>
           <div
-            className="tab-pane fade"
-            id="nav-chests"
+            class="tab-pane fade"
+            id="pills-chests"
             role="tabpanel"
-            aria-labelledby="nav-chests-tab"
+            aria-labelledby="pills-chests-tab"
           >
             <ProductsChests
-              onFormSubmit={productSelection =>
+              onFormSubmit={(productSelection) =>
                 this.props.onFormSubmit(productSelection)
               }
             />
           </div>
           <div
-            className="tab-pane fade"
-            id="nav-boosts"
+            class="tab-pane fade"
+            id="pills-boosts"
             role="tabpanel"
-            aria-labelledby="nav-boosts-tab"
+            aria-labelledby="pills-boosts-tab"
           >
             <ProductsBoosts
-              onFormSubmit={productSelection =>
+              onFormSubmit={(productSelection) =>
                 this.props.onFormSubmit(productSelection)
               }
             />

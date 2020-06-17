@@ -10,65 +10,69 @@ class ProductsSkins extends Component {
   render() {
     return (
       <section className="">
-        <nav>
-          <div className="nav nav-tabs" id="nav-tab-shop" role="tablist">
+        <ul class="nav nav-pills mb-3" id="pills-tab-skins" role="tablist">
+          <li class="nav-item mx-auto">
             <a
-              className="nav-item nav-link active mx-auto"
-              id="nav-weaponskins-tab"
-              data-toggle="tab"
-              href="#nav-weaponskins"
+              class="nav-link active"
+              id="pills-weaponskins-tab"
+              data-toggle="pill"
+              href="#pills-weaponskins"
               role="tab"
-              aria-controls="nav-weaponskins"
+              aria-controls="pills-weaponskins"
               aria-selected="true"
             >
               Weapon Skins
             </a>
+          </li>
+          <li class="nav-item mx-auto">
             <a
-              className="nav-item nav-link mx-auto"
-              id="nav-helmetskins-tab"
-              data-toggle="tab"
-              href="#nav-helmetskins"
+              class="nav-link"
+              id="pills-helmetskins-tab"
+              data-toggle="pill"
+              href="#pills-helmetskins"
               role="tab"
-              aria-controls="nav-helmetskins"
+              aria-controls="pills-helmetskins"
               aria-selected="false"
             >
               Helmet Skins
             </a>
+          </li>
+          <li class="nav-item mx-auto">
             <a
-              className="nav-item nav-link mx-auto"
-              id="nav-petskins-tab"
-              data-toggle="tab"
-              href="#nav-petskins"
+              class="nav-link"
+              id="pills-petskins-tab"
+              data-toggle="pill"
+              href="#pills-petskins"
               role="tab"
-              aria-controls="nav-petskins"
+              aria-controls="pills-petskins"
               aria-selected="false"
             >
               Pet Skins
             </a>
-          </div>
-        </nav>
-        <div className="tab-content mt-4" id="nav-tabContent">
+          </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
           <div
-            className="tab-pane fade show active"
-            id="nav-weaponskins"
+            class="tab-pane fade show active"
+            id="pills-weaponskins"
             role="tabpanel"
-            aria-labelledby="nav-weaponskins-tab"
+            aria-labelledby="pills-weaponskins-tab"
           >
             {this.renderWeapons()}
           </div>
           <div
-            className="tab-pane fade"
-            id="nav-helmetskins"
+            class="tab-pane fade"
+            id="pills-helmetskins"
             role="tabpanel"
-            aria-labelledby="nav-helmetskins-tab"
+            aria-labelledby="pills-helmetskins-tab"
           >
             {this.renderHeadgear()}
           </div>
           <div
-            className="tab-pane fade"
-            id="nav-petskins"
+            class="tab-pane fade"
+            id="pills-petskins"
             role="tabpanel"
-            aria-labelledby="nav-petskins-tab"
+            aria-labelledby="pills-petskins-tab"
           >
             {this.renderPets()}
           </div>
@@ -87,9 +91,9 @@ class ProductsSkins extends Component {
             name: "1x Weapon/Shield Skin Scroll",
             description:
               "Use on your weapon or shield to give it a visual effect. (Your item must be level 50 or higher)",
-            image: "https://media.giphy.com/media/1mhU3YqvhgLv2utfKv/giphy.gif"
+            image: "https://media.giphy.com/media/1mhU3YqvhgLv2utfKv/giphy.gif",
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />
@@ -100,9 +104,9 @@ class ProductsSkins extends Component {
             name: "2x Weapon/Shield Skin Scroll",
             description:
               "Use on your weapon or shield to give it a visual effect. (Your item must be level 50 or higher)",
-            image: "https://media.giphy.com/media/8YKZGnI8Eb6qD83tLa/giphy.gif"
+            image: "https://media.giphy.com/media/8YKZGnI8Eb6qD83tLa/giphy.gif",
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />
@@ -113,9 +117,9 @@ class ProductsSkins extends Component {
             name: "5x Weapon/Shield Skin Scroll",
             description:
               "Use on your weapon or shield to give it a visual effect. (Your item must be level 50 or higher)",
-            image: "https://media.giphy.com/media/2kSUhLi6vm0mmEvHOm/giphy.gif"
+            image: "https://media.giphy.com/media/2kSUhLi6vm0mmEvHOm/giphy.gif",
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />
@@ -133,9 +137,9 @@ class ProductsSkins extends Component {
             name: "Angel Wings",
             description:
               "Right click to change visual appearance of your equiped helmet.",
-            image: angel
+            image: angel,
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />
@@ -146,9 +150,9 @@ class ProductsSkins extends Component {
             name: "Demon Wings",
             description:
               "Right click to change visual appearance of your equiped helmet.",
-            image: demon
+            image: demon,
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />
@@ -159,9 +163,9 @@ class ProductsSkins extends Component {
             name: "Dark Dragon Wings",
             description:
               "Right click to change visual appearance of your equiped helmet.",
-            image: dragonDark
+            image: dragonDark,
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />
@@ -172,9 +176,9 @@ class ProductsSkins extends Component {
             name: "White Dragon Wings",
             description:
               "Right click to change visual appearance of your equiped helmet.",
-            image: dragonLight
+            image: dragonLight,
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />
@@ -185,9 +189,9 @@ class ProductsSkins extends Component {
             name: "Golden Crown",
             description:
               "Right click to change visual appearance of your equiped helmet.",
-            image: crown
+            image: crown,
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />
@@ -205,9 +209,9 @@ class ProductsSkins extends Component {
             name: "Bee",
             description:
               "Right click to your pet to change it's visual appearance.",
-            image: "https://i.ibb.co/DRFSv47/bee.png"
+            image: "https://i.ibb.co/DRFSv47/bee.png",
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />
@@ -218,9 +222,9 @@ class ProductsSkins extends Component {
             name: "Red Fox",
             description:
               "Right click to your pet to change it's visual appearance.",
-            image: "https://i.ibb.co/LtdZm9J/fox-red.png"
+            image: "https://i.ibb.co/LtdZm9J/fox-red.png",
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />
@@ -231,9 +235,9 @@ class ProductsSkins extends Component {
             name: "Snow Fox",
             description:
               "Right click to your pet to change it's visual appearance.",
-            image: "https://i.ibb.co/CQq5xny/fox-snow.png"
+            image: "https://i.ibb.co/CQq5xny/fox-snow.png",
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />
@@ -244,9 +248,9 @@ class ProductsSkins extends Component {
             name: "Ice Cream",
             description:
               "Right click to your pet to change it's visual appearance.",
-            image: "https://i.ibb.co/hdVTH08/icecream.png"
+            image: "https://i.ibb.co/hdVTH08/icecream.png",
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />
@@ -257,9 +261,9 @@ class ProductsSkins extends Component {
             name: "Vex",
             description:
               "Right click to your pet to change it's visual appearance.",
-            image: "https://i.ibb.co/Jks4Cqq/vex.png"
+            image: "https://i.ibb.co/Jks4Cqq/vex.png",
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />
@@ -270,9 +274,9 @@ class ProductsSkins extends Component {
             name: "Baby Dragon",
             description:
               "Right click to your pet to change it's visual appearance.",
-            image: "https://i.ibb.co/hygWC4R/mini-dragon.png"
+            image: "https://i.ibb.co/hygWC4R/mini-dragon.png",
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />
