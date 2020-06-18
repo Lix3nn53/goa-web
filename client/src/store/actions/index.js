@@ -1,45 +1,22 @@
-import axios from "axios";
 import { FETCH_USER, NOTIFICATION_MODAL, NOTIFICATION_TOPBAR } from "./types";
 import tokenService from "api/tokenService";
+import userAPI from "api/userAPI";
 
 export const fetchUser = () => async (dispatch) => {
-  const refreshToken = localStorage.getItem("refreshToken");
+  const apiRes = await userAPI.currentUser();
 
-  try {
-    const res = await axios.get("/api/current_user", {
-      headers: { Authorization: `Bearer ${refreshToken}` },
-    });
+  const { success, res } = apiRes;
 
-    console.log("res.data");
-    console.log(res.data);
+  console.log("fetchUser");
+  console.log(res.data);
 
+  if (success) {
     dispatch({ type: FETCH_USER, payload: res.data });
-    return;
-  } catch (error) {
-    if (error.response && error.response.data) {
-      console.log(error.response.data);
-    }
+    return true;
   }
 
   dispatch({ type: FETCH_USER, payload: null });
-};
-
-export const updateUser = (values) => async (dispatch) => {
-  try {
-    const res = await tokenService.requestWithAccessToken(
-      "/api/profile",
-      "post",
-      values
-    );
-
-    dispatch({ type: FETCH_USER, payload: res.data });
-
-    return { success: true };
-  } catch (error) {
-    if (error.response && error.response.data) {
-      return error.response.data;
-    }
-  }
+  return false;
 };
 
 export const buyProduct = (values) => async (dispatch) => {

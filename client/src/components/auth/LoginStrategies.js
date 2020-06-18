@@ -37,7 +37,7 @@ class LoginStrategies extends Component {
       return <p>You are already logged in</p>;
     }
     return (
-      <>
+      <div className="mx-auto text-center">
         <div className="row">
           <GoogleLogin
             className="col mx-4 nav-link login"
@@ -74,7 +74,7 @@ class LoginStrategies extends Component {
             Login with Facebook
           </a>
         </div>
-      </>
+      </div>
     );
   }
 }

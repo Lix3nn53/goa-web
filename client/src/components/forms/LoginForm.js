@@ -39,7 +39,7 @@ class LoginForm extends Component {
       return <p>You are already logged in</p>;
     }
     return (
-      <>
+      <div>
         <Formik
           className="col"
           initialValues={{ emailOrUsername: "", password: "" }}
@@ -116,7 +116,7 @@ class LoginForm extends Component {
         </Formik>
         <hr />
         <LoginStrategies />
-      </>
+      </div>
     );
   }
 }

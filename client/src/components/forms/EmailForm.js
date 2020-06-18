@@ -3,27 +3,29 @@ import Spinner from "../util/Spinner";
 import { connect } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { notifyModal, updateUser } from "store/actions";
+import { notifyModal, fetchUser } from "store/actions";
 import { emailRegex } from "assets/regex";
+import userAPI from "api/userAPI";
 
 class EmailForm extends Component {
   async onFormSubmit(fields) {
     if (this.props.auth) {
-      this.props.notifyModal(true, "Please wait", "");
+      const apiRes = await userAPI.updateUser(fields);
 
-      const resData = await this.props.updateUser(fields);
-      console.log(resData);
+      const { success } = apiRes;
 
-      if (resData.success) {
+      console.log(fields);
+
+      if (success) {
         this.props.notifyModal(
           true,
           "Success",
           "Changes saved and we sent you a new activation email."
         );
+        this.props.fetchUser();
       } else {
-        var message = "Failed";
-        if (resData.message) message = resData.message;
-        this.props.notifyModal(true, "Danger", message);
+        const { errorMessage } = apiRes;
+        this.props.notifyModal(true, "warning", errorMessage);
       }
     }
   }
@@ -111,4 +113,4 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-export default connect(mapStateToProps, { notifyModal, updateUser })(EmailForm);
+export default connect(mapStateToProps, { notifyModal, fetchUser })(EmailForm);
