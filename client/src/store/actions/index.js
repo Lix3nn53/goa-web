@@ -7,10 +7,10 @@ export const fetchUser = () => async (dispatch) => {
 
   const { success, res } = apiRes;
 
-  console.log("fetchUser");
-  console.log(res.data);
-
   if (success) {
+    console.log("fetchUser");
+    console.log(res.data);
+
     dispatch({ type: FETCH_USER, payload: res.data });
     return true;
   }

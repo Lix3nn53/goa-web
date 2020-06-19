@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import $ from "jquery";
 import { fetchUser } from "store/actions";
 import LoginStrategies from "components/auth/LoginStrategies";
 import authAPI from "api/authAPI";
@@ -14,8 +13,6 @@ class LoginForm extends Component {
   };
 
   async onFormSubmit(fields) {
-    this.hideLoginModal();
-
     const localAuth = await authAPI.localAuth(
       fields.emailOrUsername,
       fields.password
@@ -28,10 +25,6 @@ class LoginForm extends Component {
       this.setState({ loginError: localAuth.errorMessage });
       this.props.history.push("/login");
     }
-  }
-
-  hideLoginModal() {
-    $("#loginModal").modal("hide");
   }
 
   render() {

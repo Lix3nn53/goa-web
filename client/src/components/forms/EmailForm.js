@@ -1,116 +1,115 @@
-import React, { Component } from "react";
-import Spinner from "../util/Spinner";
-import { connect } from "react-redux";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { notifyModal, fetchUser } from "store/actions";
+import PropTypes from "prop-types";
+
+import Spinner from "../util/Spinner";
+import { Formik } from "formik";
+
 import { emailRegex } from "assets/regex";
+import * as Yup from "yup";
+import FormField from "components/forms/components/FormField";
 import userAPI from "api/userAPI";
 
-class EmailForm extends Component {
-  async onFormSubmit(fields) {
-    if (this.props.auth) {
-      const apiRes = await userAPI.updateUser(fields);
+function EmailForm(props) {
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
-      const { success } = apiRes;
+  const { formValues, onCancel } = props;
 
-      console.log(fields);
-
-      if (success) {
-        this.props.notifyModal(
-          true,
-          "Success",
-          "Changes saved and we sent you a new activation email."
-        );
-        this.props.fetchUser();
-      } else {
-        const { errorMessage } = apiRes;
-        this.props.notifyModal(true, "warning", errorMessage);
-      }
-    }
-  }
-
-  getInitialValues() {
-    var initialValuesMap = {
-      email: "",
+  const getInitialValues = () => {
+    return {
+      email: formValues ? formValues.email : auth ? auth.email : "",
     };
+  };
 
-    if (this.props.auth) {
-      initialValuesMap = {
-        email: this.props.auth.email || "",
-      };
+  const renderBackButton = () => {
+    if (onCancel) {
+      return (
+        <button className="btn btn-secondary float-left" onClick={onCancel}>
+          Back
+        </button>
+      );
+    }
+  };
+
+  const onFormSubmit = async (fields) => {
+    const apiRes = await userAPI.updateUser(fields);
+
+    const { success } = apiRes;
+
+    console.log(fields);
+
+    if (success) {
+      dispatch(notifyModal(true, "success", "Changes saved"));
+      dispatch(fetchUser());
     } else {
-      initialValuesMap = {
-        email: this.props.auth.email || "",
-      };
+      const { errorMessage } = apiRes;
+      dispatch(notifyModal(true, "warning", errorMessage));
     }
+  };
 
-    return initialValuesMap;
+  if (!auth) {
+    return <Spinner />;
   }
 
-  render() {
-    if (!this.props.auth) {
-      return <Spinner />;
-    }
+  return (
+    <Formik
+      className="col"
+      initialValues={getInitialValues()}
+      validationSchema={Yup.object().shape({
+        email: Yup.string()
+          .matches(emailRegex, "Email is invalid")
+          .required("Email is required"),
+      })}
+      onSubmit={async (fields, { setSubmitting }) => {
+        setSubmitting(true);
+        await onFormSubmit(fields);
 
-    return (
-      <div className="container">
-        <div className="row">
-          <Formik
-            className="col-6"
-            initialValues={this.getInitialValues()}
-            validationSchema={Yup.object().shape({
-              email: Yup.string()
-                .matches(emailRegex, "Email is invalid")
-                .required("Email is required"),
-            })}
-            onSubmit={async (fields, { setSubmitting }) => {
-              setSubmitting(true);
-              await this.onFormSubmit(fields);
+        setSubmitting(false);
+      }}
+    >
+      {({
+        handleSubmit,
+        errors,
+        values,
+        status,
+        touched,
+        isSubmitting,
+        handleBlur,
+        setFieldValue,
+      }) => (
+        <form onSubmit={handleSubmit} className="d-block mx-auto px-2">
+          <div className="form-row">
+            <FormField
+              fieldKey="email"
+              fieldType="email"
+              name="Email"
+              errors={errors}
+              touched={touched}
+            />
+          </div>
 
-              setSubmitting(false);
-            }}
-          >
-            {({ errors, status, touched }) => (
-              <Form className="d-block mx-auto px-2">
-                <div className="form-group" key="email">
-                  <label htmlFor="email">Email</label>
-                  <Field
-                    name="email"
-                    type="text"
-                    className={
-                      "form-control" +
-                      (errors.email && touched.email ? " is-invalid" : "")
-                    }
-                    placeholder="Email"
-                  />
-                  <ErrorMessage
-                    name="email"
-                    className="invalid-feedback"
-                    render={(msg) => <div className="text-danger">{msg}</div>}
-                  />
-                </div>
-
-                <div className="" key="buttons">
-                  <button
-                    className="btn btn-primary float-right"
-                    variant="primary"
-                    type="submit"
-                  >
-                    Change Email
-                  </button>
-                </div>
-              </Form>
-            )}
-          </Formik>
-        </div>
-      </div>
-    );
-  }
+          <div className="my-3" key="buttons">
+            <button
+              className="btn btn-primary float-right"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              Submit
+            </button>
+            {renderBackButton()}
+          </div>
+        </form>
+      )}
+    </Formik>
+  );
 }
 
-function mapStateToProps({ auth }) {
-  return { auth };
-}
+export default EmailForm;
 
-export default connect(mapStateToProps, { notifyModal, fetchUser })(EmailForm);
+EmailForm.propTypes = {
+  onFormSubmit: PropTypes.func.isRequired,
+  formValues: PropTypes.object,
+  onCancel: PropTypes.func,
+};

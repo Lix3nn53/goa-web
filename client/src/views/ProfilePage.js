@@ -7,10 +7,6 @@ import ProfileForm from "components/forms/ProfileForm";
 import BillingForm from "components/forms/BillingForm";
 import MinecraftForm from "components/forms/MinecraftForm";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
-
-import $ from "jquery";
 import userAPI from "api/userAPI";
 
 function ProfilePage(props) {
@@ -33,10 +29,6 @@ function ProfilePage(props) {
     }
   };
 
-  const showLoginModal = () => {
-    $("#loginModal").modal("show");
-  };
-
   switch (auth) {
     case null:
       return (
@@ -46,22 +38,15 @@ function ProfilePage(props) {
       );
     case false:
       return (
-        <div className="row">
-          <button
-            className="mt-4 btn mx-auto"
-            href="#loginModal"
-            onClick={showLoginModal}
-          >
-            <FontAwesomeIcon className="mr-2" icon={faSignInAlt} />
-            Login
-          </button>
-        </div>
+        <p className="text-center">
+          You must be logged in to complete purchase.
+        </p>
       );
     default:
       return (
         <div className="container mt-5">
           <div className="row">
-            <div className="col-xl-3 p-1 bg-primary rounded">
+            <div className="col-lg-3 p-2 bg-primary rounded">
               <div className="text-center py-2">
                 <img
                   src="https://i.ibb.co/hR60sKK/2018-04-12-19-08-26.png"
@@ -69,14 +54,23 @@ function ProfilePage(props) {
                   alt=""
                 />
               </div>
+              <div className="text-center text-secondary font-weight-bold">
+                <p>
+                  {auth.username + " / " + auth.minecraftUsername}
+                  <br />
+                  <span class="badge badge-pill badge-secondary">
+                    {auth.role}
+                  </span>
+                </p>
+              </div>
               <div
-                className="nav flex-column nav-pills"
+                className="nav nav-dark flex-column nav-pills"
                 id="v-pills-tab"
                 role="tablist"
                 aria-orientation="vertical"
               >
                 <a
-                  className="nav-link active"
+                  className="nav-link active my-1"
                   id="v-pills-home-tab"
                   data-toggle="pill"
                   href="#v-pills-home"
@@ -87,7 +81,7 @@ function ProfilePage(props) {
                   Profile
                 </a>
                 <a
-                  className="nav-link"
+                  className="nav-link my-1"
                   id="v-pills-profile-tab"
                   data-toggle="pill"
                   href="#v-pills-profile"
@@ -98,7 +92,7 @@ function ProfilePage(props) {
                   Billing
                 </a>
                 <a
-                  className="nav-link"
+                  className="nav-link my-1"
                   id="v-pills-messages-tab"
                   data-toggle="pill"
                   href="#v-pills-messages"
@@ -110,7 +104,7 @@ function ProfilePage(props) {
                 </a>
               </div>
             </div>
-            <div className="col-xl-9">
+            <div className="col-lg-9">
               <div className="tab-content" id="v-pills-tabContent">
                 <div
                   className="tab-pane fade show active"

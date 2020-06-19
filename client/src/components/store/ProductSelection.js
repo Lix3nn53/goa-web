@@ -8,7 +8,11 @@ class ProductSelection extends Component {
   render() {
     return (
       <section className="container py-5">
-        <ul className="nav nav-pills mb-3" id="pills-tab-shop" role="tablist">
+        <ul
+          className="nav nav-light nav-pills mb-3"
+          id="pills-tab-shop"
+          role="tablist"
+        >
           <li className="nav-item mx-auto">
             <a
               className="nav-link active"

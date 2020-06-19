@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import $ from "jquery";
 import { emailRegex, usernameRegex, passwordRegex } from "assets/regex";
 import { fetchUser } from "store/actions";
 import LoginStrategies from "components/auth/LoginStrategies";
@@ -15,8 +14,6 @@ class RegisterForm extends Component {
   };
 
   async onFormSubmit(fields) {
-    this.hideRegisterModal();
-
     const res = authAPI.localAuthRegister(
       fields.email,
       fields.username,
@@ -31,10 +28,6 @@ class RegisterForm extends Component {
       this.props.history.push("/register");
       this.setState({ errorMessage: res.errorMessage });
     }
-  }
-
-  hideRegisterModal() {
-    $("#registerModal").modal("hide");
   }
 
   equalTo(ref, msg) {

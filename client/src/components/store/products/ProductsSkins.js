@@ -10,7 +10,11 @@ class ProductsSkins extends Component {
   render() {
     return (
       <section className="">
-        <ul className="nav nav-pills mb-3" id="pills-tab-skins" role="tablist">
+        <ul
+          className="nav nav-light nav-pills mb-3"
+          id="pills-tab-skins"
+          role="tablist"
+        >
           <li className="nav-item mx-auto">
             <a
               className="nav-link active"

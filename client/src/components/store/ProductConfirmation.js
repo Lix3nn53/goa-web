@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import ProductCard from "./ProductCard";
 import { notifyModal, buyProduct } from "store/actions";
+
 import Spinner from "../util/Spinner";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
-import $ from "jquery";
+import ProductCard from "./ProductCard";
+
 import mojangAPI from "api/mojangAPI";
 
 class ProductConfirmation extends Component {
@@ -73,30 +72,12 @@ class ProductConfirmation extends Component {
     }
   }
 
-  showLoginModal() {
-    $("#loginModal").modal("show");
-  }
-
   render() {
     if (!this.props.auth) {
       return (
-        <div className="container mw-100">
-          <div className="row">
-            <p className="mx-auto" role="status">
-              You must be logged in to complete purchase.
-            </p>
-          </div>
-          <div className="row">
-            <button
-              className="mt-4 btn mx-auto"
-              href="#loginModal"
-              onClick={this.showLoginModal}
-            >
-              <FontAwesomeIcon className="mr-2" icon={faSignInAlt} />
-              Login
-            </button>
-          </div>
-        </div>
+        <p className="text-center">
+          You must be logged in to complete purchase.
+        </p>
       );
     }
 

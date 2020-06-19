@@ -1,13 +1,22 @@
 // Import constants
 @import "./colors.scss";
 
-.nav-pills .nav-link {
+.nav-light.nav-pills .nav-link {
   background-color: $color_primary;
   color: $color_secondary;
 }
 
-.nav-pills .nav-link.active {
+.nav-light.nav-pills .nav-link.active {
   background-color: $color_third;
   color: $color_primary_dark;
-  border: 1px solid $color_primary;
+}
+
+.nav-dark.nav-pills .nav-link {
+  background-color: $color_secondary_dark;
+  color: $color_primary_dark;
+}
+
+.nav-dark.nav-pills .nav-link.active {
+  background-color: $color_third;
+  color: $color_primary_dark;
 }

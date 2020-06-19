@@ -1,140 +1,103 @@
-import React, { Component } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
+
 import Spinner from "../util/Spinner";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import { Formik } from "formik";
+
 import { minecraftUsernameRegex } from "assets/regex";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
-import $ from "jquery";
+import * as Yup from "yup";
+import FormField from "components/forms/components/FormField";
 
-class MinecraftForm extends Component {
-  getInitialValues() {
-    var initialValuesMap = { minecraftUsername: "" };
+function MinecraftForm(props) {
+  const auth = useSelector((state) => state.auth);
 
-    if (this.props.formValues && this.props.auth) {
-      initialValuesMap = {
-        minecraftUsername:
-          this.props.formValues.minecraftUsername ||
-          this.props.auth.minecraftUsername ||
-          "",
-      };
-    } else if (this.props.auth) {
-      initialValuesMap = {
-        minecraftUsername: this.props.auth.minecraftUsername || "",
-      };
-    }
+  const { formValues, onCancel } = props;
 
-    return initialValuesMap;
-  }
+  const getInitialValues = () => {
+    return {
+      minecraftUsername: formValues
+        ? formValues.minecraftUsername
+        : auth
+        ? auth.minecraftUsername
+        : "",
+    };
+  };
 
-  renderBackButton() {
-    if (this.props.onCancel) {
+  const renderBackButton = () => {
+    if (onCancel) {
       return (
-        <button
-          className="btn btn-secondary"
-          variant="secondary"
-          onClick={this.props.onCancel}
-        >
+        <button className="btn btn-secondary float-left" onClick={onCancel}>
           Back
         </button>
       );
     }
+  };
+
+  if (!auth) {
+    return <Spinner />;
   }
 
-  showLoginModal() {
-    $("#loginModal").modal("show");
-  }
+  return (
+    <Formik
+      className="col"
+      initialValues={getInitialValues()}
+      validationSchema={Yup.object().shape({
+        minecraftUsername: Yup.string()
+          .matches(
+            minecraftUsernameRegex,
+            "3-16 characters, no spaces, The only allowed special character is _(underscore)"
+          )
+          .required("Minecraft Username is required"),
+      })}
+      onSubmit={async (fields, { setSubmitting }) => {
+        setSubmitting(true);
+        await props.onFormSubmit(fields);
 
-  render() {
-    switch (this.props.auth) {
-      case null:
-        return <Spinner />;
-      case false:
-        return (
-          <div className="row">
+        setSubmitting(false);
+      }}
+    >
+      {({
+        handleSubmit,
+        errors,
+        values,
+        status,
+        touched,
+        isSubmitting,
+        handleBlur,
+        setFieldValue,
+      }) => (
+        <form onSubmit={handleSubmit} className="d-block mx-auto px-2">
+          <div className="form-row">
+            <FormField
+              fieldKey="minecraftUsername"
+              fieldType="text"
+              name="Minecraft Username"
+              errors={errors}
+              touched={touched}
+            />
+          </div>
+
+          <div className="my-3" key="buttons">
             <button
-              className="mt-4 btn mx-auto"
-              href="#loginModal"
-              onClick={this.showLoginModal}
+              className="btn btn-primary float-right"
+              type="submit"
+              disabled={isSubmitting}
             >
-              <FontAwesomeIcon className="mr-2" icon={faSignInAlt} />
-              Login
+              Submit
             </button>
+            {renderBackButton()}
           </div>
-        );
-      default:
-        return (
-          <div className="container">
-            <div className="row">
-              <Formik
-                className="col-6"
-                initialValues={this.getInitialValues()}
-                validationSchema={Yup.object().shape({
-                  minecraftUsername: Yup.string()
-                    .matches(
-                      minecraftUsernameRegex,
-                      "3-16 characters, no spaces, The only allowed special character is _(underscore)"
-                    )
-                    .required("Minecraft Username is required"),
-                })}
-                onSubmit={async (fields, { setSubmitting }) => {
-                  setSubmitting(true);
-                  await this.props.onFormSubmit(fields);
-
-                  setSubmitting(false);
-                }}
-              >
-                {({ errors, status, touched }) => (
-                  <Form className="d-block mx-auto px-2">
-                    <div className="form-group" key="minecraftUsername">
-                      <label htmlFor="minecraftUsername">
-                        Minecraft Username
-                      </label>
-                      <Field
-                        name="minecraftUsername"
-                        type="text"
-                        className={
-                          "form-control" +
-                          (errors.minecraftUsername && touched.minecraftUsername
-                            ? " is-invalid"
-                            : "")
-                        }
-                        placeholder="Your ingame username"
-                      />
-                      <ErrorMessage
-                        name="minecraftUsername"
-                        className="invalid-feedback"
-                        render={(msg) => (
-                          <div className="text-danger">{msg}</div>
-                        )}
-                      />
-                    </div>
-
-                    <div className="" key="buttons">
-                      <button
-                        className="btn btn-primary float-right"
-                        variant="primary"
-                        type="submit"
-                      >
-                        Submit
-                      </button>
-
-                      {this.renderBackButton()}
-                    </div>
-                  </Form>
-                )}
-              </Formik>
-            </div>
-          </div>
-        );
-    }
-  }
+        </form>
+      )}
+    </Formik>
+  );
 }
 
-function mapStateToProps({ auth }) {
-  return { auth };
-}
+export default MinecraftForm;
 
-export default connect(mapStateToProps)(withRouter(MinecraftForm));
+MinecraftForm.propTypes = {
+  onFormSubmit: PropTypes.func.isRequired,
+  formValues: PropTypes.object,
+  onCancel: PropTypes.func,
+};

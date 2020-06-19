@@ -15,24 +15,10 @@ function ProfileForm(props) {
   const { formValues, onCancel } = props;
 
   const getInitialValues = () => {
-    var initialValuesMap = {
-      username: "",
-      email: "",
+    return {
+      username: formValues ? formValues.username : auth ? auth.username : "",
+      email: formValues ? formValues.email : auth ? auth.email : "",
     };
-
-    if (formValues && auth) {
-      initialValuesMap = {
-        username: formValues.username || auth.username || "",
-        email: formValues.email || auth.email || "",
-      };
-    } else {
-      initialValuesMap = {
-        username: auth.username || "",
-        email: auth.email || "",
-      };
-    }
-
-    return initialValuesMap;
   };
 
   const renderBackButton = () => {
@@ -65,11 +51,9 @@ function ProfileForm(props) {
       })}
       onSubmit={async (fields, { setSubmitting }) => {
         setSubmitting(true);
-        console.log("a");
         await props.onFormSubmit(fields);
 
         setSubmitting(false);
-        console.log("b");
       }}
     >
       {({
