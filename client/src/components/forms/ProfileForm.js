@@ -31,8 +31,10 @@ function ProfileForm(props) {
     }
   };
 
-  if (!auth) {
+  if (auth === null) {
     return <Spinner />;
+  } else if (!auth) {
+    return <p className="text-center">You must be logged in</p>;
   }
 
   return (
