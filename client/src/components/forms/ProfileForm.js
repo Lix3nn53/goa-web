@@ -16,8 +16,20 @@ function ProfileForm(props) {
 
   const getInitialValues = () => {
     return {
-      username: formValues ? formValues.username : auth ? auth.username : "",
-      email: formValues ? formValues.email : auth ? auth.email : "",
+      username: formValues
+        ? formValues.username || auth
+          ? auth.username
+          : ""
+        : auth
+        ? auth.username
+        : "",
+      email: formValues
+        ? formValues.email || auth
+          ? auth.email
+          : ""
+        : auth
+        ? auth.email
+        : "",
     };
   };
 
@@ -76,6 +88,7 @@ function ProfileForm(props) {
               name="Username"
               errors={errors}
               touched={touched}
+              label={true}
             />
           </div>
 
@@ -86,6 +99,7 @@ function ProfileForm(props) {
               name="Email"
               errors={errors}
               touched={touched}
+              label={true}
             />
           </div>
 

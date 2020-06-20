@@ -41,20 +41,3 @@
   );
   color: $color_secondary;
 }
-
-.btn-text {
-  background-color: transparent;
-  border: none;
-  color: $color_secondary;
-  font-size: 1rem;
-  line-height: 19px;
-  text-decoration: underline;
-  padding: 0;
-  text-align: left;
-}
-
-.btn.badge-light {
-  color: $color_secondary;
-  border-color: $color_secondary;
-  font-size: 1rem;
-}

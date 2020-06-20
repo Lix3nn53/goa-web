@@ -19,7 +19,13 @@ function EmailForm(props) {
 
   const getInitialValues = () => {
     return {
-      email: formValues ? formValues.email : auth ? auth.email : "",
+      email: formValues
+        ? formValues.email || auth
+          ? auth.email
+          : ""
+        : auth
+        ? auth.email
+        : "",
     };
   };
 
@@ -89,6 +95,7 @@ function EmailForm(props) {
               name="Email"
               errors={errors}
               touched={touched}
+              label={true}
             />
           </div>
 

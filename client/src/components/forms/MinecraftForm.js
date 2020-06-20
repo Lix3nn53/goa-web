@@ -17,7 +17,9 @@ function MinecraftForm(props) {
   const getInitialValues = () => {
     return {
       minecraftUsername: formValues
-        ? formValues.minecraftUsername
+        ? formValues.minecraftUsername || auth
+          ? auth.minecraftUsername
+          : ""
         : auth
         ? auth.minecraftUsername
         : "",
@@ -77,6 +79,7 @@ function MinecraftForm(props) {
               name="Minecraft Username"
               errors={errors}
               touched={touched}
+              label={true}
             />
           </div>
 

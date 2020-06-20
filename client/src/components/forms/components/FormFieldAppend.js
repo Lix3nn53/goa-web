@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 
 import { Field, ErrorMessage } from "formik";
 
-const FormFieldPrepend = (props) => {
-  const { fieldKey, fieldType, name, errors, touched, prepend } = props;
+const FormFieldAppend = (props) => {
+  const { fieldKey, fieldType, name, errors, touched, append } = props;
 
   const renderLabel = () => {
     if (props.label) {
@@ -24,9 +24,6 @@ const FormFieldPrepend = (props) => {
     <div className="form-group col" key={fieldKey}>
       {renderLabel()}
       <div className="input-group">
-        <div className="input-group-prepend">
-          <span className="input-group-text">{prepend}</span>
-        </div>
         <Field
           name={fieldKey}
           type={fieldType}
@@ -36,6 +33,9 @@ const FormFieldPrepend = (props) => {
           }
           placeholder={placeholder()}
         />
+        <div className="input-group-append">
+          <span className="input-group-text">{append}</span>
+        </div>
         <ErrorMessage
           name={fieldKey}
           render={(msg) => (
@@ -47,13 +47,13 @@ const FormFieldPrepend = (props) => {
   );
 };
 
-export default FormFieldPrepend;
+export default FormFieldAppend;
 
-FormFieldPrepend.propTypes = {
+FormFieldAppend.propTypes = {
   fieldKey: PropTypes.string.isRequired,
   fieldType: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   errors: PropTypes.object.isRequired,
   touched: PropTypes.object.isRequired,
-  prepend: PropTypes.string.isRequired,
+  append: PropTypes.string.isRequired,
 };
