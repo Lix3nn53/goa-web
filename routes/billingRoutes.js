@@ -180,7 +180,7 @@ const iyzipayStart3D = (product, buyer, paymentCard) => {
     conversationId: orderId,
     price: price,
     paidPrice: price,
-    currency: "TRY",
+    currency: "USD",
     installment: 1,
     paymentChannel: "WEB",
     basketId: orderId,

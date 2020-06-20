@@ -32,7 +32,7 @@ class CreditSelectionCard extends Component {
           ></img>
           <div className="card-body">
             <h5 className="card-title text-center">
-              {this.props.creditSelection.price} TL(Turkish Lira) for
+              ${this.props.creditSelection.price} for
             </h5>
             <h1 className="card-price text-center">
               {this.props.creditSelection.name}
