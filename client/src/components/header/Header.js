@@ -4,15 +4,13 @@ import { Link } from "react-router-dom";
 import ButtonsOnRight from "./ButtonsOnRight";
 import ButtonsOnLeft from "./ButtonsOnLeft";
 
+import favicon from "assets/img/favicon.png";
+
 function Header(props) {
   return (
     <nav id="header" className="navbar navbar-expand-lg mx-auto">
       <Link className="navbar-brand" to="/">
-        <img
-          src="https://i.ibb.co/TgQ2z1w/favicon.png"
-          alt=""
-          className="img-fluid"
-        />
+        <img src={favicon} alt="" className="img-fluid" />
       </Link>
       <button
         className="navbar-toggler"

@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import PostList from "components/posts/PostList";
 import $ from "jquery";
 
+import logo from "assets/img/logo.png";
+
 function LandingPage(props) {
   useEffect(() => {
     $('[data-toggle="tooltip"]').tooltip();
@@ -40,12 +42,8 @@ function LandingPage(props) {
         }}
       >
         <div className="row">
-          <div className="col text-center">
-            <img
-              className="img-fluid"
-              src="https://i.ibb.co/SmnMm5L/logo.png"
-              alt="logo"
-            />
+          <div className="col text-center w-75">
+            <img className="img-fluid w-50" src={logo} alt="logo" />
           </div>
         </div>
 
