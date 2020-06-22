@@ -110,10 +110,13 @@ module.exports = (app) => {
     }
 
     try {
-      const mongoRes = await User.findByIdAndUpdate(req.user.id, profife, {
-        useFindAndModify: false,
-        new: true,
-      });
+      const mongoRes = await User.findOneAndUpdate(
+        { _id: req.user.id },
+        profife,
+        {
+          new: true, //return new document
+        }
+      );
 
       res.send(mongoRes);
     } catch (err) {

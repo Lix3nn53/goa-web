@@ -161,10 +161,9 @@ const onSuccessfulPayment = async (userId, requestProducts) => {
 
   const totalCredits = credits.reduce((a, b) => a + b, 0);
 
-  await User.findByIdAndUpdate(
-    userId,
-    { $inc: { credits: totalCredits } },
-    { useFindAndModify: false }
+  await User.findOneAndUpdate(
+    { _id: userId },
+    { $inc: { credits: totalCredits } }
   );
 };
 
