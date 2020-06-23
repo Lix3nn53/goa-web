@@ -14,9 +14,8 @@ class ProductsChests extends Component {
             description:
               "Skin Chests are chests you can open in game for a chance to get a random cosmetic object!",
             image: chestGold,
-            imageSmall: true
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />
@@ -28,9 +27,8 @@ class ProductsChests extends Component {
             description:
               "Skin Chests are chests you can open in game for a chance to get a random cosmetic object!",
             image: chestGold,
-            imageSmall: true
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />
@@ -42,9 +40,8 @@ class ProductsChests extends Component {
             description:
               "Skin Chests are chests you can open in game for a chance to get a random cosmetic object!",
             image: chestGold,
-            imageSmall: true
           }}
-          onFormSubmit={productSelection =>
+          onFormSubmit={(productSelection) =>
             this.props.onFormSubmit(productSelection)
           }
         />

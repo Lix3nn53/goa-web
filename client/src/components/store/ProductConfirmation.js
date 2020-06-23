@@ -83,7 +83,7 @@ class ProductConfirmation extends Component {
 
     return (
       <section className="py-5">
-        <div className="container mw-100">
+        <div className="container w-75">
           <div className="row">
             <ProductCard product={this.props.formValues.productSelection} />
           </div>
@@ -116,11 +116,11 @@ class ProductConfirmation extends Component {
         </div>
         <div className="container">
           <button
-            className="btn btn-primary float-right btn-lg"
+            className="btn btn-success text-light float-right btn-lg"
             type="submit"
             onClick={() => this.onConfirmation(this.props.formValues)}
           >
-            Confirm!
+            Confirm Purchase!
           </button>
           <button
             className="btn btn-secondary btn-lg"

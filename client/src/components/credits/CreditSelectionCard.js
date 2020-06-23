@@ -21,15 +21,14 @@ class CreditSelectionCard extends Component {
         key={this.props.creditSelection.name}
         style={{ marginBottom: "1rem" }}
       >
-        <div
-          className="card mb-5 mb-lg-0"
-          style={{ backgroundColor: "transparent" }}
-        >
-          <img
-            src={this.props.creditSelection.icon}
-            className="card-img-top card-img-small"
-            alt="..."
-          ></img>
+        <div className="card mb-5 mb-lg-0">
+          <div className="embed-responsive embed-responsive-1by1">
+            <img
+              src={this.props.creditSelection.icon}
+              className="card-img-top embed-responsive-item"
+              alt="..."
+            />
+          </div>
           <div className="card-body">
             <h5 className="card-title text-center">
               ${this.props.creditSelection.price} for

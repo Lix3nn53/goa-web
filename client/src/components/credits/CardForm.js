@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 import CreditSelectionCard from "components/credits/CreditSelectionCard";
+import logoBand from "assets/img/logo-band@3x.png";
 
 import $ from "jquery";
 
@@ -82,6 +83,11 @@ function CardForm(props) {
             setFieldValue,
           }) => (
             <form onSubmit={handleSubmit} className="d-block mx-auto px-2">
+              <img
+                src={logoBand}
+                alt="logoBand"
+                className="img-fluid mx-auto py-4"
+              />
               <div className="form-row">
                 <FormField
                   fieldKey="cardHolderName"
@@ -143,11 +149,11 @@ function CardForm(props) {
 
               <div className="my-3" key="buttons">
                 <button
-                  className="btn btn-primary float-right"
+                  className="btn btn-success text-light float-right"
                   type="submit"
                   disabled={isSubmitting}
                 >
-                  Submit
+                  Confirm Payment
                 </button>
                 {renderBackButton()}
               </div>

@@ -18,9 +18,8 @@ class ProductsBoosts extends Component {
               description:
                 "2x exp gained from slaying monsters for 40 minutes on the whole server.",
               image: boostExp,
-              imageSmall: true
             }}
-            onFormSubmit={productSelection =>
+            onFormSubmit={(productSelection) =>
               this.props.onFormSubmit(productSelection)
             }
           />
@@ -32,9 +31,8 @@ class ProductsBoosts extends Component {
               description:
                 "2x exp gained from slaying monsters for 40 minutes on the whole server.",
               image: boostExp,
-              imageSmall: true
             }}
-            onFormSubmit={productSelection =>
+            onFormSubmit={(productSelection) =>
               this.props.onFormSubmit(productSelection)
             }
           />
@@ -46,9 +44,8 @@ class ProductsBoosts extends Component {
               description:
                 "2x exp gained from slaying monsters for 40 minutes on the whole server.",
               image: boostExp,
-              imageSmall: true
             }}
-            onFormSubmit={productSelection =>
+            onFormSubmit={(productSelection) =>
               this.props.onFormSubmit(productSelection)
             }
           />
@@ -62,9 +59,8 @@ class ProductsBoosts extends Component {
               description:
                 "2x chance of monsters droping item when they die for 40 minutes on the whole server.",
               image: boostLoot,
-              imageSmall: true
             }}
-            onFormSubmit={productSelection =>
+            onFormSubmit={(productSelection) =>
               this.props.onFormSubmit(productSelection)
             }
           />
@@ -76,9 +72,8 @@ class ProductsBoosts extends Component {
               description:
                 "2x chance of monsters droping item when they die for 40 minutes on the whole server.",
               image: boostLoot,
-              imageSmall: true
             }}
-            onFormSubmit={productSelection =>
+            onFormSubmit={(productSelection) =>
               this.props.onFormSubmit(productSelection)
             }
           />
@@ -90,9 +85,8 @@ class ProductsBoosts extends Component {
               description:
                 "2x chance of monsters droping item when they die for 40 minutes on the whole server.",
               image: boostLoot,
-              imageSmall: true
             }}
-            onFormSubmit={productSelection =>
+            onFormSubmit={(productSelection) =>
               this.props.onFormSubmit(productSelection)
             }
           />
@@ -106,9 +100,8 @@ class ProductsBoosts extends Component {
               description:
                 "Increases success rate of item enchanting by 15% for 40 minutes on the whole server.",
               image: boostEnchant,
-              imageSmall: true
             }}
-            onFormSubmit={productSelection =>
+            onFormSubmit={(productSelection) =>
               this.props.onFormSubmit(productSelection)
             }
           />
@@ -120,9 +113,8 @@ class ProductsBoosts extends Component {
               description:
                 "Increases success rate of item enchanting by 15% for 40 minutes on the whole server.",
               image: boostEnchant,
-              imageSmall: true
             }}
-            onFormSubmit={productSelection =>
+            onFormSubmit={(productSelection) =>
               this.props.onFormSubmit(productSelection)
             }
           />
@@ -134,9 +126,8 @@ class ProductsBoosts extends Component {
               description:
                 "Increases success rate of item enchanting by 15% for 40 minutes on the whole server.",
               image: boostEnchant,
-              imageSmall: true
             }}
-            onFormSubmit={productSelection =>
+            onFormSubmit={(productSelection) =>
               this.props.onFormSubmit(productSelection)
             }
           />
@@ -150,9 +141,8 @@ class ProductsBoosts extends Component {
               description:
                 "2x gathering speed for 40 minutes on the whole server.",
               image: boostGather,
-              imageSmall: true
             }}
-            onFormSubmit={productSelection =>
+            onFormSubmit={(productSelection) =>
               this.props.onFormSubmit(productSelection)
             }
           />
@@ -164,9 +154,8 @@ class ProductsBoosts extends Component {
               description:
                 "2x gathering speed for 40 minutes on the whole server.",
               image: boostGather,
-              imageSmall: true
             }}
-            onFormSubmit={productSelection =>
+            onFormSubmit={(productSelection) =>
               this.props.onFormSubmit(productSelection)
             }
           />
@@ -178,9 +167,8 @@ class ProductsBoosts extends Component {
               description:
                 "2x gathering speed for 40 minutes on the whole server.",
               image: boostGather,
-              imageSmall: true
             }}
-            onFormSubmit={productSelection =>
+            onFormSubmit={(productSelection) =>
               this.props.onFormSubmit(productSelection)
             }
           />
