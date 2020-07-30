@@ -1,6 +1,5 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGithub,
@@ -8,81 +7,67 @@ import {
   faFacebook,
 } from "@fortawesome/free-brands-svg-icons";
 import GoogleLogin from "./google/GoogleLogin";
-import { fetchUser } from "store/actions";
 import authAPI from "api/authAPI";
+import keys from "config/keys";
 
-class LoginStrategies extends Component {
-  constructor(props) {
-    super(props);
+const LoginStrategies = (props) => {
+  const [loginError, setLoginError] = useState(undefined);
 
-    this.responseGoogle = this.responseGoogle.bind(this);
+  const auth = useSelector((state) => state.auth);
+
+  if (auth) {
+    return <p>You are already logged in</p>;
   }
 
-  async responseGoogle(res) {
+  const responseGoogle = async (res) => {
     const authCode = res.code;
 
     const auth = await authAPI.googleAuth(authCode);
 
     if (auth.success) {
-      this.props.history.push("/");
-      window.location.reload(false);
+      window.location.href = "/";
     } else {
-      this.setState({ loginError: auth.errorMessage });
-      this.props.history.push("/login");
+      setLoginError(auth.errorMessage);
     }
-  }
+  };
 
-  render() {
-    if (this.props.auth) {
-      return <p>You are already logged in</p>;
-    }
-    return (
-      <div className="mx-auto text-center">
-        <div className="row">
-          <GoogleLogin
-            className="col mx-4 nav-link login"
-            clientId="113424365961-tlr4vbu3hgldcmn0if70o0il8sb1v13e.apps.googleusercontent.com"
-            buttonText="Login with Google"
-            onSuccess={this.responseGoogle}
-            onFailure={this.responseGoogle}
-            cookiePolicy={"single_host_origin"}
-            prompt="select_account"
-            accessType="offline"
-            responseType="code"
-          />
-          <a
-            className="col mx-4 nav-link login login-github"
-            href="/auth/github"
-          >
-            <FontAwesomeIcon className="mr-2" icon={faGithub} />
-            Login with GitHub
-          </a>
-        </div>
-        <div className="row mt-2">
-          <a
-            className="col mx-4 nav-link login login-twitter"
-            href="/auth/twitter"
-          >
-            <FontAwesomeIcon className="mr-2" icon={faTwitter} />
-            Login with Twitter
-          </a>
-          <a
-            className="col mx-4 nav-link login login-facebook"
-            href="/auth/facebook"
-          >
-            <FontAwesomeIcon className="mr-2" icon={faFacebook} />
-            Login with Facebook
-          </a>
-        </div>
+  return (
+    <div className="mx-auto text-center">
+      <div className="row">
+        <GoogleLogin
+          className="col mx-4 nav-link login"
+          clientId={keys.googleClientID}
+          buttonText="Login with Google"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={"single_host_origin"}
+          prompt="select_account"
+          accessType="offline"
+          responseType="code"
+        />
+        <a className="col mx-4 nav-link login login-github" href="/auth/github">
+          <FontAwesomeIcon className="mr-2" icon={faGithub} />
+          Login with GitHub
+        </a>
       </div>
-    );
-  }
-}
+      <div className="row mt-2">
+        <a
+          className="col mx-4 nav-link login login-twitter"
+          href="/auth/twitter"
+        >
+          <FontAwesomeIcon className="mr-2" icon={faTwitter} />
+          Login with Twitter
+        </a>
+        <a
+          className="col mx-4 nav-link login login-facebook"
+          href="/auth/facebook"
+        >
+          <FontAwesomeIcon className="mr-2" icon={faFacebook} />
+          Login with Facebook
+        </a>
+      </div>
+    </div>
+  );
+};
 
-function mapStateToProps({ auth }) {
-  return { auth };
-}
-
-export default connect(mapStateToProps, { fetchUser })(
-  withRouter(LoginStrategies)
-);
+export default LoginStrategies;
