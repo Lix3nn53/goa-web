@@ -5,7 +5,7 @@ const token = require("../../services/token");
 
 const Session = mongoose.model("session");
 
-const successfulLogin = async (req, res, user) => {
+exports.successfulLogin = async (req, res, user) => {
   const remoteAddress = req.ip;
   var ua = parser(req.headers["user-agent"]);
   var geo = geoip.lookup(remoteAddress);
@@ -27,5 +27,3 @@ const successfulLogin = async (req, res, user) => {
     accessToken: accessToken,
   });
 };
-
-exports.successfulLogin = successfulLogin;
