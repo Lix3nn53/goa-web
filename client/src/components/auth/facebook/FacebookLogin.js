@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import useGoogleLogin from "./useGoogleLogin";
+import useFacebookLogin from "./useFacebookLogin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 
-const GoogleLogin = (props) => {
+const FacebookLogin = (props) => {
   const [hovered, setHovered] = useState(false);
   const [active, setActive] = useState(false);
   const {
@@ -15,10 +15,12 @@ const GoogleLogin = (props) => {
     buttonText,
     children,
     render,
-    theme,
     disabled: disabledProp,
     onSuccess,
-    clientId,
+    appId,
+    autoLogAppEvents,
+    xfbml,
+    version,
     cookiePolicy,
     loginHint,
     hostedDomain,
@@ -37,9 +39,12 @@ const GoogleLogin = (props) => {
     prompt,
   } = props;
 
-  const { signIn, loaded } = useGoogleLogin({
+  const { signIn, loaded } = useFacebookLogin({
     onSuccess,
-    clientId,
+    appId,
+    autoLogAppEvents,
+    xfbml,
+    version,
     cookiePolicy,
     loginHint,
     hostedDomain,
@@ -63,94 +68,24 @@ const GoogleLogin = (props) => {
     return render({ onClick: signIn, disabled });
   }
 
-  const initialStyle = {
-    backgroundColor: theme === "dark" ? "rgb(66, 133, 244)" : "#dd4b39",
-    alignItems: "center",
-    color: theme === "dark" ? "#fff" : "#e2ded3",
-    padding: 0,
-    border: "1px solid transparent",
-  };
-
-  const hoveredStyle = {
-    color: theme === "dark" ? "#fff" : "#fff",
-    cursor: "pointer",
-    opacity: 0.9,
-  };
-
-  const activeStyle = {
-    cursor: "pointer",
-    backgroundColor: theme === "dark" ? "#3367D6" : "#eee",
-    color: theme === "dark" ? "#fff" : "rgba(0, 0, 0, .54)",
-    opacity: 1,
-  };
-
-  const defaultStyle = (() => {
-    if (disabled) {
-      return Object.assign({}, initialStyle, disabledStyle);
-    }
-
-    if (active) {
-      if (theme === "dark") {
-        return Object.assign({}, initialStyle, activeStyle);
-      }
-
-      return Object.assign({}, initialStyle, activeStyle);
-    }
-
-    if (hovered) {
-      return Object.assign({}, initialStyle, hoveredStyle);
-    }
-
-    return initialStyle;
-  })();
-  const googleLoginButton = React.createElement(
-    tag,
-    {
-      onMouseEnter: () => setHovered(true),
-      onMouseLeave: () => {
-        setHovered(false);
-        setActive(false);
-      },
-      onMouseDown: () => setActive(true),
-      onMouseUp: () => setActive(false),
-      onClick: signIn,
-      style: defaultStyle,
-      type,
-      disabled,
-      className,
-    },
-    [
-      <FontAwesomeIcon key={1} className="mr-2" icon={faGoogle} />,
-      <span
-        key={2}
-        style={{
-          paddingRight: 10,
-          fontWeight: 500,
-          paddingLeft: 10,
-          paddingTop: 10,
-          paddingBottom: 10,
-        }}
-      >
-        {children || buttonText}
-      </span>,
-    ]
-  );
-
   return (
     <btn
       className={disabled ? "disabled " + className : className}
       onClick={signIn}
     >
-      <FontAwesomeIcon key={1} className="mr-2" icon={faGoogle} />
+      <FontAwesomeIcon key={1} className="mr-2" icon={faFacebook} />
       {children || buttonText}
     </btn>
   );
 };
 
-GoogleLogin.propTypes = {
+FacebookLogin.propTypes = {
+  appId: PropTypes.string.isRequired,
+  autoLogAppEvents: PropTypes.bool,
+  xfbml: PropTypes.bool,
+  version: PropTypes.string,
   onSuccess: PropTypes.func.isRequired,
   onFailure: PropTypes.func.isRequired,
-  clientId: PropTypes.string.isRequired,
   jsSrc: PropTypes.string,
   onRequest: PropTypes.func,
   buttonText: PropTypes.node,
@@ -174,13 +109,15 @@ GoogleLogin.propTypes = {
   type: PropTypes.string,
   accessType: PropTypes.string,
   render: PropTypes.func,
-  theme: PropTypes.string,
 };
 
-GoogleLogin.defaultProps = {
+FacebookLogin.defaultProps = {
+  autoLogAppEvents: true,
+  xfbml: true,
+  version: "v8.0",
   type: "button",
   tag: "button",
-  buttonText: "Sign in with Google",
+  buttonText: "Sign in with Facebook",
   scope: "profile email",
   accessType: "online",
   prompt: "",
@@ -191,8 +128,7 @@ GoogleLogin.defaultProps = {
   disabledStyle: {
     opacity: 0.6,
   },
-  theme: "light",
   onRequest: () => {},
 };
 
-export default GoogleLogin;
+export default FacebookLogin;

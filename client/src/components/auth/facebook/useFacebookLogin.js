@@ -2,9 +2,12 @@ import { useState, useEffect, useCallback } from "react";
 import loadScript from "../load-script";
 import removeScript from "../remove-script";
 
-const useGoogleLogin = ({
+const useFacebookLogin = ({
   onSuccess,
-  clientId,
+  appId,
+  autoLogAppEvents,
+  xfbml,
+  version,
   cookiePolicy,
   loginHint,
   hostedDomain,
@@ -18,7 +21,7 @@ const useGoogleLogin = ({
   scope,
   accessType,
   responseType,
-  jsSrc = "https://apis.google.com/js/api.js",
+  jsSrc = "https://connect.facebook.net/en_US/sdk.js",
   onRequest,
   prompt,
 }) => {
@@ -54,22 +57,27 @@ const useGoogleLogin = ({
         e.preventDefault(); // to prevent submit if used within form
       }
       if (loaded) {
-        const auth2 = window.gapi.auth2.getAuthInstance();
-        const options = {
-          prompt,
-        };
-        onRequest();
-        if (responseType === "code") {
-          auth2.grantOfflineAccess(options).then(
-            (res) => onSuccess(res),
-            (err) => onFailure(err)
-          );
-        } else {
-          auth2.signIn(options).then(
-            (res) => handleSigninSuccess(res),
-            (err) => onFailure(err)
-          );
-        }
+        window.FB.login(
+          function (response) {
+            console.log(response);
+            if (response.authResponse) {
+              console.log("Welcome!  Fetching your information.... ");
+              window.FB.api("/me", { fields: "id,name,email" }, function (
+                response
+              ) {
+                console.log(response);
+                console.log("Good to see you, " + response.name + ".");
+              });
+            } else {
+              console.log("User cancelled login or did not fully authorize.");
+            }
+          },
+          {
+            scope: "public_profile,email",
+            return_scopes: true,
+            auth_type: "reauthenticate",
+          }
+        );
       }
     },
     [
@@ -85,9 +93,13 @@ const useGoogleLogin = ({
 
   useEffect(() => {
     let unmounted = false;
-    loadScript(document, "script", "google-login", jsSrc, () => {
+    loadScript(document, "script", "facebook-login", jsSrc, () => {
       const params = {
-        client_id: clientId,
+        appId: appId,
+        autoLogAppEvents: autoLogAppEvents,
+        xfbml: xfbml,
+        version: version,
+        crossorigin: "anonymous",
         cookie_policy: cookiePolicy,
         login_hint: loginHint,
         hosted_domain: hostedDomain,
@@ -103,32 +115,19 @@ const useGoogleLogin = ({
         params.access_type = "offline";
       }
 
-      window.gapi.load("auth2", () => {
-        if (!window.gapi.auth2.getAuthInstance()) {
-          window.gapi.auth2.init(params).then(
-            (res) => {
-              if (!unmounted) {
-                setLoaded(true);
-                if (isSignedIn && res.isSignedIn.get()) {
-                  handleSigninSuccess(res.currentUser.get());
-                }
-              }
-            },
-            (err) => onFailure(err)
-          );
-        } else if (!unmounted) {
-          setLoaded(true);
-        }
-      });
+      window.fbAsyncInit = function () {
+        window.FB.init(params);
+        setLoaded(true);
+      };
     });
 
     return () => {
       unmounted = true;
-      removeScript(document, "google-login");
+      removeScript(document, "facebook-login");
     };
   }, [
     accessType,
-    clientId,
+    appId,
     cookiePolicy,
     discoveryDocs,
     fetchBasicProfile,
@@ -153,4 +152,4 @@ const useGoogleLogin = ({
   return { signIn, loaded };
 };
 
-export default useGoogleLogin;
+export default useFacebookLogin;

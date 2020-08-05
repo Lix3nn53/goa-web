@@ -7,6 +7,7 @@ import {
   faFacebook,
 } from "@fortawesome/free-brands-svg-icons";
 import GoogleLogin from "./google/GoogleLogin";
+import FacebookLogin from "./facebook/FacebookLogin";
 import authAPI from "api/authAPI";
 import keys from "config/keys";
 
@@ -35,7 +36,7 @@ const LoginStrategies = (props) => {
     <div className="mx-auto text-center">
       <div className="row">
         <GoogleLogin
-          className="col mx-4 nav-link login"
+          className="col mx-4 nav-link btn login login-google"
           clientId={keys.googleClientID}
           buttonText="Login with Google"
           onSuccess={responseGoogle}
@@ -45,26 +46,27 @@ const LoginStrategies = (props) => {
           accessType="offline"
           responseType="code"
         />
-        <a className="col mx-4 nav-link login login-github" href="/auth/github">
+        <a className="col mx-4 nav-link" href="/auth/github">
           <FontAwesomeIcon className="mr-2" icon={faGithub} />
           Login with GitHub
         </a>
       </div>
       <div className="row mt-2">
-        <a
-          className="col mx-4 nav-link login login-twitter"
-          href="/auth/twitter"
-        >
+        <a className="col mx-4 nav-link" href="/auth/twitter">
           <FontAwesomeIcon className="mr-2" icon={faTwitter} />
           Login with Twitter
         </a>
-        <a
-          className="col mx-4 nav-link login login-facebook"
-          href="/auth/facebook"
-        >
-          <FontAwesomeIcon className="mr-2" icon={faFacebook} />
-          Login with Facebook
-        </a>
+        <FacebookLogin
+          className="col mx-4 nav-link btn login login-facebook"
+          appId={keys.facebookAppID}
+          buttonText="Login with Facebook"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={"single_host_origin"}
+          prompt="select_account"
+          accessType="offline"
+          responseType="code"
+        />
       </div>
     </div>
   );
