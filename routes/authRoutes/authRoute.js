@@ -17,6 +17,7 @@ module.exports = (app) => {
     jwt.verify(refreshToken, keys.refreshTokenSecret, (err, decodedToken) => {
       if (err)
         return res.status(403).json({ errorMessage: "Not Authenticated" });
+      console.log("decodedToken");
       console.log(decodedToken);
       const userId = decodedToken.user;
 
@@ -48,6 +49,7 @@ module.exports = (app) => {
     jwt.verify(refreshToken, keys.refreshTokenSecret, (err, decodedToken) => {
       if (err)
         return res.status(403).json({ errorMessage: "Not Authenticated" });
+      console.log("decodedToken");
       console.log(decodedToken);
       const userId = decodedToken.user;
 
@@ -81,6 +83,7 @@ module.exports = (app) => {
     jwt.verify(refreshToken, keys.refreshTokenSecret, (err, decodedToken) => {
       if (err)
         return res.status(403).json({ errorMessage: "Not Authenticated" });
+      console.log("decodedToken");
       console.log(decodedToken);
       const userId = decodedToken.user;
 
@@ -113,6 +116,7 @@ module.exports = (app) => {
     jwt.verify(refreshToken, keys.refreshTokenSecret, (err, decodedToken) => {
       if (err)
         return res.status(403).json({ errorMessage: "Not Authenticated" });
+      console.log("decodedToken");
       console.log(decodedToken);
       const userId = decodedToken.user;
 
@@ -149,6 +153,7 @@ module.exports = (app) => {
     jwt.verify(refreshToken, keys.refreshTokenSecret, (err, decodedToken) => {
       if (err)
         return res.status(403).json({ errorMessage: "Not Authenticated" });
+      console.log("decodedToken");
       console.log(decodedToken);
       const userId = decodedToken.user;
 
@@ -183,6 +188,7 @@ module.exports = (app) => {
     jwt.verify(refreshToken, keys.refreshTokenSecret, (err, decodedToken) => {
       if (err)
         return res.status(403).json({ errorMessage: "Not Authenticated" });
+      console.log("decodedToken");
       console.log(decodedToken);
       const userId = decodedToken.user;
 
@@ -204,6 +210,7 @@ module.exports = (app) => {
         let tempUser = user.toObject();
         delete tempUser.sessions;
 
+        console.log("tempUser");
         console.log(tempUser);
 
         res.send(tempUser);

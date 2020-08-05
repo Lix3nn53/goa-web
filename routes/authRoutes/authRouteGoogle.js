@@ -54,10 +54,8 @@ module.exports = (app) => {
         googleId: id,
         username: given_name,
         verified: true,
-      }).save(); //we already have a record with given profile.id
+      }).save();
     }
-
-    console.log(user);
 
     await authHandler.successfulLogin(req, res, user);
   });

@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 
-const generateToken = (id, tokenType) => {
+exports.generateToken = (id, tokenType) => {
   if (!(tokenType === "accessToken" || tokenType === "refreshToken"))
     return null;
 
@@ -26,5 +26,3 @@ const generateToken = (id, tokenType) => {
 
   return token;
 };
-
-exports.generateToken = generateToken;
