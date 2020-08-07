@@ -42,16 +42,16 @@ module.exports = (app) => {
 
       let user = await User.findOne({ facebookId: id }, "+sessions");
 
-    if (!user) {
-      user = await new User({
-        facebookId: id,
-        username: name,
-        email,
-        verified: true,
-      }).save();
-    }
+      if (!user) {
+        user = await new User({
+          facebookId: id,
+          username: name,
+          email,
+          verified: true,
+        }).save();
+      }
 
-    await authHandler.successfulLogin(req, res, user);
+      await authHandler.successfulLogin(req, res, user);
     } catch (err) {
       console.log(err);
       console.log(err.response.data);

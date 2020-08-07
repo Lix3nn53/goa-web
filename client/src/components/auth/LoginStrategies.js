@@ -10,7 +10,7 @@ import GoogleLogin from "./google/GoogleLogin";
 import FacebookLogin from "./facebook/FacebookLogin";
 import authAPI from "api/authAPI";
 import keys from "config/keys";
-import Testt from "./test"
+import OAuth2 from "./OAuth2"
 
 const LoginStrategies = (props) => {
   const [loginError, setLoginError] = useState(undefined);
@@ -57,21 +57,17 @@ const LoginStrategies = (props) => {
           <FontAwesomeIcon className="mr-2" icon={faTwitter} />
           Login with Twitter
         </a>
-        <FacebookLogin
+        <OAuth2 
+          authUrl="https://www.facebook.com/v8.0/dialog/oauth"
+          parameters={{
+            client_id: keys.facebookAppID,
+            redirect_uri: keys.facebookRedirectUri,
+            state: "myteststate123"}
+          }
           className="col mx-4 nav-link btn login login-facebook"
-          appId={keys.facebookAppID}
           buttonText="Login with Facebook"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
-          cookiePolicy={"single_host_origin"}
-          prompt="select_account"
-          accessType="offline"
-          responseType="code"
         />
       </div>
-      <div className="row mt-2">
-        <Testt></Testt>
-    </div>
     </div>
   );
 };

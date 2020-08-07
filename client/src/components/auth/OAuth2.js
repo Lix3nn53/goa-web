@@ -7,11 +7,11 @@ import {
   faFacebook,
 } from "@fortawesome/free-brands-svg-icons";
 import GoogleLogin from "./google/GoogleLogin";
-import FacebookLogin from "./facebook/FacebookLogin";
 import authAPI from "api/authAPI";
 import keys from "config/keys";
+import PropTypes from "prop-types";
 
-const LoginStrategies = (props) => {
+const OAuth2 = (props) => {
   const [loginError, setLoginError] = useState(undefined);
 
   const auth = useSelector((state) => state.auth);
@@ -31,16 +31,39 @@ const LoginStrategies = (props) => {
     return <p>You are already logged in</p>;
   }
 
+  const {
+    authUrl,
+    parameters,
+    className,
+    buttonText,
+    disabled
+  } = props;
+
+  var paramatersString = "";
+
+  var keys = Object.keys(parameters);
+
+  for (var i = 0; i < keys.length; i++) {
+    var prefix = '&';
+    if (i == 0) prefix = '?';
+
+    paramatersString += prefix + keys[i] + '=' + parameters[keys[i]];
+  }
+
+  console.log(paramatersString);
+
   return (
-    <div className="mx-auto text-center">
-      <div className="row">
-        <button className="btn btn-primary" onClick={() => openSignInWindow(`https://www.facebook.com/v8.0/dialog/oauth?client_id=${keys.facebookAppID}&redirect_uri=${keys.facebookRedirectUri}&state=teststate123`, "b")}>Feysbuk</button>
-      </div>
-    </div>
+    <button
+    className={disabled ? "disabled " + className : className}
+    onClick={() => openSignInWindow(authUrl + paramatersString, "b")}
+  >
+    <FontAwesomeIcon key={1} className="mr-2" icon={faFacebook} />
+    {buttonText}
+  </button>
   );
 };
 
-export default LoginStrategies;
+export default OAuth2;
 
 let windowObjectReference = null;
 let previousUrl = null;
@@ -88,7 +111,15 @@ const openSignInWindow = (url, name) => {
   if (data.source === 'lma-login-redirect') {
     // get the URL params and redirect to our server to use Passport to auth/login
     const { payload } = data;
-    const redirectUrl = `/auth/google${payload}`;
+    const redirectUrl = `/auth/facebook${payload}`;
     window.location.pathname = redirectUrl;
   }
  };
+
+ OAuth2.propTypes = {
+    authUrl: PropTypes.string.isRequired,
+    parameters: PropTypes.object.isRequired,
+    buttonText: PropTypes.string.isRequired,
+    className: PropTypes.string.isRequired,
+    disabled: PropTypes.bool
+  };
