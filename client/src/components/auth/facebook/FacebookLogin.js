@@ -15,7 +15,6 @@ const FacebookLogin = (props) => {
     buttonText,
     children,
     render,
-    disabled: disabledProp,
     onSuccess,
     appId,
     autoLogAppEvents,
@@ -62,20 +61,20 @@ const FacebookLogin = (props) => {
     onRequest,
     prompt,
   });
-  const disabled = disabledProp || !loaded;
+  const disabled = !loaded;
 
   if (render) {
     return render({ onClick: signIn, disabled });
   }
 
   return (
-    <btn
+    <button
       className={disabled ? "disabled " + className : className}
       onClick={signIn}
     >
       <FontAwesomeIcon key={1} className="mr-2" icon={faFacebook} />
       {children || buttonText}
-    </btn>
+    </button>
   );
 };
 

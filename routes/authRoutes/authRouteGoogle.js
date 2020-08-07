@@ -53,6 +53,7 @@ module.exports = (app) => {
       user = await new User({
         googleId: id,
         username: given_name,
+        email,
         verified: true,
       }).save();
     }

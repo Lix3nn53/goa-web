@@ -37,7 +37,7 @@ function PostsList(props) {
   };
 
   const renderPosts = () => {
-    if (currentPosts.length === 0) return <Spinner />;
+    if (!currentPosts || currentPosts.length === 0) return <Spinner />;
 
     const headerClass = [
       "m-0",

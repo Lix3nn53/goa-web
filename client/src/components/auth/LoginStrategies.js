@@ -10,6 +10,7 @@ import GoogleLogin from "./google/GoogleLogin";
 import FacebookLogin from "./facebook/FacebookLogin";
 import authAPI from "api/authAPI";
 import keys from "config/keys";
+import Testt from "./test"
 
 const LoginStrategies = (props) => {
   const [loginError, setLoginError] = useState(undefined);
@@ -68,6 +69,9 @@ const LoginStrategies = (props) => {
           responseType="code"
         />
       </div>
+      <div className="row mt-2">
+        <Testt></Testt>
+    </div>
     </div>
   );
 };

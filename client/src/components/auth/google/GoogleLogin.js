@@ -137,13 +137,13 @@ const GoogleLogin = (props) => {
   );
 
   return (
-    <btn
+    <button
       className={disabled ? "disabled " + className : className}
       onClick={signIn}
     >
       <FontAwesomeIcon key={1} className="mr-2" icon={faGoogle} />
       {children || buttonText}
-    </btn>
+    </button>
   );
 };
 
