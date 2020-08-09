@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,30 +7,15 @@ import {
   faFacebook,
   faGoogle,
 } from "@fortawesome/free-brands-svg-icons";
-import authAPI from "api/authAPI";
 import keys from "config/keys";
 import OAuth2 from "./OAuth2";
 
 const LoginStrategies = (props) => {
-  const [loginError, setLoginError] = useState(undefined);
-
   const auth = useSelector((state) => state.auth);
 
   if (auth) {
     return <p>You are already logged in</p>;
   }
-
-  const responseGoogle = async (res) => {
-    const authCode = res.code;
-
-    const auth = await authAPI.googleAuth(authCode);
-
-    if (auth.success) {
-      window.location.href = "/";
-    } else {
-      setLoginError(auth.errorMessage);
-    }
-  };
 
   return (
     <div className="mx-auto text-center">
