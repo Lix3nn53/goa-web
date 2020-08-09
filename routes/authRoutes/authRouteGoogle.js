@@ -10,92 +10,68 @@ const userProfileURL = "https://www.googleapis.com/oauth2/v2/userinfo";
 
 module.exports = (app) => {
   app.get("/auth/google", async function (req, res, next) {
-    var code;
-    if (req.body && req.body.code) {
-      code = req.body.code;
-    } else if (req.query && req.query.code) {
-      code = req.query.code;
-    } else if (req.headers && req.headers.code) {
-      code = req.headers.code;
-    } else {
-      const authHeader = req.headers["authorization"];
-      code = authHeader && authHeader.split(" ")[1];
+    const code = authHandler.getOauthCode(req);
+
+    var access_token;
+
+    try {
+      const accessTokenRes = await axios.post(tokenURL, {
+        code,
+        client_id: keys.googleClientID,
+        client_secret: keys.googleClientSecret,
+        redirect_uri: "http://localhost:3000/auth/google",
+        grant_type: "authorization_code",
+      });
+
+      access_token = accessTokenRes.data.access_token;
+    } catch (err) {
+      console.log("google token err", err);
+      res.status(500).json({
+        err: "Error while trying to get access token",
+      });
     }
 
-    const token_res = await getToken(res, code);
+    var id;
+    var username;
 
-    if (!token_res) {
-      return;
+    try {
+      const userInfoRes = await axios.get(userProfileURL, {
+        headers: { Authorization: `Bearer ${access_token}` },
+      });
+
+      const profile = userInfoRes.data;
+
+      console.log("profile");
+      console.log(profile);
+
+      id = profile.id;
+      username = profile.name;
+    } catch (err) {
+      console.log("google user info err", err);
+      res.status(500).json({
+        err: "Error while trying to get user info",
+      });
     }
 
-    const { access_token, expires_in, scope, token_type, id_token } = token_res;
+    var user;
 
-    const profile_res = await getUserProfile(res, access_token);
+    try {
+      user = await User.findOne({ googleId: id }, "+sessions");
 
-    if (!profile_res) {
-      return;
+      if (!user) {
+        user = await new User({
+          googleId: id,
+          username: name,
+          verified: true,
+        }).save();
+      }
+    } catch (err) {
+      console.log("google database err", err);
+      res.status(500).json({
+        err: "Database error",
+      });
     }
 
-    const {
-      id,
-      email,
-      verified_email,
-      name,
-      given_name,
-      family_name,
-      picture,
-      locale,
-    } = profile_res;
-
-    let user = await User.findOne({ googleId: id }, "+sessions");
-
-    if (!user) {
-      user = await new User({
-        googleId: id,
-        username: given_name,
-        email,
-        verified: true,
-      }).save();
-    }
-
-    await authHandler.successfulLogin(req, res, user);
+    authHandler.successfulLogin(req, res, user);
   });
-};
-
-const getToken = async (res, code) => {
-  try {
-    const res = await axios.post(tokenURL, {
-      code,
-      client_id: keys.googleClientID,
-      client_secret: keys.googleClientSecret,
-      redirect_uri: "postmessage",
-      grant_type: "authorization_code",
-    });
-
-    return res.data;
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      err,
-    });
-  }
-
-  return false;
-};
-
-const getUserProfile = async (res, access_token) => {
-  try {
-    const res = await axios.get(userProfileURL, {
-      headers: { Authorization: `Bearer ${access_token}` },
-    });
-
-    return res.data;
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      err,
-    });
-  }
-
-  return false;
 };

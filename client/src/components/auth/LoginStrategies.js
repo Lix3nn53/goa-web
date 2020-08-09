@@ -5,12 +5,11 @@ import {
   faGithub,
   faTwitter,
   faFacebook,
+  faGoogle,
 } from "@fortawesome/free-brands-svg-icons";
-import GoogleLogin from "./google/GoogleLogin";
-import FacebookLogin from "./facebook/FacebookLogin";
 import authAPI from "api/authAPI";
 import keys from "config/keys";
-import OAuth2 from "./OAuth2"
+import OAuth2 from "./OAuth2";
 
 const LoginStrategies = (props) => {
   const [loginError, setLoginError] = useState(undefined);
@@ -36,16 +35,20 @@ const LoginStrategies = (props) => {
   return (
     <div className="mx-auto text-center">
       <div className="row">
-        <GoogleLogin
+        <OAuth2
+          authUrl="https://accounts.google.com/o/oauth2/v2/auth"
+          parameters={{
+            client_id: keys.googleClientID,
+            redirect_uri: keys.googleRedirectUri,
+            response_type: "code",
+            scope: "profile email",
+            prompt: "select_account",
+            include_granted_scopes: true,
+            state: "myteststate123",
+          }}
           className="col mx-4 nav-link btn login login-google"
-          clientId={keys.googleClientID}
           buttonText="Login with Google"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
-          cookiePolicy={"single_host_origin"}
-          prompt="select_account"
-          accessType="offline"
-          responseType="code"
+          icon={<FontAwesomeIcon key={1} className="mr-2" icon={faGoogle} />}
         />
         <a className="col mx-4 nav-link" href="/auth/github">
           <FontAwesomeIcon className="mr-2" icon={faGithub} />
@@ -57,15 +60,16 @@ const LoginStrategies = (props) => {
           <FontAwesomeIcon className="mr-2" icon={faTwitter} />
           Login with Twitter
         </a>
-        <OAuth2 
+        <OAuth2
           authUrl="https://www.facebook.com/v8.0/dialog/oauth"
           parameters={{
             client_id: keys.facebookAppID,
             redirect_uri: keys.facebookRedirectUri,
-            state: "myteststate123"}
-          }
+            state: "myteststate123",
+          }}
           className="col mx-4 nav-link btn login login-facebook"
           buttonText="Login with Facebook"
+          icon={<FontAwesomeIcon key={1} className="mr-2" icon={faFacebook} />}
         />
       </div>
     </div>
