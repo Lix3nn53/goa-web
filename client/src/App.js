@@ -15,6 +15,7 @@ import NotificationModal from "./components/notification/NotificationModal";
 const AdminDashboard = lazy(() => import("./views/admin/AdminDashboard"));
 const LandingPage = lazy(() => import("./views/LandingPage"));
 const LoginPage = lazy(() => import("./views/auth/LoginPage"));
+const OAuth2Callback = lazy(() => import("./components/auth/OAuth2Callback"));
 const RegisterPage = lazy(() => import("./views/auth/RegisterPage"));
 const VerifyPage = lazy(() => import("./views/auth/VerifyPage"));
 const LorePage = lazy(() => import("./views/LorePage"));
@@ -68,7 +69,8 @@ function App(props) {
           <Switch>
             <Route exact path="/admin" component={AdminDashboard} />
             <Route exact path="/" component={LandingPage} />
-            <Route path="/login" component={LoginPage} />
+            <Route exact path="/login" component={LoginPage} />
+            <Route path="/login/oauth2/callback" component={OAuth2Callback} />
             <Route exact path="/register" component={RegisterPage} />
             <Route path="/register/verify" component={VerifyPage} />
             <Route path="/lore" component={LorePage} />

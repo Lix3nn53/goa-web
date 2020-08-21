@@ -20,7 +20,7 @@ module.exports = (app) => {
           "?client_id=" +
           keys.facebookAppID +
           "&redirect_uri=" +
-          "http://localhost:3000/auth/facebook" +
+          "http://localhost:3000/login/oauth2/callback" +
           "&client_secret=" +
           keys.facebookAppSecret +
           "&code=" +

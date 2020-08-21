@@ -10,6 +10,8 @@ const userProfileURL = "https://www.googleapis.com/oauth2/v2/userinfo";
 
 module.exports = (app) => {
   app.get("/auth/google", async function (req, res, next) {
+    console.log("google leeee");
+
     const code = authHandler.getOauthCode(req);
 
     var access_token;
@@ -19,13 +21,13 @@ module.exports = (app) => {
         code,
         client_id: keys.googleClientID,
         client_secret: keys.googleClientSecret,
-        redirect_uri: "http://localhost:3000/auth/google",
+        redirect_uri: "http://localhost:3000/login/oauth2/callback",
         grant_type: "authorization_code",
       });
 
       access_token = accessTokenRes.data.access_token;
     } catch (err) {
-      console.log("google token err", err);
+      console.log("google token err");
       res.status(500).json({
         err: "Error while trying to get access token",
       });
@@ -47,7 +49,7 @@ module.exports = (app) => {
       id = profile.id;
       username = profile.name;
     } catch (err) {
-      console.log("google user info err", err);
+      console.log("google user info err");
       res.status(500).json({
         err: "Error while trying to get user info",
       });
@@ -66,7 +68,7 @@ module.exports = (app) => {
         }).save();
       }
     } catch (err) {
-      console.log("google database err", err);
+      console.log("google database err");
       res.status(500).json({
         err: "Database error",
       });

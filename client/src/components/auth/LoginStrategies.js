@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import authAPI from "api/authAPI";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGithub,
@@ -10,7 +11,7 @@ import {
 import keys from "config/keys";
 import OAuth2 from "./OAuth2";
 
-const LoginStrategies = (props) => {
+const LoginStrategies = () => {
   const auth = useSelector((state) => state.auth);
 
   if (auth) {
@@ -24,7 +25,7 @@ const LoginStrategies = (props) => {
           authUrl="https://accounts.google.com/o/oauth2/v2/auth"
           parameters={{
             client_id: keys.googleClientID,
-            redirect_uri: keys.googleRedirectUri,
+            redirect_uri: keys.oAuth2RedirectUri,
             response_type: "code",
             scope: "profile email",
             prompt: "select_account",
@@ -34,6 +35,14 @@ const LoginStrategies = (props) => {
           className="col mx-4 nav-link btn login login-google"
           buttonText="Login with Google"
           icon={<FontAwesomeIcon key={1} className="mr-2" icon={faGoogle} />}
+          onCallback={async (params) => {
+            console.log("Google", params);
+            const auth_res = await authAPI.googleAuth(params);
+
+            if (auth_res.success) {
+              window.location.href = "/";
+            }
+          }}
         />
         <a className="col mx-4 nav-link" href="/auth/github">
           <FontAwesomeIcon className="mr-2" icon={faGithub} />
@@ -49,12 +58,19 @@ const LoginStrategies = (props) => {
           authUrl="https://www.facebook.com/v8.0/dialog/oauth"
           parameters={{
             client_id: keys.facebookAppID,
-            redirect_uri: keys.facebookRedirectUri,
+            redirect_uri: keys.oAuth2RedirectUri,
             state: "myteststate123",
           }}
           className="col mx-4 nav-link btn login login-facebook"
           buttonText="Login with Facebook"
           icon={<FontAwesomeIcon key={1} className="mr-2" icon={faFacebook} />}
+          onCallback={async (params) => {
+            const auth_res = await authAPI.facebookAuth(params);
+
+            if (auth_res.success) {
+              window.location.href = "/";
+            }
+          }}
         />
       </div>
     </div>

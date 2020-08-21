@@ -17,11 +17,23 @@ const localAuth = async (emailOrUsername, password) => {
   }
 };
 
-const googleAuth = async (authCode) => {
+const googleAuth = async (params) => {
   try {
-    const res = await axios.get("/auth/google", {
-      headers: { Authorization: `Bearer ${authCode}` },
-    });
+    const res = await axios.get("/auth/google" + params);
+
+    return handleAuthResponse(res);
+  } catch (error) {
+    if (error.response && error.response.data) {
+      return { success: false, errorMessage: error.response.data.message };
+    }
+
+    return { success: false };
+  }
+};
+
+const facebookAuth = async (params) => {
+  try {
+    const res = await axios.get("/auth/facebook" + params);
 
     return handleAuthResponse(res);
   } catch (error) {
@@ -118,4 +130,5 @@ export default {
   logout,
   resendConfirmationMail,
   googleAuth,
+  facebookAuth,
 };
