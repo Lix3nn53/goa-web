@@ -1,7 +1,8 @@
 let windowObjectReference = null;
 let previousUrl = null;
+let currentCallBackFunc = null;
 
-const receiveMessage = (event, callbackFunc) => {
+const receiveMessage = (event) => {
   // Do we trust the sender of this message? (might be
   // different from what we originally opened, for example).
   // if (event.origin) {
@@ -13,13 +14,14 @@ const receiveMessage = (event, callbackFunc) => {
     // get the URL params and redirect to our server to use Passport to auth/login
     const params = event.data;
 
-    callbackFunc(params);
+    currentCallBackFunc(params);
   }
 };
 
 exports.openSignInWindow = (url, name, callbackFunc) => {
+  currentCallBackFunc = callbackFunc;
   // remove any existing event listeners
-  window.removeEventListener("message", receiveMessage);
+  window.removeEventListener("message", receiveMessage, true);
 
   // window features
   const strWindowFeatures =
@@ -44,11 +46,7 @@ exports.openSignInWindow = (url, name, callbackFunc) => {
   }
 
   // add the listener for receiving a message from the popup
-  window.addEventListener(
-    "message",
-    (event) => receiveMessage(event, callbackFunc),
-    false
-  );
+  window.addEventListener("message", receiveMessage, true);
   // assign the previous URL
   previousUrl = url;
 };
